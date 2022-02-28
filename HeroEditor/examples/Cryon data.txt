@@ -1,0 +1,16 @@
+Name
+Cryon
+
+Class
+Goldmage
+
+Unit
+Ice Engine
+
+Skills
+Water Magic
+Mastery
+Creation
+Summoning
+Potency
+Regeneration
