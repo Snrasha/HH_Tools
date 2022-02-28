@@ -1,0 +1,151 @@
+<Faction>
+  <FactionName>Order</FactionName>
+  <!-- 9 Units on 6 tier. The src tag got the xml unit which contains all about the unit and upgrade. The name TAG can be removed -->
+  <FactionUnits>
+    <Unit>
+      <Tier>1</Tier>
+      <Name>Militia</Name>
+      <Src>order.militia</Src>
+    </Unit>
+    <Unit>
+      <Tier>2</Tier>
+      <Name>Arbalist</Name>
+      <Src>order.arbalist</Src>
+    </Unit>
+    <Unit>
+      <Tier>3</Tier>
+      <Name>Paragon</Name>
+      <Src>order.paragon</Src>
+    </Unit>
+    <Unit>
+      <Tier>3</Tier>
+      <Name>Strongarm</Name>
+      <Src>order.strongarm</Src>
+    </Unit>
+    <Unit>
+      <Tier>4</Tier>
+      <Name>Monk</Name>
+      <Src>order.monk</Src>
+    </Unit>
+    <Unit>
+      <Tier>4</Tier>
+      <Name>Survivor</Name>
+      <Src>order.survivor</Src>
+    </Unit>
+    <Unit>
+      <Tier>5</Tier>
+      <Name>Calvalry</Name>
+      <Src>order.calvalry</Src>
+    </Unit>
+    <Unit>
+      <Tier>5</Tier>
+      <Name>Paladin</Name>
+      <Src>order.paladin</Src>
+    </Unit>
+    <Tier>6</Tier>
+    <Name>Seraph</Name>
+    <Src>order.seraph</Src>
+  </Unit>
+
+  <!-- Will get the hero from the Heroes Folder-->
+</FactionUnits>
+
+<FactionHeroes>
+  custom.Hero_1,
+  order.Hero_2,
+  order.hero_3,
+  order.hero_4,
+  order.hero_5,
+  order.hero_6
+</FactionHeroes>
+
+<!--  -->
+<HeroNames>
+  <Caster>Priest</Caster>
+  <Fighter>General</Fighter>
+</HeroNames>
+
+<!-- (options are: "Crag","Dirt","Grass","Ice","Lava","Swamp","Sand","Deadlands","Moss Forest","Deep Forest","Tundra","Obsidian","Teal Marsh","Orange Desert")  -->
+<StartingTerrain>Grass</StartingTerrain>
+
+<!-- Split with ',' then trim it. Maybe JSON will be better than XML -->
+<TownNames>
+  Sample 1,Sample 2,Sample 3, Sample 4,Sample 5,Sample 6
+</TownNames>
+
+<!-- Default are from the game and do not need the suffix. custom.Machin.mp3 will try to found the music from the faction on the folder. -->
+<TownMusic>
+  default.Arcane
+</TownMusic>
+
+<!-- Same than before, but for magic school speciality. On a future update, maybe let people create magic or do not put magic for their custom faction (Like "none" or delete this tag). -->
+<MagicSchoolSpecialty>
+  default.water
+</MagicSchoolSpecialty>
+
+<ArchmageTribunalSkill>
+  default.Leadership
+</ArchmageTribunalSkill>
+
+<Lore>
+  <Name>bla bla Name</Name>
+  <MainRace>bla bla Main Race</MainRace>
+  <History>bla bla History</History>
+  <Culture>bla bla culture</Culture>
+
+  <HeroFighter>bla bla Hero Fighter</HeroFighter>
+  <HeroCaster>bla bla Hero Caster</HeroCaster>
+</Lore>
+
+
+<!-- On the town UI, put this background of YxY pixels -->
+<!--  If None, the button Town will be disabled. -->
+<TownBuildingBackground>order.background</TownBuildingBackground>
+
+<!-- Max 24 building -->
+<BuildingTree>
+  <!-- Pos X and Pos Y are the top left of the image of the building -->
+  <!-- Src will contains all the effect from a building which exist. But on future update, maybe custom building -->
+  <!--  We use the tag PREVIOUS for lock some building. With UP,DOWN,RIGHT,LEFT. You can put all of them with a ',' for separate -->
+  <!-- Tag replace is for replace the image building with the upgraded version -->
+  <Building>
+    <Name>Plaza of Order</Name>
+    <Src>order.plaza_of_order</Src>
+    <Image>order.plaza_of_order</Image>
+    <PosX>500</PosX>
+    <PosY>400</PosY>
+    <Line>0</Line>
+    <Column>0</Column>
+  </Building>
+  <Building>
+    <Name>Barrack</Name>
+    <Src>order.barrack</Src>
+    <Image>order.barrack</Image>
+    <PosX>800</PosX>
+    <PosY>1000</PosY>
+    <Line>0</Line>
+    <Column>1</Column>
+  </Building>
+  <Building>
+    <Name>Blacksmith</Name>
+    <Src>order.blacksmith</Src>
+    <Image>order.blacksmith</Image>
+    <PosX>200</PosX>
+    <PosY>50</PosY>
+    <Line>1</Line>
+    <Column>0</Column>
+    <Previous>UP</Previous>
+  </Building>
+  <Building>
+    <Name>Centre of Order</Name>
+    <Src>order.centre_of_order</Src>
+    <Image>order.centre_of_order</Image>
+    <PosX>500</PosX>
+    <PosY>400</PosY>
+    <Line>2</Line>
+    <Column>0</Column>
+    <Previous>UP</Previous>
+    <Replace>0,0</Replace>
+  </Building>
+</BuildingTree>
+</Faction>

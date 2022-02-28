@@ -1,0 +1,19 @@
+<Hero>
+<Name>Klaus</Name>
+<Unit>Little Helper</Unit>
+
+<!-- Fighter, caster, etc -->
+<Class>Fighter</Class>
+<Portrait>Hero 2 portrait.png</Portrait>
+
+<!-- Custom for each hero -->
+<Frames>Heroclass Fighter spritesheet.png</Frames>
+
+
+<!-- If begin per custom., this is a custom skill -->
+<Skills>
+  Leadership,
+  Fortune,
+</Skills>
+
+</Hero>
