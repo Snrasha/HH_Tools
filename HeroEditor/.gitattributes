@@ -1,0 +1,9 @@
+.gitattributes export-ignore
+.gitignore export-ignore
+__pycache__ export-ignore
+build export-ignore
+sources export-ignore
+main.spec export-ignore
+Readme.md export-ignore
+*.gif export-ignore
+*.zip export-ignore
