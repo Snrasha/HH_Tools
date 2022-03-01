@@ -4,6 +4,7 @@ from tkinter import filedialog as fd
 import os
 import ListSearchBar
 
+fields=["Name","Unit","Class","Skills"]
 
 ## Contains the search bar, the description (placed wrongly) and the skill tree.
 class SkillFields(tk.Frame):
@@ -167,30 +168,35 @@ class SimpleFields(tk.Frame):
         file1 = open(self.filename, 'r')
         self.lines=file1.readlines()
         self.count=0
+        filled=[]
+        
         while self.count<len(self.lines):
             line=self.lines[self.count].strip()
-
+            
             ## If found Name, check the next line. If the next line do not exist because it
             ## check than this is illegal, continue without increment.
-            if(line.startswith("Name")):
+            if(line.startswith(fields[0]) and fields[0] not in filled):
                 answer=self.getNextLine()
-                if(answer !=None and not self.checkIfIllegal(answer)):
+                if(answer !=None):
                     self.name_entry.insert(0,answer)
+                    filled+=[fields[0]]
                 continue
-            if(line.startswith("Unit")):
+            if(line.startswith(fields[1]) and fields[1] not in filled):
                 answer=self.getNextLine()
-                if(answer !=None and not self.checkIfIllegal(answer)):
+                if(answer !=None):
                     self.unit_entry.insert(0,answer)
+                    filled+=[fields[1]]
                 continue
-            if(line.startswith("Class")):
+            if(line.startswith(fields[2]) and fields[2] not in filled):
                 answer=self.getNextLine()
-                if(answer !=None and not self.checkIfIllegal(answer)):
+                if(answer !=None):
                     self.class_entry.insert(0,answer)
+                    filled+=[fields[2]]
                 continue
 
             ## If found Skills, read all lines after it and stop when found a blank.
-            if(line.startswith("Skills")):
-                answer=self.getNextLine(True)
+            if(line.startswith(fields[3])):
+                answer=self.getNextLine()
                 lin=0
                 listOfSkills=[]
                 
@@ -202,50 +208,48 @@ class SimpleFields(tk.Frame):
                     else:
                         listOfSkills+=[answer]
                     lin+=1
-                    answer=self.getNextLine(True)
+                    answer=self.getNextLine()
                 else:
                     continue
             self.count+=1
         file1.close()
         
     ## Found the next line to read. Ignore blank line except if stopToBlank is True
-    def getNextLine(self,stopToBlank=False):
+    def getNextLine(self):
         self.count+=1
-        while self.count<len(self.lines):
+        if(self.count<len(self.lines)):
             line=self.lines[self.count].strip()
             if(len(line)>0):
                 return line
             else:
                 return None
-
-            self.count+=1
         return None
 
-    ## Check if the text do not start with a illegal word.
-    def checkIfIllegal(self,text):
-        if(text.startswith("Skills")):
-            return True
-        if(text.startswith("Unit")):
-            return True
-        if(text.startswith("Name")):
-            return True
-        if(text.startswith("Class")):
-            return True
-        return False
+##    ## Check if the text do not start with a illegal word.
+##    def checkIfIllegal(self,text):
+##        if(text.startswith(fields[0])):
+##            return True
+##        if(text.startswith(fields[1])):
+##            return True
+##        if(text.startswith(fields[2])):
+##            return True
+##        if(text.startswith(fields[3])):
+##            return True
+##        return False
     
             
     ## Save a file. Check if all field are valid.        
     def saveFile(self):
 
-        if(self.checkIfIllegal(self.name_entry.get())):
-            self.name_entry.configure(background="red")
-            return
-        if(self.checkIfIllegal(self.unit_entry.get())):
-            self.unit_entry.configure(background="red")
-            return            
-        if(self.checkIfIllegal(self.class_entry.get())):
-            self.unit_entry.configure(background="red")
-            return                 
+##        if(self.checkIfIllegal(self.name_entry.get())):
+##            self.name_entry.configure(background="red")
+##            return
+##        if(self.checkIfIllegal(self.unit_entry.get())):
+##            self.unit_entry.configure(background="red")
+##            return            
+##        if(self.checkIfIllegal(self.class_entry.get())):
+##            self.unit_entry.configure(background="red")
+##            return                 
         
         labels=self.master.skillFields.allSkills
         listOfSkills=[]
@@ -255,9 +259,9 @@ class SimpleFields(tk.Frame):
                 label.configure(background="red")
                 return
             listOfSkills+=[label.get()]
-            if(self.checkIfIllegal(label.get())):
-                label.configure(background="red")
-                return
+##            if(self.checkIfIllegal(label.get())):
+##                label.configure(background="red")
+##                return
             if(label.get() == "None"):
                 break
 
