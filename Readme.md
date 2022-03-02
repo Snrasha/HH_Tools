@@ -6,17 +6,34 @@ Hero's hour unofficial tools editor.
 See this link for the modding guide of Hero's Hour.
 https://docs.google.com/document/d/1h64ac7rNAW0_0Kfj-KsMecsdMdQGZlJ2cmIU0PMVWFY/edit#heading=h.rrar1dgps27e
 
-### Hero Editor
+## Hero's Hour Editor
+
+This editor has only the Hero tab, but i will implement soon the unit, faction and artifact tab.
+
+### Usage
+
+Double click on the HerosHourEditor.exe. Warning, this software will probably be seens like a **virus** the first time.</br>
+
+On open, you will have differents tabs. Click on these tabs for switching of editor or press the number on your keyboard.
+
+### Shortcut
+
+* **1,2,3,4** will open the tab wanted.
+* **D** will open the file dialog for edit a file.
+* **V** will "save as" your work.
+
+
+### Hero Tab
  * **Name**: Hero name. Need to be unique amongs every mods and vanilla heroes;
  * **Unit**: The unit which the Hero spawn at the start or linked to skills;
  * **Class**: For neutral heroes only. Look at the guide for know what insert;
  * **Skills**: Setup the 18 skills like in the game. You do not need to fill every slots, they will be randomized on game.
 
-For use the software:
-Double click on the HeroEditor.exe. Warning, this software will probably be seens like a virus.</br>
+ For the skills tree, click on the skill slot than you want fill, then double click on the skill on the skill list. A simple click on a skill slot or a skill from skill list will display the description.
 
-When opened, you can edit and save your file. You can do that from scratch but be sure to put the correct filename for the game (pretty sensitive).</br>
+ Do not hesitate to use the search bar because it check also the description of each skill.
 
-You can fill the Name, Unit and Class easily. For the skill tree, click on the slot wished, then double click on the list of skill for add it. A simple click on a skill (list or slot) will just display the description.
+## Unit Animation Tool
+I do not own this tool, this is from HH. I keep it here like a tool.
 
-Currently working on this readme.
+Transform your 20 frames to a gif-alike in HH game. This is not just a simple gif of the 20 frames.
