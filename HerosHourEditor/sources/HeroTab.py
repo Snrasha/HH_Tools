@@ -298,8 +298,7 @@ class SimpleFields(tk.Frame):
             if(label.get() == "None"):
                 break
 
-        
-        self.filename=fd.asksaveasfilename(initialfile=self.filename,title="Save Hero file",filetypes=[("TXT Files","*.txt")])
+        self.filename=fd.asksaveasfilename(initialfile=self.filename.split('/')[-1],title="Save Hero file",filetypes=[("TXT Files","*.txt")])
         if(len(self.filename.strip())==0):
             self.filename=None
             return

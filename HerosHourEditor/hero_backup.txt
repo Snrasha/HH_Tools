@@ -1,0 +1,23 @@
+Name
+Andress the bloodless
+
+Unit
+Ne-Drone
+
+Skills
+Legion
+Armorer
+Mastery
+Healing
+Plunder
+Oligarchy
+Destruction
+Recruitment
+Engineering
+Scouting
+Bodyguards
+Planning
+Logistics
+Royalty
+Regeneration
+Leadership
