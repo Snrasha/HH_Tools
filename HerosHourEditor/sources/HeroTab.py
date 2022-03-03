@@ -3,6 +3,8 @@ import tkinter.ttk as ttk
 from tkinter import filedialog as fd
 import os
 import ListSearchBar
+from PIL import Image,ImageTk
+
 
 fields=["Name","Unit","Class","Skills"]
 
@@ -28,8 +30,15 @@ class SkillFields(tk.Frame):
         self.labelDesc.config(wraplength=200)
         self.labelDesc.configure(text=self.searchBar.descriptionsSkills["None"])
 
-        subframe2=ttk.LabelFrame(self,text='Skill Tree', padding=(5, 5))
-        subframe2.pack(fill=tk.BOTH,side=tk.LEFT,padx=(1,1),pady=(1,1))
+        frame=tk.Frame(self)
+        frame.pack(fill=tk.BOTH,side=tk.LEFT,padx=(1,1),pady=(1,1))
+        subframe2=ttk.LabelFrame(frame,text='Skill Tree', padding=(5, 5))
+        subframe2.pack(fill=tk.BOTH,side=tk.TOP,padx=(1,1),pady=(1,1))
+        subframe3=ttk.LabelFrame(frame,text='Informations', padding=(5, 5))
+        subframe3.pack(fill=tk.BOTH,side=tk.TOP,padx=(1,1),pady=(1,1),expand=True)
+
+        self.portrait = tk.Label(subframe3,text="NO PORTRAIT")
+        self.portrait.pack()
 
         level0=ttk.Frame(subframe2)
         level0.pack(side=tk.TOP,padx=(1,1),pady=(1,1),anchor=tk.N)
@@ -88,6 +97,7 @@ class SimpleFields(tk.Frame):
     def  __init__(self,master):
         tk.Frame.__init__(self,master,padx=5,pady=5)
         self.master=master
+        self.filename=None
         
         self.pack(side=tk.RIGHT,fill=tk.Y,expand=False)
 
@@ -140,11 +150,56 @@ class SimpleFields(tk.Frame):
         file1 = open(self.filename, 'r')
         lines=file1.readlines()
 
-        backup = open("backup.txt", 'w')
+        backup = open("hero_backup.txt", 'w')
         backup.writelines(lines)
         
         file1.close()
         backup.close()
+
+    def loadImageToPortrait(self,path):
+        data="data.txt"
+        length=-len("data.txt")
+        if(data in path):
+            path=path[:length]+"portrait.png"
+        else:
+            path=""
+        if(os.path.exists(path)):
+            image = self.addBlackOutline(path)
+            n_image = image.resize((64, 64))
+            photo = ImageTk.PhotoImage(n_image)
+            self.master.skillFields.portrait.image = photo # <== this is were we anchor the img object
+            self.master.skillFields.portrait.configure(image=photo)
+            self.master.skillFields.portrait.pack(fill=tk.BOTH,side=tk.TOP)
+        else:
+            self.master.skillFields.portrait.image = None 
+            self.master.skillFields.portrait.configure(image=None,text="NO PORTRAIT")
+            self.master.skillFields.portrait.pack(fill=tk.BOTH,side=tk.TOP)            
+            
+    def addBlackOutline(self,path):
+        image=Image.open(path)
+        w=image.size[0]
+        h=image.size[1]
+        gameImage=Image.new("RGBA", (w, h), (0, 0, 0, 0)) 
+        pixels = image.load()
+        pixelsBlack=gameImage.load()
+
+        for i in range(w):
+            for j in range(h):
+                if(pixels[i,j][3]!=0):
+                    if(j+1<h):
+                        pixelsBlack[i, j + 1] = (0, 0, 0, 255)
+                    if(j-1>=0):
+                        pixelsBlack[i, j - 1] = (0, 0, 0, 255)
+                    if(i+1<w):
+                        pixelsBlack[i + 1, j] = (0, 0, 0, 255)
+                    if(i-1>=0):
+                        pixelsBlack[i - 1, j] = (0, 0, 0, 255)
+        for i in range(w):
+            for j in range(h):
+                if(pixels[i,j][3]!=0):
+                    pixelsBlack[i, j] = pixels[i,j]
+                       
+        return gameImage
 
 
     ## Open a existing file for edit it.
@@ -156,6 +211,9 @@ class SimpleFields(tk.Frame):
 
         if(self.filename==None or self.filename.strip()==""):
             return None
+
+        self.loadImageToPortrait(self.filename)
+        
         self.name_entry.delete(0, tk.END)
         self.unit_entry.delete(0, tk.END)
         self.class_entry.delete(0, tk.END)
@@ -240,9 +298,15 @@ class SimpleFields(tk.Frame):
             if(label.get() == "None"):
                 break
 
-        self.filename=fd.asksaveasfilename(title="Save Hero file",filetypes=[("TXT Files","*.txt")])
+        
+        self.filename=fd.asksaveasfilename(initialfile=self.filename,title="Save Hero file",filetypes=[("TXT Files","*.txt")])
+        if(len(self.filename.strip())==0):
+            self.filename=None
+            return
         if not self.filename.endswith(".txt"):
             self.filename+=".txt"
+
+        self.loadImageToPortrait(self.filename)
         
         file1 = open(self.filename, 'w')
         file1.write("Name\n")

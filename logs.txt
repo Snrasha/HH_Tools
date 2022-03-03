@@ -1,0 +1,6 @@
+03/03/2022:
+
+Hero tab:
+ - On 'Save as', insert the opened filename if exist.
+ - On 'Save as', cancel the save will not write (and probably overwrite) a file.
+ - Added "Portrait" on Load and Save file. For check if the portrait (which will get a black outline) is working.
