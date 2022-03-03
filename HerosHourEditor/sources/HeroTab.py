@@ -309,13 +309,14 @@ class SimpleFields(tk.Frame):
         
         file1 = open(self.filename, 'w')
         file1.write("Name\n")
-        file1.write(self.name_entry.get()+"\n\n")
-        
-        file1.write("Class\n")
-        file1.write(self.class_entry.get()+"\n\n")
+        file1.write(self.name_entry.get().strip()+"\n\n")
+
+        if(len(self.class_entry.get().strip())>0):
+            file1.write("Class\n")
+            file1.write(self.class_entry.get().strip()+"\n\n")
 
         file1.write("Unit\n")
-        file1.write(self.unit_entry.get()+"\n\n")
+        file1.write(self.unit_entry.get().strip()+"\n\n")
 
         file1.write("Skills\n")
         labels=self.master.skillFields.allSkills

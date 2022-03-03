@@ -1,23 +1,27 @@
 Name
-Andress the bloodless
+Iris the mute
+
+Class
+
 
 Unit
-Ne-Drone
+Ne-Gunner
 
 Skills
-Legion
-Armorer
+Pyromancy
+Leadership
+Sorcery
+Summoning
+Recruitment
+Scouting
+Mysticism
+Wisdom
 Mastery
 Healing
-Plunder
-Oligarchy
-Destruction
-Recruitment
-Engineering
-Scouting
 Bodyguards
-Planning
-Logistics
-Royalty
+Warding
+Learning
 Regeneration
-Leadership
+Planning
+Tactics
+Legion
