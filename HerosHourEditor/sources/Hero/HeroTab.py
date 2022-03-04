@@ -83,10 +83,10 @@ class SkillFields(tk.Frame):
         label=CommonClass.LabelSimplified(frame,padding=(2,2),background="white",width=20,borderwidth=1,relief="sunken")
         label.set("None")
         label.pack(side=tk.LEFT,padx=1,pady=1)
-        label.bind("<Button-1>",self.on_enter)
+        label.bind("<Button-1>",self.onEnter)
         self.allSkills+=[label]
 
-    def on_enter(self,event):
+    def onEnter(self,event):
         if(self.currentSlot!=None):
             self.currentSlot.configure(background="white")
         self.currentSlot=event.widget
@@ -129,7 +129,7 @@ class SimpleFields(tk.Frame):
     def loadImageToPortrait(self,path):
         data="data.txt"
         length=-len(data)
-        if(data in path):
+        if(data in path.lower()):
             path=path[:length]+"portrait.png"
         else:
             path=""

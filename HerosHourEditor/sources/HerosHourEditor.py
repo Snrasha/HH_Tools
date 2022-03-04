@@ -2,6 +2,7 @@ import tkinter as tk
 import tkinter.ttk as ttk
 import os
 import Hero.HeroTab as HeroTab
+import Faction.FactionTab as FactionTab
 import Utils.CommonClass as CommonClass
 
 # Empty tab for work in progress.
@@ -32,8 +33,8 @@ class Application(ttk.Notebook):
         # Add Tabs.
         self.tabs+=[HeroTab.TabHeroEditor(self,window)]
         self.tabs+=[EmptyTab(self,window)]
-        self.tabs+=[EmptyTab(self,window)]
-##        self.tabs+=[FactionTab.TabFactionEditor(self,window)]
+##        self.tabs+=[EmptyTab(self,window)]
+        self.tabs+=[FactionTab.TabFactionEditor(self,window)]
         self.tabs+=[EmptyTab(self,window)]
         
         self.tabs[0].bindKey()

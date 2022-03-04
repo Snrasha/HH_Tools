@@ -3,7 +3,8 @@ import tkinter.ttk as ttk
 import os
 from PIL import Image,ImageTk
 import Utils
-
+import Utils.CommonClass as CommonClass
+import Utils.CommonFunctions as CommonFunctions
 
 fields=["FACTION NAME","FACTION UNITS ALTERNATES","HERO NAMES",
         "DWELLING NAMES","STARTING TERRAIN","TOWN NAMES",
@@ -13,79 +14,92 @@ fields=["FACTION NAME","FACTION UNITS ALTERNATES","HERO NAMES",
         "LORE HERO CASTER"
         ]
 
+terrains=["Crag","Dirt","Grass","Ice","Lava","Swamp","Sand",
+          "Deadlands","Moss Forest","Deep Forest","Tundra","Obsidian","Teal Marsh","Orange Desert"]
+
+music=["Order", "Wild", "Arcane", "Decay", "Pyre", "Horde","Enclave", "Lament", "Tide", "Earthen"]
+
+magic=["Water", "Air", "Fire", "Earth"]
+
   
-## Label do not have set and get method. This class will do that.     
-class LabelSimplified(tk.Entry):
-    def __init__(self,master=None,**kwargs):
-        self.var= tk.StringVar(master)
-        ttk.Label.__init__(self,master,textvariable=self.var,**kwargs)
-        self.get,self.set=self.var.get,self.var.set
-
-
 ## Contains edit, save and the three simple fields.
 class SimpleFields(tk.Frame):
     def  __init__(self,master):
         tk.Frame.__init__(self,master,padx=5,pady=5)
         self.master=master
         self.filename=None
-        
-        self.pack(side=tk.RIGHT,fill=tk.Y,expand=False)
 
-        Utils.FileFrame(self)
+        CommonClass.FileFrame(self,side=tk.RIGHT,anchor="n")
+
+        self.fieldsEntry=[]
+        
 
         subframe2=ttk.LabelFrame(self,text='Fields', padding=(5, 5))
-        subframe2.pack(fill=tk.BOTH,side=tk.TOP,padx=(1,1),pady=(1,1))
+        subframe2.pack(fill=tk.BOTH,side=tk.LEFT,padx=(1,1),pady=(1,1),expand=True)
 
-        subframe3=ttk.Frame(subframe2,borderwidth=1,relief="sunken")
-        subframe3.pack(fill=tk.BOTH,side=tk.TOP,padx=(1,1),pady=(1,1))
-
-        label=ttk.Label(subframe3,text="Name:")
-        label.pack(side=tk.LEFT,padx=5,pady=5)
-
-        self.name_entry=tk.Entry(subframe3, font='bold',justify='center')
-        self.name_entry.pack(fill=tk.X,padx=5,expand=True)
-        self.name_entry.insert(0,"Hero name")
-
-        subframe4=ttk.Frame(subframe2,borderwidth=1,relief="sunken")
-        subframe4.pack(fill=tk.BOTH,side=tk.TOP,padx=(1,1),pady=(1,1))
-
-        label=ttk.Label(subframe4,text="Unit:")
-        label.pack(side=tk.LEFT,padx=5,pady=5)
-
-        self.unit_entry=tk.Entry(subframe4, font='bold',justify='center')
-        self.unit_entry.pack(fill=tk.X,padx=5,expand=True)
-        self.unit_entry.insert(0,"Starting Unit")
-
-        subframe5=ttk.Frame(subframe2,borderwidth=1,relief="sunken")
-        subframe5.pack(fill=tk.BOTH,side=tk.TOP,padx=(1,1),pady=(1,1))
-
-        label=ttk.Label(subframe5,text="Class:")
-        label.pack(side=tk.LEFT,padx=5,pady=5)
-
-        self.class_entry=tk.Entry(subframe5, font='bold',justify='center')
-        self.class_entry.pack(fill=tk.X,padx=5,expand=True)
-        self.class_entry.insert(0,"")
+        listFrame=tk.Frame(self)
+        listFrame.pack(fill=tk.BOTH,side=tk.LEFT,padx=(1,1),pady=(1,1))    
 
 
-    
+        self.pack(side=tk.LEFT,fill=tk.BOTH,expand=False)
+
+        
+        canvas=tk.Canvas(subframe2)
+        canvas.pack(fill=tk.BOTH,side=tk.LEFT, expand=True)
+        scrollbar1 = ttk.Scrollbar(subframe2, orient='vertical', command=canvas.yview)
+        scrollbar1.pack(fill=tk.Y,side=tk.LEFT,expand=True)
+        canvas.configure(yscrollcommand=scrollbar1.set)
+
+        leftFrame=tk.Frame(canvas)
+        leftFrame.pack(fill=tk.BOTH)
+
+        
+        
+
+        # 0 Name, 1 Unit, 2 Class
+        self.fieldsEntry+=[CommonClass.Field(leftFrame,titleField="Faction name:",hintField="")]
+        self.fieldsEntry+=[CommonClass.Field(leftFrame,titleField="Hero Name Fighter:",hintField="Fighter")]
+        self.fieldsEntry+=[CommonClass.Field(leftFrame,titleField="Hero Name Caster:",hintField="Caster")]
+        self.fieldsEntry+=[CommonClass.FieldList(leftFrame,titleField="Starting Terrain:",listOfItems=terrains)]
+        self.fieldsEntry+=[CommonClass.Field(leftFrame,titleField="Humanoid Elite Target:",hintField="9")]
+        self.fieldsEntry+=[CommonClass.FieldList(leftFrame,titleField="Town Music:",listOfItems=music)]
+        self.fieldsEntry+=[CommonClass.FieldList(leftFrame,titleField="Magic School Specialty:",listOfItems=magic)]
+
+        self.skills=CommonFunctions.readSkills()
+        self.fieldsEntry+=[CommonClass.FieldList(leftFrame,titleField="Archmage Tribunal Skill:",listOfItems=self.skills.keys())]
+
+        self.fieldsEntry+=[CommonClass.Field(leftFrame,titleField="Lore Name:",hintField="Empire (not Order)")]
+        self.fieldsEntry+=[CommonClass.Field(leftFrame,titleField="Lore Main Race:",hintField="Human")]
+        self.fieldsEntry+=[CommonClass.Field(leftFrame,titleField="Lore History:",hintField="Bla bla genocide")]
+        self.fieldsEntry+=[CommonClass.Field(leftFrame,titleField="Lore Culture:",hintField="Bla bla religion")]
+        self.fieldsEntry+=[CommonClass.Field(leftFrame,titleField="Lore Hero Fighter:",hintField="Bla bla Inquisitor")]
+        self.fieldsEntry+=[CommonClass.Field(leftFrame,titleField="Lore Hero Caster:",hintField="Bla bla Idol of death")]
+
+
+
+        leftFrame.update_idletasks()
+        canvas.create_window((0, 0), window=leftFrame, anchor='w')
+        canvas.configure(scrollregion=canvas.bbox("all"))
 
     def loadImages(self,path):
-        
-        data="FACTION.txt"
+        data="faction.txt"
         length=-len(data)
         
-        if(data in path):
-            pathDir=pathDir[:length]+"Folder/"
+        if(data in path.lower()):
+            pathDir=path[:length]+"Folder/"
         else:
             pathDir=""
+        if not (os.path.exists(pathDir)):
+            CommonClass.Popup("faction Folder do not exist. Verify it. This is case-sensitive")
+            
 
         for i in range (6):
             path=pathDir+"Hero "+i+" portrait.png"
-            Utils.addImage(path,self.portraits[i],48,outline=True)
+            CommonFunctions.addImage(path,self.portraits[i],48,outline=True)
         for i in range (9):
             path=pathDir+"Unit "+i+" spritesheet.png"
             path2=pathDir+"Unit "+i+"+ spritesheet.png"
-            addFrameUnits(path,path2,self.unitsImg[i])            
+            addFrameUnits(path,path2,self.unitsImg[i])          
                        
     def addFrameUnits(self,pathUnit,pathUnitUpgraded,label):
         gameImage=Image.new("RGBA", (48, 24), (0, 0, 0, 0))
@@ -103,69 +117,24 @@ class SimpleFields(tk.Frame):
         gameImage.paste(image,(24,48,0,24))  
         
 
-
-
     ## Open a existing file for edit it.
     def editFile(self):
-        self.filename=Utils.askEditFile("Select a Faction file")
+        self.filename=CommonFunctions.askEditFile("Select a Faction file")
         if(self.filename==None):
             return None
 
         self.loadImages(self.filename)
         
-##        self.name_entry.delete(0, tk.END)
-##        self.unit_entry.delete(0, tk.END)
-##        self.class_entry.delete(0, tk.END)
-
+        for field in self.fieldsEntry:
+            field.empty()
+        
         ## Made a backup of the opened file.
-        Utils.madeBackUp("faction_backup.txt",self.filename)
+        CommonFunctions.madeBackUp("faction_backup.txt",self.filename)
         file1 = open(self.filename, 'r')
         self.lines=file1.readlines()
         self.count=0
         filled=[]
         
-##        while self.count<len(self.lines):
-##            line=self.lines[self.count].strip()
-##            
-##            ## If found Name, check the next line. If the next line do not exist because it
-##            ## check than this is illegal, continue without increment.
-##            if(line.startswith(fields[0]) and fields[0] not in filled):
-##                answer=self.getNextLine()
-##                if(answer !=None):
-##                    self.name_entry.insert(0,answer)
-##                    filled+=[fields[0]]
-##                continue
-##            if(line.startswith(fields[1]) and fields[1] not in filled):
-##                answer=self.getNextLine()
-##                if(answer !=None):
-##                    self.unit_entry.insert(0,answer)
-##                    filled+=[fields[1]]
-##                continue
-##            if(line.startswith(fields[2]) and fields[2] not in filled):
-##                answer=self.getNextLine()
-##                if(answer !=None):
-##                    self.class_entry.insert(0,answer)
-##                    filled+=[fields[2]]
-##                continue
-##
-##            ## If found Skills, read all lines after it and stop when found a blank.
-##            if(line.startswith(fields[3])):
-##                answer=self.getNextLine()
-##                lin=0
-##                listOfSkills=[]
-##                
-##                
-##                while(answer !=None):
-##                    labels[lin].set(answer)
-##                    if(answer in listOfSkills):
-##                        labels[lin].configure(background="red")
-##                    else:
-##                        listOfSkills+=[answer]
-##                    lin+=1
-##                    answer=self.getNextLine()
-##                else:
-##                    continue
-##            self.count+=1
         file1.close()
         
     ## Found the next line to read. Ignore blank line except if stopToBlank is True
@@ -182,29 +151,18 @@ class SimpleFields(tk.Frame):
     ## Save a file. Check if all field are valid.        
     def saveFile(self):                
         
-        labels=self.master.skillFields.allSkills
-        listOfSkills=[]
-        
-        for label in labels:
-            if(label.get() in listOfSkills):
-                label.configure(background="red")
-                return
-            listOfSkills+=[label.get()]
-            if(label.get() == "None"):
-                break
-
-        self.filename=Utils.askSaveFile(self.filename,"Save Faction file")
+        self.filename=CommonFunctions.askSaveFile(self.filename,"Save Faction file")
         if(self.filename==None):
             self.filename=None
             return
 
-        self.loadImageToPortrait(self.filename)
+        self.loadImages(self.filename)
 
         inc=0
         
         file1 = open(self.filename, 'w')
         file1.write(fields[inc]+"\n")
-        file1.write(self.faction_name_entry.get().strip()+"\n\n")
+        file1.write(self.fieldsEntry[0].get().strip()+"\n\n")
         inc+=1
 
         file1.write(fields[inc]+"\n")
@@ -214,8 +172,8 @@ class SimpleFields(tk.Frame):
         inc+=1
 
         file1.write(fields[inc]+"\n")
-        file1.write(self.hero_fighter_name_entry.get().strip()+"\n")
-        file1.write(self.hero_caster_name_entry.get().strip()+"\n\n")
+        file1.write(self.fieldsEntry[1].get().strip()+"\n")
+        file1.write(self.fieldsEntry[2].get().strip()+"\n\n")
         inc+=1
 
         file1.write(fields[inc]+"\n")
@@ -225,7 +183,7 @@ class SimpleFields(tk.Frame):
         inc+=1
 
         file1.write(fields[inc]+"\n")
-        file1.write(self.starting_terrain_entry.get().strip()+"\n\n")
+        file1.write(self.fieldsEntry[3].get().strip()+"\n\n")
         inc+=1
 
         file1.write(fields[inc]+"\n")
@@ -233,56 +191,20 @@ class SimpleFields(tk.Frame):
             file1.write(self.town_names[i]+"\n")
         file1.write("\n")
         inc+=1
-        
-        file1.write(fields[inc]+"\n")
-        file1.write(self.humanoid_elite_target_entry.get().strip()+"\n\n")
-        inc+=1
 
-        file1.write(fields[inc]+"\n")
-        file1.write(self.magic_school_specialty_entry.get().strip()+"\n\n")
-        inc+=1
-
-        file1.write(fields[inc]+"\n")
-        file1.write(self.archmage_tribunal_skill_entry.get().strip()+"\n\n")
-        inc+=1
-        
-        file1.write(fields[inc]+"\n")
-        file1.write(self.lore_name_entry.get().strip()+"\n\n")
-        inc+=1
-        
-        file1.write(fields[inc]+"\n")
-        file1.write(self.lore_main_race_entry.get().strip()+"\n\n")
-        inc+=1
-
-        file1.write(fields[inc]+"\n")
-        file1.write(self.lore_history_entry.get().strip()+"\n\n")
-        inc+=1
-        
-        file1.write(fields[inc]+"\n")
-        file1.write(self.lore_culture_entry.get().strip()+"\n\n")
-        inc+=1
-
-        file1.write(fields[inc]+"\n")
-        file1.write(self.lore_hero_fighter_entry.get().strip()+"\n\n")
-        inc+=1
-        
-        file1.write(fields[inc]+"\n")
-        file1.write(self.lore_hero_caster_entry.get().strip()+"\n\n")
-        inc+=1
-                
+        for i in range(4,15):
+            file1.write(fields[inc]+"\n")
+            file1.write(self.fieldsEntry[i].get().strip()+"\n\n")
+            inc+=1
+            
         file1.close()
 
 class TabFactionEditor(CommonClass.Tab):     
     def  __init__(self,master,window):
         CommonClass.Tab.__init__(self,master,window)
 
-        scrollbar = ttk.Scrollbar(master, orient='vertical', command=master.yview)
-        self['yscrollcommand'] = scrollbar.set
-        scrollbar.pack()
-
         self.pack(fill=tk.BOTH,expand=True)
         self.simpleFields=SimpleFields(self)
-        self.skillFields=SkillFields(self)
         
     def onKeyRelease(self,event):
          # If the user is on an entry / input field, skip the event.
