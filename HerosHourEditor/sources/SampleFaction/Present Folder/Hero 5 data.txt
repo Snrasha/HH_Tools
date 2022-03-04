@@ -1,0 +1,9 @@
+Name
+Krampus
+
+Unit
+Krampus
+
+Skills
+Hydromancy
+Pyromancy

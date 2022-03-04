@@ -1,0 +1,61 @@
+FACTION NAME
+Present
+
+FACTION UNITS ALTERNATES
+2
+4
+6
+
+HERO NAMES (fighter first, caster second)
+Nicebringer
+Naughtymaker
+
+DWELLING NAMES (in order from tier 1, 6 in total)
+Iceberg
+Elf Cabins
+Igloo
+Snow Fields
+Hall of Feasts
+Holly Throne
+
+STARTING TERRAIN (options are: "Crag","Dirt","Grass","Ice","Lava","Swamp","Sand","Deadlands","Moss Forest","Deep Forest","Tundra","Obsidian","Teal Marsh","Orange Desert")
+Ice
+
+TOWN NAMES (write as many as required)
+Candyland
+Snowwhirl
+Land of Joy
+Nuuk
+Julemanden
+Naughty List
+Toy Factory
+
+HUMANOID ELITE TARGET (for bloodwarping, artisan's lodge)
+9
+
+TOWN MUSIC (write name of faction to borrow music from)
+Arcane
+
+MAGIC SCHOOL SPECIALTY (Water, Earth, Air, or Fire)
+Water
+
+ARCHMAGE TRIBUNAL SKILL
+Leadership
+
+LORE NAME:
+Counsil of Presents
+
+LORE MAIN RACE:
+Aetherkin
+
+LORE HISTORY:
+This fledgling group of aetherkin and elementals comes from far away, and rarely interacts with the lands of Astoria. However, once a year, they hold a ritual, after which they head to lands all around the world, bringing presents or punishment to whomever they decide deserve it.
+
+LORE CULTURE:
+A mish mash of unthinking elementals and more advanced aetherkin, all they have in common is their obsession with justice. Broadly, the Counsil is split in two groups: Those who believe bad acts should be punished, and those who believe that though people are mostly bad, it is more effective to reward good behaviour than to punish.
+
+LORE HERO FIGHTER:
+While the Nicebringers bring out gifts to virtuous people each Presentmas, they spend the rest of the year fighting and leading their armies
+
+LORE HERO CASTER:
+In opposition to Nicebringers, the Naughtymakers hold grudges and are highly judgemental of people who do bad things - however rare this may be

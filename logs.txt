@@ -1,3 +1,10 @@
+
+04/03/2022:
+  - Greatly clean-up the code.
+  - Begin the Faction Editor.
+
+
+
 03/03/2022:
 
 Hero tab:

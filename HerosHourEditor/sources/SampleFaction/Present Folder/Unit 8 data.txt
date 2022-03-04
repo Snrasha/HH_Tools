@@ -1,0 +1,41 @@
+Names (first basic, then the upgrade)
+Wintergeist
+Krampus
+
+Gold cost for base unit (also decides basic strength of unit)
+3500
+
+Weekly Growth
+1
+
+Rare Resource Cost (00 for nothing. Write in number + letter, where letters are: O=ore, L=lumber, S=sulphur, C=crystal, M=mercury)
+1O
+
+Balance modifier (first basic, then the upgrade. Makes the unit stronger/weaker compared to cost, to make up for strong abilities)
+100
+100
+
+Abilities for base unit
+Slowing
+Terror
+Charge
+
+Abilities for upgrade (duplicate  from base unit if you want to keep them)
+Slowing
+Terror
+Charge
+Summon Fireflies
+
+Use sound effects from X unit
+Pride
+
+Attack type			(0: defensive || 1: aggressive || 2: magical (for potency))
+1
+
+Living				(-2: blight || -1: undead || 0: elemental || 1: living || 2: humanoid || 3: beast)
+2
+
+Link				(unit summoned via Summoning, Bodyguards, or similar)
+Toadfrog
+
+Unit groups

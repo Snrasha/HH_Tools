@@ -1,0 +1,13 @@
+Name
+Jack Frost
+
+Class
+hh
+
+Unit
+Abominable
+
+Skills
+Healing
+Diplomacy
+Warding

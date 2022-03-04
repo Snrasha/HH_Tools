@@ -1,32 +1,5 @@
 import tkinter as tk
-import os
-import Hero.Skills as Skills
-
-##def fillSkill(descriptionsSkill):
-##    backup = open("Skill.py", 'w')
-##    backup.write(str(descriptionsSkill))
-##        
-##    backup.close()
-
-## Read the Skills.csv for all name skills followed per their description
-def readSkills():
-    descriptionsSkills={"None":"Click on a skill on the list or the skill tree for get the description"}
-
-    if(os.path.exists("Skills.csv")):
-        descriptionsSkills={"None":"Click on a skill on the list or the skill tree for get the description"}
-        file1 = open("Skills.csv", 'r')
-        lines=file1.readlines()
-        for line in lines:
-            if(line.startswith('#')):
-               continue
-            split=line.split(";")
-            descriptionsSkills[split[0]]=split[1]
-            
-        file1.close()
-    else:
-        descriptionsSkills={"None":"Skills.csv has not be found. Put the Skills.csv on the same folder."}
-##    fillSkill(descriptionsSkills)
-    return descriptionsSkills
+import Utils.CommonFunctions as CommonFunctions
 
 ## Init a search bar with a list box and all the events linked to it.
 class SearchBar(tk.Frame):
@@ -35,8 +8,7 @@ class SearchBar(tk.Frame):
         tk.Frame.__init__(self,master,padx=5,pady=5)
         self.pack(fill=tk.BOTH,side=tk.LEFT)
         self.parent=parent
-##        self.descriptionsSkills=readSkills()
-        self.descriptionsSkills=Skills.get()
+        self.descriptionsSkills=CommonFunctions.readSkills()
         self.skills=self.descriptionsSkills.keys()
 
         self.entry = tk.Entry(master)

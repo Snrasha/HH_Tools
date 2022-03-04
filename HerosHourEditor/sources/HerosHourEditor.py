@@ -1,28 +1,22 @@
 import tkinter as tk
 import tkinter.ttk as ttk
-from tkinter import filedialog as fd
 import os
 import Hero.HeroTab as HeroTab
+import Utils.CommonClass as CommonClass
 
-
-class EmptyTab(ttk.Frame):     
+# Empty tab for work in progress.
+class EmptyTab(CommonClass.Tab):     
     def  __init__(self,master,window):
-        ttk.Frame.__init__(self,master)
-
-        self.master=master
-        self.window=window
+        CommonClass.Tab.__init__(self,master,window)
         self.pack(fill=tk.BOTH,expand=True)
-        label=ttk.Label(self,text="On progress")
+        label=ttk.Label(self,text="Work in progress")
         label.pack(fill=tk.BOTH,expand=True,padx=5,pady=5)
-        
     def onKeyRelease(self,event):
         None
-
     def bindKey(self):
         self.window.bind("<KeyRelease>", self.onKeyRelease)
     def unBindKey(self):
         self.window.bind("<KeyRelease>", self.onKeyRelease)
-
 
 class Application(ttk.Notebook):
     def  __init__(self,window):
@@ -34,6 +28,8 @@ class Application(ttk.Notebook):
         self.window=window
         self.pack(fill=tk.BOTH,expand=True)
         self.tabs=[]
+
+        # Add Tabs.
         self.tabs+=[HeroTab.TabHeroEditor(self,window)]
         self.tabs+=[EmptyTab(self,window)]
         self.tabs+=[EmptyTab(self,window)]
@@ -49,15 +45,20 @@ class Application(ttk.Notebook):
         self.add(self.tabs[1],text="Unit (2)")
         self.add(self.tabs[2],text="Faction (3)")
         self.add(self.tabs[3],text="Artifact (4)")
-        
-    def onEscape(self,event):
 
+    def onEscape(self,event):
         # Exit the input field or any Entry
         self.window.focus()
-        
+
+
+    # Switch the tab and disable key listener of the old tab and enable for the new tab.
     def onKeyDown(self,event):
+
         # If the user is on an entry / input field, skip the event.
         if(type(self.focus_get()) == tk.Entry or type(self.focus_get()) == ttk.Entry):
+            # When press Enter, remove the focus if Entry.
+            if(ord(event.char)==13):
+                self.window.focus()
             return            
         
         if(event.char=='1'):
