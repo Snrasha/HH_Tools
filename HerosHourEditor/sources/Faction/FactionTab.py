@@ -2,11 +2,16 @@ import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter import filedialog as fd
 import os
-import ListSearchBar
 from PIL import Image,ImageTk
 
 
-fields=["Name","Unit","Class","Skills"]
+fields=["FACTION NAME","FACTION UNITS ALTERNATES","HERO NAMES",
+        "DWELLING NAMES","STARTING TERRAIN","TOWN NAMES",
+        "HUMANOID ELITE TARGET","TOWN MUSIC","MAGIC SCHOOL SPECIALTY",
+        "ARCHMAGE TRIBUNAL SKILL","LORE NAME","LORE MAIN RACE",
+        "LORE HISTORY","LORE CULTURE","LORE HERO FIGHTER",
+        "LORE HERO CASTER"
+        ]
 
 ## Contains the search bar, the description (placed wrongly) and the skill tree.
 class SkillFields(tk.Frame):
@@ -34,29 +39,12 @@ class SkillFields(tk.Frame):
         frame.pack(fill=tk.BOTH,side=tk.LEFT,padx=(1,1),pady=(1,1))
         subframe2=ttk.LabelFrame(frame,text='Skill Tree', padding=(5, 5))
         subframe2.pack(fill=tk.BOTH,side=tk.TOP,padx=(1,1),pady=(1,1))
-        subframe3=ttk.LabelFrame(frame,text='Informations', padding=(5, 5))
+        subframe3=ttk.LabelFrame(frame,text='Portraits', padding=(5, 5))
         subframe3.pack(fill=tk.BOTH,side=tk.TOP,padx=(1,1),pady=(1,1),expand=True)
 
         self.portrait = tk.Label(subframe3,text="NO PORTRAIT")
         self.portrait.pack()
 
-        level0=ttk.Frame(subframe2)
-        level0.pack(side=tk.TOP,padx=(1,1),pady=(1,1),anchor=tk.N)
-        level1=ttk.Frame(subframe2)
-        level1.pack(side=tk.TOP,padx=(1,1),pady=(1,1),anchor=tk.N)
-        level2=ttk.Frame(subframe2)
-        level2.pack(side=tk.TOP,padx=(1,1),pady=(1,1),anchor=tk.N)
-        level3=ttk.Frame(subframe2)
-        level3.pack(side=tk.TOP,padx=(1,1),pady=(1,1),anchor=tk.N)
-
-        for i in range(0,2):
-            self.createLabel(level0)
-        for i in range(0,4):
-            self.createLabel(level1)
-        for i in range(0,5):
-            self.createLabel(level2)
-        for i in range(0,6):
-            self.createLabel(level3)
             
     def createLabel(self,frame):
         v = tk.StringVar()
@@ -150,31 +138,60 @@ class SimpleFields(tk.Frame):
         file1 = open(self.filename, 'r')
         lines=file1.readlines()
 
-        backup = open("hero_backup.txt", 'w')
+        backup = open("faction_backup.txt", 'w')
         backup.writelines(lines)
         
         file1.close()
         backup.close()
 
-    def loadImageToPortrait(self,path):
-        data="data.txt"
-        length=-len("data.txt")
+    def loadImages(self,path):
+        
+        data="FACTION.txt"
+        length=-len(data)
+        
         if(data in path):
-            path=path[:length]+"portrait.png"
+            pathDir=pathDir[:length]+"Folder/"
         else:
-            path=""
+            pathDir=""
+
+        for i in range (6):
+            path=pathDir+"Hero "+i+" portrait.png"
+            addImage(path,self.portraits[i],48,outline=True)
+        for i in range (9):
+            path=pathDir+"Unit "+i+" spritesheet.png"
+            path2=pathDir+"Unit "+i+"+ spritesheet.png"
+            addFrameUnits(path,path2,self.unitsImg[i])            
+                
+    def addImage(self,path,label,size,outline=False):
         if(os.path.exists(path)):
-            image = self.addBlackOutline(path)
-            n_image = image.resize((64, 64))
+            if(outline):
+                image = self.addBlackOutline(path)
+            else:
+                image=Image.open(path)
+            n_image = image.resize((size, size))
             photo = ImageTk.PhotoImage(n_image)
-            self.master.skillFields.portrait.image = photo # <== this is were we anchor the img object
-            self.master.skillFields.portrait.configure(image=photo)
-            self.master.skillFields.portrait.pack(fill=tk.BOTH,side=tk.TOP)
+            label.image = photo # <== this is were we anchor the img object
+            label.configure(image=photo)
+            label.pack(fill=tk.BOTH,side=tk.TOP)
         else:
-            self.master.skillFields.portrait.image = None 
-            self.master.skillFields.portrait.configure(image=None,text="NO PORTRAIT")
-            self.master.skillFields.portrait.pack(fill=tk.BOTH,side=tk.TOP)            
-            
+            label.image = None 
+            label.configure(image=None,text="Err. Image")
+            label.pack(fill=tk.BOTH,side=tk.TOP)       
+    def addFrameUnits(self,pathUnit,pathUnitUpgraded,label):
+        gameImage=Image.new("RGBA", (48, 24), (0, 0, 0, 0))
+        if(os.path.exists(pathUnit)):
+            image=Image.open(pathUnit)
+            image = ImageTk.PhotoImage(image)
+        else:
+            image=Image.new("RGBA", (24, 24), (0, 0, 0, 255))
+        gameImage.paste(image,(0,24,0,24))
+        if(os.path.exists(pathUnitUpgraded)):
+            image=Image.open(pathUnitUpgraded)
+            image = ImageTk.PhotoImage(image)
+        else:
+            image=Image.new("RGBA", (24, 24), (0, 0, 0, 255))
+        gameImage.paste(image,(24,48,0,24))  
+        
     def addBlackOutline(self,path):
         image=Image.open(path)
         w=image.size[0]
@@ -205,22 +222,16 @@ class SimpleFields(tk.Frame):
     ## Open a existing file for edit it.
     def editFile(self):
 
-        
-        self.filename=fd.askopenfilename(title="Select a hero file",filetypes=[("TXT Files","*.txt")])
-        
+        self.filename=fd.askopenfilename(title="Select a Faction file",filetypes=[("TXT Files","*.txt")])
 
         if(self.filename==None or self.filename.strip()==""):
             return None
 
-        self.loadImageToPortrait(self.filename)
+        self.loadImages(self.filename)
         
-        self.name_entry.delete(0, tk.END)
-        self.unit_entry.delete(0, tk.END)
-        self.class_entry.delete(0, tk.END)
-        labels=self.master.skillFields.allSkills
-        for i in range(0,len(labels)):
-            labels[i].set("None")
-            labels[i].configure(background="white")
+##        self.name_entry.delete(0, tk.END)
+##        self.unit_entry.delete(0, tk.END)
+##        self.class_entry.delete(0, tk.END)
 
         ## Made a backup of the opened file.
         self.madeBackUp(self.filename)
@@ -229,48 +240,48 @@ class SimpleFields(tk.Frame):
         self.count=0
         filled=[]
         
-        while self.count<len(self.lines):
-            line=self.lines[self.count].strip()
-            
-            ## If found Name, check the next line. If the next line do not exist because it
-            ## check than this is illegal, continue without increment.
-            if(line.startswith(fields[0]) and fields[0] not in filled):
-                answer=self.getNextLine()
-                if(answer !=None):
-                    self.name_entry.insert(0,answer)
-                    filled+=[fields[0]]
-                continue
-            if(line.startswith(fields[1]) and fields[1] not in filled):
-                answer=self.getNextLine()
-                if(answer !=None):
-                    self.unit_entry.insert(0,answer)
-                    filled+=[fields[1]]
-                continue
-            if(line.startswith(fields[2]) and fields[2] not in filled):
-                answer=self.getNextLine()
-                if(answer !=None):
-                    self.class_entry.insert(0,answer)
-                    filled+=[fields[2]]
-                continue
-
-            ## If found Skills, read all lines after it and stop when found a blank.
-            if(line.startswith(fields[3])):
-                answer=self.getNextLine()
-                lin=0
-                listOfSkills=[]
-                
-                
-                while(answer !=None):
-                    labels[lin].set(answer)
-                    if(answer in listOfSkills):
-                        labels[lin].configure(background="red")
-                    else:
-                        listOfSkills+=[answer]
-                    lin+=1
-                    answer=self.getNextLine()
-                else:
-                    continue
-            self.count+=1
+##        while self.count<len(self.lines):
+##            line=self.lines[self.count].strip()
+##            
+##            ## If found Name, check the next line. If the next line do not exist because it
+##            ## check than this is illegal, continue without increment.
+##            if(line.startswith(fields[0]) and fields[0] not in filled):
+##                answer=self.getNextLine()
+##                if(answer !=None):
+##                    self.name_entry.insert(0,answer)
+##                    filled+=[fields[0]]
+##                continue
+##            if(line.startswith(fields[1]) and fields[1] not in filled):
+##                answer=self.getNextLine()
+##                if(answer !=None):
+##                    self.unit_entry.insert(0,answer)
+##                    filled+=[fields[1]]
+##                continue
+##            if(line.startswith(fields[2]) and fields[2] not in filled):
+##                answer=self.getNextLine()
+##                if(answer !=None):
+##                    self.class_entry.insert(0,answer)
+##                    filled+=[fields[2]]
+##                continue
+##
+##            ## If found Skills, read all lines after it and stop when found a blank.
+##            if(line.startswith(fields[3])):
+##                answer=self.getNextLine()
+##                lin=0
+##                listOfSkills=[]
+##                
+##                
+##                while(answer !=None):
+##                    labels[lin].set(answer)
+##                    if(answer in listOfSkills):
+##                        labels[lin].configure(background="red")
+##                    else:
+##                        listOfSkills+=[answer]
+##                    lin+=1
+##                    answer=self.getNextLine()
+##                else:
+##                    continue
+##            self.count+=1
         file1.close()
         
     ## Found the next line to read. Ignore blank line except if stopToBlank is True
@@ -298,7 +309,7 @@ class SimpleFields(tk.Frame):
             if(label.get() == "None"):
                 break
 
-        self.filename=fd.asksaveasfilename(initialfile=self.filename.split('/')[-1],title="Save Hero file",filetypes=[("TXT Files","*.txt")])
+        self.filename=fd.asksaveasfilename(initialfile=self.filename.split('/')[-1],title="Save Faction file",filetypes=[("TXT Files","*.txt")])
         if(len(self.filename.strip())==0):
             self.filename=None
             return
@@ -306,30 +317,86 @@ class SimpleFields(tk.Frame):
             self.filename+=".txt"
 
         self.loadImageToPortrait(self.filename)
+
+        inc=0
         
         file1 = open(self.filename, 'w')
-        file1.write("Name\n")
-        file1.write(self.name_entry.get().strip()+"\n\n")
+        file1.write(fields[inc]+"\n")
+        file1.write(self.faction_name_entry.get().strip()+"\n\n")
+        inc+=1
 
-        if(len(self.class_entry.get().strip())>0):
-            file1.write("Class\n")
-            file1.write(self.class_entry.get().strip()+"\n\n")
+        file1.write(fields[inc]+"\n")
+        for i in range(0,3):
+            file1.write(self.faction_unit_alternates[i]+"\n")
+        file1.write("\n")
+        inc+=1
 
-        file1.write("Unit\n")
-        file1.write(self.unit_entry.get().strip()+"\n\n")
+        file1.write(fields[inc]+"\n")
+        file1.write(self.hero_fighter_name_entry.get().strip()+"\n")
+        file1.write(self.hero_caster_name_entry.get().strip()+"\n\n")
+        inc+=1
 
-        file1.write("Skills\n")
-        labels=self.master.skillFields.allSkills
-        for label in labels:
-            if(label.get() == "None"):
-                break
-            else:
-                file1.write(label.get()+"\n")
+        file1.write(fields[inc]+"\n")
+        for i in range(0,6):
+            file1.write(self.building_names[i]+"\n")
+        file1.write("\n")
+        inc+=1
+
+        file1.write(fields[inc]+"\n")
+        file1.write(self.starting_terrain_entry.get().strip()+"\n\n")
+        inc+=1
+
+        file1.write(fields[inc]+"\n")
+        for i in range(0,len(self.town_names)):
+            file1.write(self.town_names[i]+"\n")
+        file1.write("\n")
+        inc+=1
+        
+        file1.write(fields[inc]+"\n")
+        file1.write(self.humanoid_elite_target_entry.get().strip()+"\n\n")
+        inc+=1
+
+        file1.write(fields[inc]+"\n")
+        file1.write(self.magic_school_specialty_entry.get().strip()+"\n\n")
+        inc+=1
+
+        file1.write(fields[inc]+"\n")
+        file1.write(self.archmage_tribunal_skill_entry.get().strip()+"\n\n")
+        inc+=1
+        
+        file1.write(fields[inc]+"\n")
+        file1.write(self.lore_name_entry.get().strip()+"\n\n")
+        inc+=1
+        
+        file1.write(fields[inc]+"\n")
+        file1.write(self.lore_main_race_entry.get().strip()+"\n\n")
+        inc+=1
+
+        file1.write(fields[inc]+"\n")
+        file1.write(self.lore_history_entry.get().strip()+"\n\n")
+        inc+=1
+        
+        file1.write(fields[inc]+"\n")
+        file1.write(self.lore_culture_entry.get().strip()+"\n\n")
+        inc+=1
+
+        file1.write(fields[inc]+"\n")
+        file1.write(self.lore_hero_fighter_entry.get().strip()+"\n\n")
+        inc+=1
+        
+        file1.write(fields[inc]+"\n")
+        file1.write(self.lore_hero_caster_entry.get().strip()+"\n\n")
+        inc+=1
+                
         file1.close()
 
-class TabHeroEditor(ttk.Frame):     
+class TabFactionEditor(ttk.Frame):     
     def  __init__(self,master,window):
         ttk.Frame.__init__(self,master)
+
+        scrollbar = ttk.Scrollbar(master, orient='vertical', command=master.yview)
+        self['yscrollcommand'] = scrollbar.set
+        scrollbar.pack()
 
         self.master=master
         self.window=window

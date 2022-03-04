@@ -1,11 +1,8 @@
 Name
 Iris the mute
 
-Class
-
-
 Unit
-Ne-Gunner
+Ne-Healer
 
 Skills
 Pyromancy

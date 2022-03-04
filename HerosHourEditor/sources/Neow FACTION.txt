@@ -1,0 +1,60 @@
+FACTION NAME
+Neow
+
+FACTION UNITS ALTERNATES
+3
+4
+5
+
+HERO NAMES (fighter first, caster second)
+Ne-Android
+Ne-Cyborg
+
+DWELLING NAMES (in order from tier 1, 6 in total)
+Usine
+Barracks
+Casern
+High quarter
+Magical Manufacture
+Factory
+
+STARTING TERRAIN
+Deadlands
+
+TOWN NAMES
+D4-k
+D5-k
+C2-B
+U10-W
+V1-A
+V2-A
+
+HUMANOID ELITE TARGET (for bloodwarping, artisan's lodge)
+5
+
+TOWN MUSIC
+Arcane
+
+MAGIC SCHOOL SPECIALTY
+Fire
+
+ARCHMAGE TRIBUNAL SKILL
+Leadership
+
+LORE NAME:
+The Returned Empire
+
+LORE MAIN RACE:
+Transhumanist Human
+
+LORE HISTORY:
+From unknown origin, this group of half-human-half-machine came to salvage the land of any resources they find on their march.
+
+LORE CULTURE:
+Despite having the same goal, the Returned are divided into two differing factions. The left wing which focus on the principle of unity and the transcendence into absolute beings; and the right wing which believe in individual strength and the strive to make full use of their crippled body.
+
+LORE HERO FIGHTER:
+A Commander of the left wing, had "transcended" most of their feeble flesh into powerful inorganic weapon of destruction.
+
+LORE HERO CASTER:
+An elder of the right wing, modified his crippled body parts with prosthetics capable of storing and manipulating magical substances.

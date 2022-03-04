@@ -2,7 +2,7 @@ import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter import filedialog as fd
 import os
-import HeroTab
+import Hero.HeroTab as HeroTab
 
 
 class EmptyTab(ttk.Frame):     
@@ -37,6 +37,7 @@ class Application(ttk.Notebook):
         self.tabs+=[HeroTab.TabHeroEditor(self,window)]
         self.tabs+=[EmptyTab(self,window)]
         self.tabs+=[EmptyTab(self,window)]
+##        self.tabs+=[FactionTab.TabFactionEditor(self,window)]
         self.tabs+=[EmptyTab(self,window)]
         
         self.tabs[0].bindKey()

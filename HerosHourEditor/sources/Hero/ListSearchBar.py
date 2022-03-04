@@ -1,6 +1,6 @@
 import tkinter as tk
 import os
-import Skills
+import Hero.Skills as Skills
 
 ##def fillSkill(descriptionsSkill):
 ##    backup = open("Skill.py", 'w')
