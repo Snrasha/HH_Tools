@@ -27,9 +27,9 @@ descMagic="The guild of mages, archives of magic and archmage tribunal buildings
 descMusic="Here you can specify what type of music should play when the player has the town screen open."
 descTerrain="The starting terrain where you faction will start."
 descHumanoidEliteTarget="Specific mechanics within the game require an elite humanoid target from each faction. It should be the highest tier humanoid unit the faction has - and if there’s just one or two humanoid units, you could pick one that isn’t."
-descTownNames="Click on input field and write your town name. Then clic enter for add it. Double clic on a name on the list for modify it (remove it from the list). Clic then delete shorcut for delete a name."
+descTownNames="Click on input field and write your town name. Then 'Enter' for add it. Double clic on a name on the list for modify it. Clic then 'Delete' for delete a name."
 
-class TabFactionEditor(CommonClass.Tab):     
+class TabFactionEditor(CommonClass.Tab):
     def  __init__(self,master,window,**kwargs):
         CommonClass.Tab.__init__(self,master,window,**kwargs)
         self.pack(fill=tk.BOTH,expand=True)
@@ -43,14 +43,14 @@ class TabFactionEditor(CommonClass.Tab):
 
         middleFrame=ttk.Frame(self)
         middleFrame.pack(fill=tk.BOTH,side=tk.LEFT,padx=(1,1),pady=(1,1),expand=True)
-        
+
         self.initContentFolder(middleFrame)
 
         self.initBuildings(middleFrame)
 
         rightFrame=ttk.Frame(self)
         rightFrame.pack(fill=tk.BOTH,side=tk.RIGHT,padx=(1,1),pady=(1,1),anchor="n")
-        
+
         CommonClass.FileFrame(rightFrame,self,side=tk.TOP)
 
         belowFrame=ttk.Frame(rightFrame,borderwidth=1,relief="sunken")
@@ -58,13 +58,13 @@ class TabFactionEditor(CommonClass.Tab):
 
         self.saveInfo=CommonClass.LabelSimplified(belowFrame)
         self.saveInfo.pack(fill=tk.BOTH,side=tk.TOP,expand=True)
-        
+
     def initStandardField(self):
-        
+
         self.fieldsEntry=[]
         standardField=ttk.LabelFrame(self,text='Fields', padding=(5, 5))
         standardField.pack(fill=tk.BOTH,side=tk.LEFT,padx=(1,1),pady=(1,1))
-        
+
         self.canvas=tk.Canvas(standardField,bg=self.bg,relief=tk.FLAT,bd=0,highlightthickness=0)
         self.canvas.pack(fill=tk.BOTH,side=tk.LEFT, expand=True)
         self.scrollbar1 = ttk.Scrollbar(standardField, orient='vertical', command=self.canvas.yview)
@@ -96,14 +96,14 @@ class TabFactionEditor(CommonClass.Tab):
         self.townNamesEntry=CommonClass.FieldAdditiveList(leftFrame,titleField="Town names:",description=descTownNames)
 
         self.townNamesEntry.setItems(["City","DuckVille","OrderCity"])
-        
+
 
         leftFrame.update_idletasks()
         self.canvas.create_window((0, 0), window=leftFrame, anchor='w')
         self.canvas.configure(scrollregion=self.canvas.bbox("all"))
         self.set_mousewheel(self.canvas)
         self.set_mousewheel(self.scrollbar1)
-        
+
 
     def initContentFolder(self,middleFrame):
         contentFolder=ttk.LabelFrame(middleFrame,text='Folder Contents', padding=(5, 5))
@@ -111,7 +111,7 @@ class TabFactionEditor(CommonClass.Tab):
 
         self.portraits=[]
 
-        
+
         horFrame=ttk.Frame(contentFolder)
         horFrame.pack(fill=tk.BOTH,side=tk.TOP,padx=(1,1),pady=(1,1))
 
@@ -119,7 +119,7 @@ class TabFactionEditor(CommonClass.Tab):
         subhorFrame.pack(fill=tk.BOTH,side=tk.LEFT,padx=(1,1),pady=(1,1))
         label=ttk.Label(subhorFrame,text="Fighter: ")
         label.pack(fill=tk.BOTH,side=tk.LEFT)
-        
+
         for i in range(0,3):
             self.portraits+=[ttk.Label(subhorFrame)]
             CommonFunctions.setBackground(self.portraits[i],48,side=tk.LEFT)
@@ -140,7 +140,7 @@ class TabFactionEditor(CommonClass.Tab):
     def initBuildings(self,middleFrame):
         buildFrame=ttk.LabelFrame(middleFrame,text='Buildings', padding=(5, 5))
         buildFrame.pack(fill=tk.BOTH,side=tk.TOP,padx=(1,1),pady=(1,1),expand=True)
-        
+
         frames=[]
         self.buildings=[1,2,3]
         self.checkBoxVar=[]
@@ -160,7 +160,7 @@ class TabFactionEditor(CommonClass.Tab):
             self.buildingsName+=[CommonClass.EntrySimplified(frame1)]
             self.buildingsName[i].set("building "+str(i))
             self.buildingsName[i].pack(fill=tk.BOTH,side=tk.LEFT,padx=(1,1),pady=(1,1))
-            
+
             checkbutton = tk.Checkbutton(frame1, variable = self.checkBoxVar[i], onvalue = 1, offvalue = 0,bg=self.bg,command=self.onCheckBoxChange)
             checkbutton.pack(side=tk.LEFT)
             self.checkbuttons+=[checkbutton]
@@ -173,7 +173,7 @@ class TabFactionEditor(CommonClass.Tab):
 
             self.tiersUnitLabel+=[ttk.Label(frame1)]
             self.tiersUnitLabel[i*2].pack(side=tk.LEFT)
-            
+
             self.tiersUnitLabel+=[ttk.Label(frame1)]
             self.tiersUnitLabel[i*2+1].pack(side=tk.LEFT)
 
@@ -182,11 +182,11 @@ class TabFactionEditor(CommonClass.Tab):
             self.tiersUnitImage+=[ImageTk.PhotoImage(Image.new("RGBA", (48,24), (255,255,255,255)))]
 
         self.tiersUnitImage+=[ImageTk.PhotoImage(Image.new("RGBA", (48,24), (0,0,0,255)))]
-        
-        self.setTierUnit(self.buildings)               
 
-            
-                
+        self.setTierUnit(self.buildings)
+
+
+
 
     def setTierUnit(self,builds):
         inc=0
@@ -199,11 +199,11 @@ class TabFactionEditor(CommonClass.Tab):
                 CommonFunctions.setImage(self.tiersUnitLabel[i*2+1],self.tiersUnitImage[-1],side=tk.LEFT)
             inc+=1
 
-        
+
     def onCheckBoxChange(self):
         build=[]
         for i in range(6):
-            
+
             if(self.checkBoxVar[i].get()==1):
                 build+=[i]
         self.setTierUnit(build)
@@ -224,9 +224,9 @@ class TabFactionEditor(CommonClass.Tab):
         # Will stop the save if the building is "empty" because less than 3 or more than 3 checked.
         self.buildings=None
 
-    
+
     def set_mousewheel(self,widget):
-        """Activate / deactivate mousewheel scrolling when 
+        """Activate / deactivate mousewheel scrolling when
         cursor is over / not over the widget respectively."""
         widget.bind("<Enter>", lambda _: widget.bind_all('<MouseWheel>', self.onMouseWheel))
         widget.bind("<Leave>", lambda _: widget.unbind_all('<MouseWheel>'))
@@ -237,14 +237,14 @@ class TabFactionEditor(CommonClass.Tab):
     def loadImages(self,path):
         data="faction.txt"
         length=-len(data)
-        
+
         if(data in path.lower()):
             pathDir=path[:length]+"Folder/"
         else:
             pathDir=""
 ####        if not (os.path.exists(pathDir)):
 ##            CommonClass.Popup("faction Folder do not exist. Verify it. This is case-sensitive")
-            
+
 
         for i in range (6):
             path=pathDir+"Hero "+str(i+1)
@@ -258,8 +258,8 @@ class TabFactionEditor(CommonClass.Tab):
             path2=pathDir+"Unit "+str(i+1)+"+ spritesheet.png"
             self.addFrameUnits(path,path2,i)
         CommonFunctions.addImage(pathDir+"Town.png",self.town,48,True,tk.LEFT)
-        
-                       
+
+
     def addFrameUnits(self,pathUnit,pathUnitUpgraded,i):
         gameImage=Image.new("RGBA", (48, 24), (0, 0, 0, 0))
         if(os.path.exists(pathUnit)):
@@ -284,7 +284,7 @@ class TabFactionEditor(CommonClass.Tab):
         self.tiersUnitImage[i]=image
     def defaultImg(self):
         return Image.new("RGBA", (24, 24), (0, 0, 0, 255))
-        
+
 
     ## Open a existing file for edit it.
     def editFile(self):
@@ -293,10 +293,10 @@ class TabFactionEditor(CommonClass.Tab):
             return None
 
         self.loadImages(self.filename)
-        
+
 ##        for field in self.fieldsEntry:
 ##            field.empty()
-        
+
         ## Made a backup of the opened file.
         CommonFunctions.madeBackUp("faction_backup.txt",self.filename)
         file1 = open(self.filename, 'r')
@@ -306,11 +306,11 @@ class TabFactionEditor(CommonClass.Tab):
 
         verySimpleField=[0,10,11,12,13,14,15]
         verySimpleField2=[0,8,9,10,11,12,13]
-        
-        
+
+
         while self.count<len(self.lines):
             line=self.lines[self.count].strip()
-            
+
             ## If found Name, check the next line. If the next line do not exist because it
             ## check than this is illegal, continue without increment.
 
@@ -327,10 +327,10 @@ class TabFactionEditor(CommonClass.Tab):
             if(line.upper().startswith(fields[1])):
                 answer=self.getNextLine()
                 filled+=[fields[1]]
-                
+
                 for i in range(6):
                     self.checkBoxVar[i].set(0)
-                
+
                 while(answer !=None):
                     print(answer)
                     try:
@@ -343,7 +343,7 @@ class TabFactionEditor(CommonClass.Tab):
                 else:
                     self.onCheckBoxChange()
                     continue
-            
+
             # HERO NAMES
             if(line.upper().startswith(fields[2]) and fields[2] not in filled):
                 filled+=[fields[2]]
@@ -358,7 +358,7 @@ class TabFactionEditor(CommonClass.Tab):
                 filled+=[fields[3]]
                 inc=0
                 while(answer !=None and inc < 6):
-                    
+
                     self.buildingsName[inc].set(answer)
                     answer=self.getNextLine()
                     inc+=1
@@ -379,7 +379,7 @@ class TabFactionEditor(CommonClass.Tab):
                 li=[]
                 while(answer !=None):
                     li+=[answer]
-                    
+
                     answer=self.getNextLine()
                 self.townNamesEntry.setItems(li)
                 continue
@@ -421,7 +421,7 @@ class TabFactionEditor(CommonClass.Tab):
                 continue
             self.count+=1
         file1.close()
-        
+
     ## Found the next line to read. Ignore blank line except if stopToBlank is True
     def getNextLine(self):
         self.count+=1
@@ -432,8 +432,8 @@ class TabFactionEditor(CommonClass.Tab):
             else:
                 return None
         return None
-    
-    ## Save a file. Check if all field are valid.        
+
+    ## Save a file. Check if all field are valid.
     def saveFile(self):
 
         if(self.buildings==None or len(self.buildings)!=3):
@@ -443,18 +443,18 @@ class TabFactionEditor(CommonClass.Tab):
             if(len(self.buildingsName[i].get().strip())==0):
                 self.saveInfo.set("Building name need one character minimum")
                 return
-            
+
         if(self.fieldsEntry[7].get()=='None'):
             self.saveInfo.set("Archmage Tribunal Skill need a skill")
-            return            
+            return
         for field in self.fieldsEntry:
             if(field.get().strip()==0):
                 self.saveInfo.set("One or more fields are empty")
                 return
 
-            
-            
-        
+
+
+
         self.filename=CommonFunctions.askSaveFile(self.filename,"Save Faction file")
         if(self.filename==None):
             self.filename=None
@@ -463,7 +463,7 @@ class TabFactionEditor(CommonClass.Tab):
         self.loadImages(self.filename)
 
         inc=0
-        
+
         file1 = open(self.filename, 'w')
         file1.write(fields[inc]+"\n")
         file1.write(self.fieldsEntry[0].get().strip()+"\n\n")
@@ -500,16 +500,14 @@ class TabFactionEditor(CommonClass.Tab):
             file1.write(fields[inc]+"\n")
             file1.write(self.fieldsEntry[i].get().strip()+"\n\n")
             inc+=1
-            
+
         file1.close()
     def onKeyRelease(self,event):
          # If the user is on an entry / input field, skip the event.
         if(CommonFunctions.checkIfInputField(type(self.focus_get()))):
-            return  
-        
+            return
+
         if(event.char=='d'):
             self.editFile()
         if(event.char=='v'):
             self.saveFile()
-
-        

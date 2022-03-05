@@ -8,7 +8,7 @@ https://docs.google.com/document/d/1h64ac7rNAW0_0Kfj-KsMecsdMdQGZlJ2cmIU0PMVWFY/
 
 ## Hero's Hour Editor
 
-This editor has only the Hero tab, but i will implement soon the unit, faction and artifact tab.
+This editor has only the Hero, Faction tab, but i will implement soon the unit and artifact tab.
 
 ### Usage
 
@@ -32,6 +32,12 @@ On open, you will have differents tabs. Click on these tabs for switching of edi
  For the skills tree, click on the skill slot than you want fill, then double click on the skill on the skill list. A simple click on a skill slot or a skill from skill list will display the description.
 
  Do not hesitate to use the search bar because it check also the description of each skill.
+
+### Faction Tab
+  * **Faction Name/Lore fields**: Text to fill;
+  * **Buildings**: DWELLING NAMES + FACTION UNITS ALTERNATES;
+  * **Others**: See modding guide;
+  * **Town names**: Look the description popup.
 
 ## Unit Animation Tool
 I do not own this tool, this is from HH. I keep it here like a tool.
