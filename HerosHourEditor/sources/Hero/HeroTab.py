@@ -273,7 +273,7 @@ class TabHeroEditor(CommonClass.Tab):
         
     def onKeyRelease(self,event):
          # If the user is on an entry / input field, skip the event.
-        if(type(self.focus_get()) == tk.Entry or type(self.focus_get()) == ttk.Entry):
+        if(CommonFunctions.checkIfInputField(type(self.focus_get()))):
             return  
         
         if(event.char=='d'):

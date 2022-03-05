@@ -4,7 +4,7 @@ import os
 import Hero.HeroTab as HeroTab
 import Faction.FactionTab as FactionTab
 import Utils.CommonClass as CommonClass
-
+import Utils.CommonFunctions as CommonFunctions
 
 
 
@@ -56,6 +56,8 @@ class Application(ttk.Notebook):
 
         self.window.bind("<KeyPress>", self.onKeyDown)
         self.window.bind('<Escape>', self.onEscape)
+
+        
         
         self.add(self.tabs[0],text="Hero (1)")
         self.add(self.tabs[1],text="Unit (2)")
@@ -73,9 +75,8 @@ class Application(ttk.Notebook):
 
     # Switch the tab and disable key listener of the old tab and enable for the new tab.
     def onKeyDown(self,event):
-
         # If the user is on an entry / input field, skip the event.
-        if(type(self.focus_get()) == tk.Text or type(self.focus_get()) == tk.Entry or type(self.focus_get()) == ttk.Entry):
+        if(CommonFunctions.checkIfInputField(type(self.focus_get()))):
             # When press Enter, remove the focus if Entry.
             if(ord(event.char)==13):
                 self.window.focus()

@@ -28,19 +28,21 @@ class SearchBar(ttk.Frame):
 
     ## On double click of the list box, send the item clicked to the parent for fill a slot.
     def onDoubleClickListBox(self,event):
-        w = event.widget
-        index = int(w.curselection()[0])
-        value = w.get(index)
-        
-        self.parent.setValue(value)
+        if(type(self.focus_get()) == tk.Listbox):
+            w = event.widget
+            index = int(w.curselection()[0])
+            value = w.get(index)
+            
+            self.parent.setValue(value)
         
 
     ## When you select a item on the list box, set the text of the description label.
     def onSelectListBox(self,event):
-        w = event.widget
-        index = int(w.curselection()[0])
-        value = w.get(index)
-        self.parent.labelDesc.configure(text=self.descriptionsSkills[value])
+        if(type(self.focus_get()) == tk.Listbox):
+            w = event.widget
+            index = int(w.curselection()[0])
+            value = w.get(index)
+            self.parent.labelDesc.configure(text=self.descriptionsSkills[value])
 
 
     ## Get the value of the search bar and reduce the list bar to only descriptions or skills which is filling the word

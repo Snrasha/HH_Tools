@@ -4,7 +4,14 @@ import tkinter as tk
 import tkinter.ttk as ttk
 import os
 import Utils.Skills as Skills
+import Utils.CommonClass as CommonClass
 
+# If the user is on an entry / input field, skip the event.
+def checkIfInputField(compare):
+    return (compare == tk.Text or\
+           compare == tk.Entry or\
+           compare == ttk.Entry or\
+           compare == CommonClass.EntrySimplified)
 
 ## For have a unique software without any data around, we transform the csv to a python data. We call never this function except for update the data.
 def writePythonData(descriptionsSkill,file):

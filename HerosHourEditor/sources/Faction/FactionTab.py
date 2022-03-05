@@ -27,7 +27,7 @@ descMagic="The guild of mages, archives of magic and archmage tribunal buildings
 descMusic="Here you can specify what type of music should play when the player has the town screen open."
 descTerrain="The starting terrain where you faction will start."
 descHumanoidEliteTarget="Specific mechanics within the game require an elite humanoid target from each faction. It should be the highest tier humanoid unit the faction has - and if there’s just one or two humanoid units, you could pick one that isn’t."
-
+descTownNames="Click on input field and write your town name. Then clic enter for add it. Double clic on a name on the list for modify it (remove it from the list). Clic then delete shorcut for delete a name."
 
 class TabFactionEditor(CommonClass.Tab):     
     def  __init__(self,master,window,**kwargs):
@@ -93,6 +93,10 @@ class TabFactionEditor(CommonClass.Tab):
         self.fieldsEntry+=[CommonClass.FattyField(leftFrame,titleField="Lore Culture:",hintField="Bla bla religion")]
         self.fieldsEntry+=[CommonClass.FattyField(leftFrame,titleField="Lore Hero Fighter:",hintField="Bla bla Inquisitor")]
         self.fieldsEntry+=[CommonClass.FattyField(leftFrame,titleField="Lore Hero Caster:",hintField="Bla bla Idol of death")]
+        self.townNamesEntry=CommonClass.FieldAdditiveList(leftFrame,titleField="Town names:",description=descTownNames)
+
+        self.townNamesEntry.setItems(["City","DuckVille","OrderCity"])
+        
 
         leftFrame.update_idletasks()
         self.canvas.create_window((0, 0), window=leftFrame, anchor='w')
@@ -252,7 +256,9 @@ class TabFactionEditor(CommonClass.Tab):
         for i in range (9):
             path=pathDir+"Unit "+str(i+1)+" spritesheet.png"
             path2=pathDir+"Unit "+str(i+1)+"+ spritesheet.png"
-            self.addFrameUnits(path,path2,i)       
+            self.addFrameUnits(path,path2,i)
+        CommonFunctions.addImage(pathDir+"Town.png",self.town,48,True,tk.LEFT)
+        
                        
     def addFrameUnits(self,pathUnit,pathUnitUpgraded,i):
         gameImage=Image.new("RGBA", (48, 24), (0, 0, 0, 0))
@@ -370,8 +376,12 @@ class TabFactionEditor(CommonClass.Tab):
             if(line.upper().startswith(fields[5]) and fields[5] not in filled):
                 answer=self.getNextLine()
                 filled+=[fields[5]]
+                li=[]
                 while(answer !=None):
+                    li+=[answer]
+                    
                     answer=self.getNextLine()
+                self.townNamesEntry.setItems(li)
                 continue
             # HUMANOID ELITE TARGET
             if(line.upper().startswith(fields[6]) and fields[6] not in filled):
@@ -480,11 +490,11 @@ class TabFactionEditor(CommonClass.Tab):
         file1.write(self.fieldsEntry[3].get().strip()+"\n\n")
         inc+=1
 
-##        file1.write(fields[inc]+"\n")
-##        for i in range(0,len(self.town_names)):
-##            file1.write(self.town_names[i]+"\n")
-##        file1.write("\n")
-##        inc+=1
+        file1.write(fields[inc]+"\n")
+        for i in range(0,len(self.townNamesEntry.getItems())):
+            file1.write(self.townNamesEntry.getItems()[i]+"\n")
+        file1.write("\n")
+        inc+=1
 
         for i in range(4,14):
             file1.write(fields[inc]+"\n")
@@ -494,7 +504,7 @@ class TabFactionEditor(CommonClass.Tab):
         file1.close()
     def onKeyRelease(self,event):
          # If the user is on an entry / input field, skip the event.
-        if(type(self.focus_get()) == tk.Entry or type(self.focus_get()) == ttk.Entry):
+        if(CommonFunctions.checkIfInputField(type(self.focus_get()))):
             return  
         
         if(event.char=='d'):

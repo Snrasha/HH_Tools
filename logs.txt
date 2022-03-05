@@ -1,13 +1,13 @@
 
+05/03/2022:
+  - Modify the style.
+  - Finish the base of the faction editor.
+
 04/03/2022:
   - Greatly clean-up the code.
   - Begin the Faction Editor.
 
-
-
 03/03/2022:
-
-Hero tab:
  - On 'Save as', insert the opened filename if exist.
  - On 'Save as', cancel the save will not write (and probably overwrite) a file.
  - Added "Portrait" on Load and Save file. For check if the portrait (which will get a black outline) is working.

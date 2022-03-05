@@ -1,0 +1,61 @@
+FACTION NAME
+Pre
+
+FACTION UNITS ALTERNATES
+2
+3
+4
+
+HERO NAMES
+Niceb
+Naug
+
+DWELLING NAMES
+Iceooo
+Elf Cabinsoo
+Igloojj
+Snow Fieldsbbv
+Hall of Feastsc
+Holly Thronex
+
+STARTING TERRAIN
+Sand
+
+TOWN NAMES
+Candyland
+Nuuk
+Julemanden
+Naughty List
+Toy Factory
+Mobidick
+
+HUMANOID ELITE TARGET
+6
+
+TOWN MUSIC
+Lament
+
+MAGIC SCHOOL SPECIALTY
+Fire
+
+ARCHMAGE TRIBUNAL SKILL
+Aeromancy
+
+LORE NAME
+Counsil of
+
+LORE MAIN RACE
+Aethe
+
+LORE HISTORY
+This fledgling group of aetherkin and elementals comes from far away, and rarely interacts with the lands of Astoria.
+
+LORE CULTURE
+A mish mash of unthinking elementals and more advanced aetherkinhan to punish.
+
+LORE HERO FIGHTER
+While the Nicebringers bring out gifts to virtuous people each Pres
+
+LORE HERO CASTER
+In opposition to Nicebringers, the Naughty
+
