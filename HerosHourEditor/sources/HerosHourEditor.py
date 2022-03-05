@@ -5,6 +5,11 @@ import Hero.HeroTab as HeroTab
 import Faction.FactionTab as FactionTab
 import Utils.CommonClass as CommonClass
 
+
+
+
+
+
 # Empty tab for work in progress.
 class EmptyTab(CommonClass.Tab):     
     def  __init__(self,master,window):
@@ -24,8 +29,18 @@ class Application(ttk.Notebook):
         ttk.Notebook.__init__(self,window)
 
         style = ttk.Style(window)
+        style.theme_use('clam')
         style.configure('TNotebook.Tab', width=window.winfo_screenwidth())
+##        style.configure('TFrame', highlightthickness=0)
+##        style.configure('TLabelframe', background="white")
+##        style.configure('TLabelframe.Label', background="white")
+##        style.configure('TFrame', background="white")
+##        style.configure('TLabel',background="white")
+##        style.configure('TLabelframe' , bordercolor="black")
+       
+        
 
+        
         self.window=window
         self.pack(fill=tk.BOTH,expand=True)
         self.tabs=[]
@@ -47,6 +62,10 @@ class Application(ttk.Notebook):
         self.add(self.tabs[2],text="Faction (3)")
         self.add(self.tabs[3],text="Artifact (4)")
 
+
+
+##        ,fg=c.white,bg=c.greenblue,
+
     def onEscape(self,event):
         # Exit the input field or any Entry
         self.window.focus()
@@ -56,7 +75,7 @@ class Application(ttk.Notebook):
     def onKeyDown(self,event):
 
         # If the user is on an entry / input field, skip the event.
-        if(type(self.focus_get()) == tk.Entry or type(self.focus_get()) == ttk.Entry):
+        if(type(self.focus_get()) == tk.Text or type(self.focus_get()) == tk.Entry or type(self.focus_get()) == ttk.Entry):
             # When press Enter, remove the focus if Entry.
             if(ord(event.char)==13):
                 self.window.focus()

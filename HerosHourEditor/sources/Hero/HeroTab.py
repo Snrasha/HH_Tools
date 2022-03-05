@@ -9,16 +9,23 @@ import Utils.CommonFunctions as CommonFunctions
 fields=["Name","Unit","Class","Skills"]
 
 ## Contains the search bar, the description (placed wrongly) and the skill tree.
-class SkillFields(tk.Frame):
+class SkillFields(ttk.Frame):
     def  __init__(self,master):
-        tk.Frame.__init__(self,master,padx=5,pady=5)
+        ttk.Frame.__init__(self,master)
+
         self.master=master
         self.pack(fill=tk.BOTH,side=tk.LEFT,expand=True)
-        subframe0=ttk.Frame(self)
+        subframe0=ttk.Frame(self,borderwidth=1,relief=tk.GROOVE)
         subframe0.pack(fill=tk.BOTH,side=tk.LEFT,padx=(1,1),pady=(1,1))
 
         self.currentSlot=None
         self.allSkills=[]
+
+        style = ttk.Style(self)
+        bg = style.lookup('TFrame', 'background')
+
+##        style = ttk.Style(self)
+##        style.configure('TLabelframe', background="white")
 
         self.searchBar=ListSearchBar.SearchBar(subframe0,self)
 
@@ -30,9 +37,9 @@ class SkillFields(tk.Frame):
         self.labelDesc.config(wraplength=200)
         self.labelDesc.configure(text=self.searchBar.descriptionsSkills["None"])
 
-        frame_canvas = tk.Frame(self)
-        frame_canvas.pack(fill=tk.BOTH,side=tk.LEFT,padx=(1,1),pady=(1,1), expand=True)
-        canvas=tk.Canvas(frame_canvas)
+        frame_canvas = ttk.Frame(self)
+        frame_canvas.pack(fill=tk.BOTH,side=tk.LEFT, expand=True)
+        canvas=tk.Canvas(frame_canvas,bg=bg,highlightthickness=0,relief=tk.FLAT,bd=0)
         canvas.pack(fill=tk.BOTH,side=tk.TOP, expand=True)       
 
         scrollbar2 = ttk.Scrollbar(frame_canvas, orient='horizontal', command=canvas.xview)
@@ -41,7 +48,7 @@ class SkillFields(tk.Frame):
         scrollbar1 = ttk.Scrollbar(self, orient='vertical', command=canvas.yview)
         scrollbar1.pack(fill=tk.Y,side=tk.RIGHT)
         canvas.configure(yscrollcommand=scrollbar1.set)
-        frame_inner = tk.Frame(canvas)
+        frame_inner = ttk.Frame(canvas)
         frame_inner.pack(fill=tk.BOTH)        
         
         
@@ -50,7 +57,7 @@ class SkillFields(tk.Frame):
         subframe3=ttk.LabelFrame(frame_inner,text='Informations', padding=(5, 5))
         subframe3.pack(fill=tk.BOTH,side=tk.TOP,padx=(1,1),pady=(1,1),expand=True)
 
-        self.portrait = tk.Label(subframe3)
+        self.portrait = ttk.Label(subframe3)
         self.portrait.pack()
 
 
@@ -80,7 +87,7 @@ class SkillFields(tk.Frame):
     def createLabel(self,frame):
         v = tk.StringVar()
         
-        label=CommonClass.LabelSimplified(frame,padding=(2,2),background="white",width=20,borderwidth=1,relief="sunken")
+        label=CommonClass.LabelSimplified(frame,padding=(2,2),background="white",width=20,borderwidth=1,relief=tk.SUNKEN)
         label.set("None")
         label.pack(side=tk.LEFT,padx=1,pady=1)
         label.bind("<Button-1>",self.onEnter)
@@ -105,9 +112,9 @@ class SkillFields(tk.Frame):
 
                 
 ## Contains edit, save and the three simple fields.
-class SimpleFields(tk.Frame):
+class SimpleFields(ttk.Frame):
     def  __init__(self,master):
-        tk.Frame.__init__(self,master,padx=5,pady=5)
+        ttk.Frame.__init__(self,master)
         self.master=master
         self.filename=None
 
@@ -115,7 +122,7 @@ class SimpleFields(tk.Frame):
         
         self.pack(side=tk.RIGHT,fill=tk.Y,expand=False)
 
-        CommonClass.FileFrame(self)
+        CommonClass.FileFrame(self,fill=tk.X)
 
         subframe2=ttk.LabelFrame(self,text='Fields', padding=(5, 5))
         subframe2.pack(fill=tk.BOTH,side=tk.TOP,padx=(1,1),pady=(1,1))
@@ -257,8 +264,8 @@ class SimpleFields(tk.Frame):
         file1.close()
 
 class TabHeroEditor(CommonClass.Tab):     
-    def  __init__(self,master,window):
-        CommonClass.Tab.__init__(self,master,window)
+    def  __init__(self,master,window,**kwargs):
+        CommonClass.Tab.__init__(self,master,window,**kwargs)
 
         self.pack(fill=tk.BOTH,expand=True)
         self.simpleFields=SimpleFields(self)

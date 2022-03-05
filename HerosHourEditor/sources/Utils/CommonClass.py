@@ -2,17 +2,27 @@ import tkinter as tk
 import tkinter.ttk as ttk
 
 ## Label do not have set and get method. This class will do that.     
-class LabelSimplified(tk.Entry):
+class LabelSimplified(ttk.Label):
     def __init__(self,master=None,**kwargs):
         self.var= tk.StringVar(master)
         ttk.Label.__init__(self,master,textvariable=self.var,**kwargs)
         self.get,self.set=self.var.get,self.var.set
-
+class EntrySimplified(tk.Entry):
+    def __init__(self,master=None,**kwargs):
+        tk.Entry.__init__(self,master,**kwargs)
+    def set(self,text):
+        self.empty()
+        if(text!=None):
+            self.insert(0,text)
+    def empty(self):
+        self.delete(0, tk.END)
 class FileFrame(ttk.LabelFrame):
-    def __init__(self,master=None,side=tk.TOP,anchor=None,**kwargs):
-        ttk.LabelFrame.__init__(self,master,text='File', padding=(5, 5))
+    def __init__(self,parent=None,master=None,side=tk.TOP,anchor=None,fill=None,**kwargs):
+        ttk.LabelFrame.__init__(self,parent,text='File', padding=(5, 5))
+        if(master==None):
+            master=parent
         self.master=master
-        self.pack(side=side,anchor=anchor,padx=(1,1),pady=(1,1))
+        self.pack(side=side,anchor=anchor,padx=(1,1),pady=(1,1),fill=fill)
                 
         editButton=ttk.Button(self,text='Edit (D)',command=self.master.editFile,width=12)
         editButton.pack(side=tk.LEFT,padx=5,pady=5)
@@ -20,81 +30,76 @@ class FileFrame(ttk.LabelFrame):
         saveButton=ttk.Button(self,text='Save as (V)',command=self.master.saveFile,width=12)
         saveButton.pack(side=tk.LEFT,padx=5,pady=5)
 
-class Field(tk.Frame):
+class Field(ttk.Frame):
     def __init__(self,master,titleField,hintField="",side=tk.TOP,**kwargs):
-        tk.Frame.__init__(self,master,borderwidth=1,relief="sunken")
+        ttk.Frame.__init__(self,master)
         self.pack(fill=tk.BOTH,side=side,padx=(1,1),pady=(1,1))
                 
         label=ttk.Label(self,text=titleField)
         label.pack(side=tk.LEFT,padx=5,pady=5)
 
-        self.entry=tk.Entry(self, font='bold',justify='center')
-        self.entry.pack(fill=tk.X,padx=5,expand=True)
+##        self.entry=tk.Text(self, font='bold',height=1,width=20)
+##        self.entry.pack(side=tk.RIGHT,padx=5)
+##        if(hintField!=None):
+##            self.set(hintField)
+##    def get(self):
+##        return self.entry.get("1.0",tk.END)
+##    def set(self,text):
+##        self.empty()        
+##        self.entry.insert("1.0",text)
+##    def empty(self):
+##        self.entry.delete("1.0", tk.END)
+        self.entry=tk.Entry(self, font='bold')
+        self.entry.pack(side=tk.RIGHT,padx=5)
         if(hintField!=None):
             self.set(hintField)
     def get(self):
         return self.entry.get()
     def set(self,text):
+        self.empty()
+        if(text==None):
+            return
         self.entry.insert(0,text)
     def empty(self):
         self.entry.delete(0, tk.END)
-class FieldList(tk.Frame):
-    def __init__(self,master,titleField,listOfItems,function=None,side=tk.TOP,**kwargs):
-        tk.Frame.__init__(self,master,borderwidth=1,relief="sunken")
-        self.pack(fill=tk.BOTH,side=side,padx=(1,1),pady=(1,1))
-        
-        label=ttk.Label(self,text=titleField)
-        label.pack(side=tk.LEFT,padx=5,pady=5)
-
-        # Function to call when we select a item.
-        self.function=function
-
-        self.entry=tk.Entry(self, font='bold',justify='center')
+   
+class FattyField(Field):
+    def __init__(self,master,titleField,hintField="",side=tk.TOP,**kwargs):
+        Field.__init__(self,master,titleField,hintField)
         self.entry.bind("<Button-1>",self.onEnter)
-        self.entry.pack(fill=tk.X,padx=5,expand=True)
-        self.listbox = tk.Listbox(self)
-        self.listbox.bind('<<ListboxSelect>>', self.onSelectListBox)
-        self.listbox.bind('<Double-Button-1>', self.onDoubleClickListBox)
-
-        self.listbox.delete(0, 'end')
-        first=None
-        for item in listOfItems:
-            if(first==None):
-                first=item
-            self.listbox.insert('end', item)
-        
-        self.set(first)
-
     def onEnter(self,event):
         self.entry.configure(state=tk.DISABLED)
-        self.listbox.pack(side=tk.BOTTOM,fill=tk.BOTH,padx=5,expand=True)
+        EntryPopup(self,event.x_root,event.y_root)
 
-    def onDoubleClickListBox(self,event):
-        w = event.widget
-        index = int(w.curselection()[0])
-        value = w.get(index)
-        self.entry.configure(state=tk.NORMAL)
-        self.set(value)
-        self.listbox.pack_forget()
         
-    def onSelectListBox(self,event):
-        if(self.function!=None):
-            w = event.widget
-            index = int(w.curselection()[0])
-            value = w.get(index)
-            self.function(value)
+class FieldList(Field):
+    def __init__(self,master,titleField,listOfItems,dictionnary=None,description="None",side=tk.TOP,**kwargs):
+        Field.__init__(self,master,titleField)
         
-    def get(self):
-        return self.entry.get()
-    def set(self,text):
-        self.entry.delete(0, tk.END)
-        self.entry.insert(0,text)
-    def empty(self):
-        self.entry.delete(0, tk.END)
+        self.listOfItems=listOfItems
+        self.dictionnary=dictionnary
+        self.description=description
+
+        self.entry.bind("<Button-1>",self.onEnter)
+        
+        for item in listOfItems:
+            self.set(item)
+            return
+        
+    def onEnter(self,event):
+        self.entry.configure(state=tk.DISABLED)
+        ListPopup(self,event.x_root,event.y_root)
+        
+    def getKeys(self):
+        return self.listOfItems
+    def getDict(self):
+        return self.dictionnary
+    def getDescription(self):
+        return self.description
 
 class Tab(ttk.Frame):
-    def  __init__(self,master,window):
-        ttk.Frame.__init__(self,master)
+    def  __init__(self,master,window,**kwargs):
+        ttk.Frame.__init__(self,master,**kwargs)
         self.master=master
         self.window=window
     
@@ -105,21 +110,92 @@ class Tab(ttk.Frame):
     def unBindKey(self):
         self.window.bind("<KeyRelease>", self.onKeyRelease)
 
-class Popup(tk.Tk):
-    def __init__(self,text):
-        super().__init__()
+class Popup(tk.Toplevel):
+    def __init__(self,frame,x,y,width=200):
+        tk.Toplevel.__init__(self,frame)
 
-        # root window
         self.title("Popup")
-        self.geometry("100x100+100+300")
-
-        label=LabelSimplified(self)
-        label.set(text)
-        self.mainloop()
-
-    def onEscape(self,event):
+        self.geometry(str(width)+"x200+"+str(x-100)+"+"+str(y-100))
+        self.focus()
+        
+        self.bind("<KeyPress>", self.onKeyDown)
+        self.bind('<Escape>', self.onEscape)
+        self.protocol("WM_DELETE_WINDOW", self.onEscape)
+    def onEscape(self,event=None):
         self.destroy()
     def onKeyDown(self,event):
+        if(len(event.char)!=1):
+            return
         if(ord(event.char)==13):
             self.destroy()
+            
+class TextPopup(Popup):
+    def __init__(self,frame,x,y,text):
+        Popup.__init__(self,frame,x,y)
+        label=LabelSimplified(self)
+        label.set(text)
+        label.pack(side=tk.LEFT,padx=1,pady=1)
+class EntryPopup(Popup):
+    def __init__(self,field,x,y,width=600):
+        Popup.__init__(self,field,x,y)
+        self.field=field
+        self.entry=tk.Text(self, font='bold')
+        self.entry.delete('1.0', tk.END) 
+        self.entry.insert('1.0',field.get())
+        self.entry.pack(fill=tk.BOTH,side=tk.RIGHT,padx=5,expand=True)
+    def onEscape(self,event=None):
+        self.field.entry.configure(state=tk.NORMAL)
+        self.field.set(self.entry.get("1.0",tk.END))
+        self.destroy()
+        
+    def onKeyDown(self,event):
+        if(len(event.char)!=1):
+            return
+        if(ord(event.char)==13):
+            if(type(self.focus_get()) == tk.Text):
+                return
+            else:
+                self.onEscape()
+        
+class ListPopup(Popup):
+    def __init__(self,field,x,y):
+        Popup.__init__(self,field,x,y,width=400)
 
+        self.listbox = tk.Listbox(self)
+        self.field=field
+        
+        self.listbox.delete(0, 'end')
+        first=None
+        for item in field.getKeys():
+            if(first==None):
+                first=item
+            self.listbox.insert('end', item)
+
+        self.listbox.bind('<Double-Button-1>', self.onDoubleClickListBox)
+        self.listbox.pack(side=tk.LEFT,fill=tk.BOTH,padx=5,expand=True)
+        subframe1=ttk.LabelFrame(self,text='Description', padding=(5, 5))
+        subframe1.pack(fill=tk.BOTH,expand=True,side=tk.TOP,padx=(1,1),pady=(1,1))
+
+        self.labelDesc=ttk.Label(subframe1,justify=tk.CENTER)
+        self.labelDesc.pack(side=tk.LEFT,fill=tk.Y,expand=True,padx=5,pady=5)
+        self.labelDesc.config(wraplength=200)
+        if(field.getDict()!=None):
+            self.listbox.bind('<<ListboxSelect>>', self.onSelectListBox)
+            self.labelDesc.configure(text=self.field.getDict()[first])
+        else:
+            self.labelDesc.configure(text=self.field.getDescription())
+            
+        
+    def onDoubleClickListBox(self,event):
+        w = event.widget
+        index = int(w.curselection()[0])
+        value = w.get(index)
+        self.field.entry.configure(state=tk.NORMAL)
+        self.field.set(value)
+        self.destroy()
+        
+    def onSelectListBox(self,event):
+        w = event.widget
+        index = int(w.curselection()[0])
+        value = w.get(index)
+        self.labelDesc.configure(text=self.field.getDict()[value])

@@ -1,20 +1,22 @@
 import tkinter as tk
+import tkinter.ttk as ttk
+
 import Utils.CommonFunctions as CommonFunctions
 
 ## Init a search bar with a list box and all the events linked to it.
-class SearchBar(tk.Frame):
+class SearchBar(ttk.Frame):
 
     def  __init__(self,master,parent):
-        tk.Frame.__init__(self,master,padx=5,pady=5)
+        ttk.Frame.__init__(self,master,padding=(5,5))
         self.pack(fill=tk.BOTH,side=tk.LEFT)
         self.parent=parent
         self.descriptionsSkills=CommonFunctions.readSkills()
         self.skills=self.descriptionsSkills.keys()
 
-        self.entry = tk.Entry(master)
+        self.entry = tk.Entry(master,bd=2)
         self.entry.pack(side=tk.TOP,padx=5,pady=5)
         self.entry.bind('<KeyRelease>', self.readSearchBarAndReloadListBox)
-        self.listbox = tk.Listbox(master)
+        self.listbox = tk.Listbox(master,bd=2)
 
         self.listbox.bind('<<ListboxSelect>>', self.onSelectListBox)
         self.listbox.bind('<Double-Button-1>', self.onDoubleClickListBox)

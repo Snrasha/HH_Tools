@@ -79,7 +79,12 @@ def addBlackOutline(path):
 
 ## Call the save dialog
 def askSaveFile(oldFilename,title):
-    filename=fd.asksaveasfilename(initialfile=oldFilename.split('/')[-1],title=title,filetypes=[("TXT Files","*.txt")])
+    if(oldFilename!=None):
+        inifile=oldFilename.split('/')[-1]
+    else:
+        inifile=None
+    
+    filename=fd.asksaveasfilename(initialfile=inifile,title=title,filetypes=[("TXT Files","*.txt")])
     if(len(filename.strip())==0):
         filename=None 
     elif not filename.endswith(".txt"):
@@ -102,18 +107,20 @@ def addImage(path,label,size,outline=False,side=tk.TOP):
             image=Image.open(path)
         n_image = image.resize((size, size),resample=Image.BOX)
         photo = ImageTk.PhotoImage(n_image)
-        label.image = photo # <== this is were we anchor the img object
-        label.configure(image=photo)
-        label.pack(fill=tk.BOTH,side=side)
+        setImage(label,photo,side)
     else:
-        label.image = None 
-        label.configure(text="Err. Image")
-        label.pack(fill=tk.BOTH,side=side)  
-
-
-
+        setBackground(label,size,side=side)
+def setBackground(label,size,color= (0, 0, 0, 255),side=tk.TOP):
+    
+    if not (isinstance(size,tuple)):
+        size=(size,size)
         
-        
-        
+    photo = ImageTk.PhotoImage(Image.new("RGBA", size, color))
+    setImage(label,photo,side)
+
+def setImage(label,photo,side):
+    label.image = photo
+    label.configure(image=photo)
+    label.pack(fill=tk.BOTH,side=side)    
 
 
