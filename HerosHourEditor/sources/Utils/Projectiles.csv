@@ -1,8 +1,8 @@
 #id; desc
-None;
+None;Default Proj
 Fireprojectile;
 Rockprojectile;
-Bulletprojectile;straight line
+Bulletprojectile;Straight Line
 Lightningprojectile;
 Manaprojectile;
 Iceprojectile;
@@ -13,4 +13,4 @@ Sirenprojectile;
 Javelinprojectile;
 Dynamiteprojectile;
 Windslashprojectile;
-Custom;
+Custom;Put your custom proj

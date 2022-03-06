@@ -1,5 +1,4 @@
 #id; desc
-Ranged;This creature is able to fire a projectile, damaging enemies at a distance. It deals half its normal damage in melee combat, and there is an area where units are too close for ranged attacks and too far for melee attacks.
 Blaster;The projectiles fired by this creature strike a large area and knock around friends and foes alike - though only enemies are damaged.
 Flying;This creature is able to fly, moving faster and dodging whenever it can't attack. It is able to grab enemies close to death, then drop them from great heights. It can also fly over walls.
 Slow;This creature moves slowly across the battlefield.
@@ -67,14 +66,11 @@ Budding;When this creature takes damage, it has a chance to summon <UNITNAMES>
 Budding Half;Same as above, but has half chance of proccing
 Splitting;When this creature dies, it summons two <UNITNAMES>
 Splitting Half;When this creature dies, it summons one <UNITNAMES>
-Long Ranged;This creature's ranged attacks can strike enemies further away than other ranged creatures would
-Short Ranged;This creature's ranged attacks have a shorter range than other ranged creatures, but can also hit enemies closer to them
 Aura of Power;Creatures close to this will have their health, attack and speed increased
 Rage;When this unit takes damage, its damage and speed increases
 Taxpayer;Each day, this creature pays 2 gold to its owner for each power it has,
 Thorns;Whenever this creature is hit by a melee attack, the attacker takes damage equal to half this creature's attack,
 Fire Shield;Whenever this creature is hit by a melee attack, the attacker is set on fire,
-Tower;This creature is unable to move but has infinite range,
 Chaos;Enemies struck by this creature have a chance to be teleported away,
 Displacement;Whenever this creature is hit by a melee attack, the attacker has a chance to be teleported away,
 Buffer;When the hero controlling these units casts a spell costing mana, each can refund 1 mana once per battle,

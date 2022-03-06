@@ -6,6 +6,8 @@ import Utils
 import Utils.CommonClass as CommonClass
 import Utils.CommonFunctions as CommonFunctions
 import Utils.ToolTipFactory as ToolTipFactory
+import Unit.UnitUtils as UnitUtils
+
 fields=["Names","Gold cost for base unit","Weekly Growth",
         "Rare Resource Cost","Balance modifier","Abilities for base unit",
         "Abilities for upgrade","Use sound effects from X unit","Attack type",
@@ -47,7 +49,7 @@ class TabUnitEditor(CommonClass.Tab):
         middleFrame=ttk.Frame(self)
         middleFrame.pack(fill=tk.BOTH,side=tk.LEFT,padx=(1,1),pady=(1,1),expand=True)
         frame0=ttk.LabelFrame(middleFrame,text='Unit cost')
-        frame0.pack(fill=tk.BOTH,side=tk.LEFT,expand=True)
+        frame0.pack(fill=tk.BOTH,side=tk.TOP)
         frame=ttk.Frame(frame0)
         frame.pack(fill=tk.BOTH,side=tk.TOP,padx=(1,1),pady=(1,1))
         frame1=ttk.Frame(frame0)
@@ -55,14 +57,61 @@ class TabUnitEditor(CommonClass.Tab):
         self.centerFieldsEntry=[]
         vcmd = (self.register(self.validate),
                 '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
-        self.centerFieldsEntry+=[CommonClass.Field(frame,titleField="Gold cost:",hintField="100",side=tk.LEFT)]
-        self.centerFieldsEntry[0].entry.configure( validate = 'key',validatecommand = vcmd)
+        self.centerFieldsEntry+=[CommonClass.Field(frame,titleField="Gold cost: ",hintField="100",side=tk.LEFT)]
+        self.centerFieldsEntry[-1].entry.configure( validate = 'key',validatecommand = vcmd)
+
+        self.centerFieldsEntry+=[CommonClass.Field(frame,titleField="Weekly Growth: ",hintField="30",side=tk.LEFT)]
+        self.centerFieldsEntry[-1].entry.configure( validate = 'key',validatecommand = vcmd)
 ##        self.centerFieldsEntry+=[CommonClass.OptionMenu(leftFrame,"Living:",living,descLiving)]
-        self.centerFieldsEntry+=[CommonClass.OptionMenu(frame1,"Rare resource",rareResourceNumber,tooltipRareRes,side=tk.LEFT)]
+        self.centerFieldsEntry+=[CommonClass.OptionMenu(frame1,"Rare resource: ",rareResourceNumber,tooltipRareRes,side=tk.LEFT)]
         self.centerFieldsEntry+=[CommonClass.OptionMenu(frame1,None,rareResource,tooltipRareRes,side=tk.LEFT)]
 
+        frameStat=ttk.LabelFrame(middleFrame,text='Stats')
+        frameStat.pack(fill=tk.BOTH,side=tk.TOP)
+        frame1=ttk.Frame(frameStat)
+        frame1.pack(fill=tk.BOTH,side=tk.TOP,padx=(1,1),pady=(1,1))
+       
+        self.centerFieldsEntry+=[CommonClass.Field(frame1,titleField="Balance modifier: ",hintField="100",side=tk.LEFT)]
+        self.centerFieldsEntry[-1].entry.configure( validate = 'key',validatecommand = vcmd)
+        self.centerFieldsEntry+=[CommonClass.Field(frame1,titleField=None,hintField="100",side=tk.LEFT)]
+        self.centerFieldsEntry[-1].entry.configure( validate = 'key',validatecommand = vcmd)
+        
+        frame2=ttk.Frame(frameStat,padding=(5,0))
+        frame2.pack(fill=tk.BOTH,side=tk.TOP,padx=(1,1),pady=(1,0))
+        self.labels=[]
+        for i in range(5):
+            label=CommonClass.LabelSimplified(frame2,relief=tk.SUNKEN,borderwidth=1,width=20,anchor="center")
+            label.pack(side=tk.LEFT,fill=tk.BOTH)
+            self.labels+=[label]
+
+        self.labels[0].set("Power")
+        self.labels[1].set("Damage")
+        self.labels[2].set("Health")
+        self.labels[3].set("Size")
+        self.labels[4].set("Speed")
+        frame3=ttk.Frame(frameStat,padding=(5,0))
+        frame3.pack(fill=tk.BOTH,side=tk.TOP,padx=(1,1),pady=(0,1))
+        frame4=ttk.Frame(frameStat,padding=(5,0))
+        frame4.pack(fill=tk.BOTH,side=tk.TOP,padx=(1,1),pady=(0,1))
+        self.labelsStats=[]
+        self.labelsStatsUpgraded=[]
+        for i in range(5):
+            label=CommonClass.LabelSimplified(frame3,relief=tk.SUNKEN,borderwidth=1,width=20,anchor="center")
+            label.pack(side=tk.LEFT,fill=tk.BOTH)
+            label.set("0")
+            self.labelsStats+=[label]
+        for i in range(5):
+            label=CommonClass.LabelSimplified(frame4,relief=tk.SUNKEN,borderwidth=1,width=20,anchor="center")
+            label.pack(side=tk.LEFT,fill=tk.BOTH)
+            label.set("0")
+            self.labelsStatsUpgraded+=[label]
+            
+        frameAbilities=ttk.LabelFrame(middleFrame,text='Abilities')
+        frameAbilities.pack(fill=tk.BOTH,side=tk.TOP)
+        
     def validate(self, action, index, value_if_allowed,
                        prior_value, text, validation_type, trigger_type, widget_name):
+        
         if action == 0:
             return True
         if value_if_allowed == "":
@@ -72,6 +121,52 @@ class TabUnitEditor(CommonClass.Tab):
             return True
         except ValueError:
             return False
+    def toInt(self,value):
+        if(value==None or value ==""):
+            return 0
+        else:
+            return int(value)
+        
+    def updateStats(self):
+        print("ok")
+
+        gold=self.toInt(self.centerFieldsEntry[0].get())
+        print(gold)
+        balanceStat1=self.toInt(self.centerFieldsEntry[4].get())/100.
+
+        
+        balanceStat2=1.16*self.toInt(self.centerFieldsEntry[5].get())/100.
+        if(self.checkBoxVar[0].get()==1):
+            balanceStat2*=0
+
+        #Power
+        power=2
+        self.labelsStats[0].set(str(power*balanceStat1))
+        self.labelsStatsUpgraded[0].set(str(power*balanceStat2))
+        #Damage
+        damage=5.5
+        self.labelsStats[1].set(str(power*balanceStat1))
+        self.labelsStatsUpgraded[1].set(str(power*balanceStat2))
+        #Health
+        health=31.0
+        self.labelsStats[2].set(str(power*balanceStat1))
+        self.labelsStatsUpgraded[2].set(str(power*balanceStat2))
+        # Size
+        size=3
+        if(power>21):
+            size=6
+        elif (power>9):
+            size=5
+        elif (power>5):
+            size=4
+        self.labelsStats[3].set(str(size))
+        self.labelsStatsUpgraded[3].set(str(size))
+        # Speed
+        speed=(0.1*(size/3)*50)
+        self.labelsStats[4].set(str(speed))
+        self.labelsStatsUpgraded[4].set(str(speed))
+        
+        
 
 
     def initRightFrame(self):
@@ -105,14 +200,6 @@ class TabUnitEditor(CommonClass.Tab):
         standardField=ttk.LabelFrame(self,text='Fields', padding=(5, 5))
         standardField.pack(fill=tk.BOTH,side=tk.LEFT,padx=(1,1),pady=(1,1))
 
-        self.canvas=tk.Canvas(standardField,bg=self.bg,relief=tk.FLAT,bd=0,highlightthickness=0)
-        self.canvas.pack(fill=tk.BOTH,side=tk.LEFT, expand=True)
-        self.scrollbar1 = ttk.Scrollbar(standardField, orient='vertical', command=self.canvas.yview)
-        self.scrollbar1.pack(fill=tk.Y,side=tk.LEFT,expand=True)
-        self.canvas.configure(yscrollcommand=self.scrollbar1.set)
-
-        leftFrame=ttk.Frame(self.canvas)
-        leftFrame.pack(fill=tk.BOTH)
 
 ##    fields=["Gold cost for base unit","Weekly Growth",
 ##            "Rare Resource Cost","Balance modifier","Abilities for base unit",
@@ -120,40 +207,30 @@ class TabUnitEditor(CommonClass.Tab):
 ##            "Living","Link","Unit groups"
 ##            ]
 
-        self.fieldsEntry+=[CommonClass.Field(leftFrame,titleField="Unit Name:",hintField="Calf")]
-        self.fieldsEntry+=[CommonClass.Field(leftFrame,titleField="Upgrade Name:",hintField="Cow")]
-        self.fieldsEntry+=[CommonClass.Field(leftFrame,titleField="Sound Effect from a Unit:",hintField="Golem")]
+        self.fieldsEntry+=[CommonClass.Field(standardField,titleField="Unit Name:",hintField="Calf")]
+        self.fieldsEntry+=[CommonClass.Field(standardField,titleField="Upgrade Name:",hintField="Cow")]
+        self.fieldsEntry+=[CommonClass.Field(standardField,titleField="Sound Effect from a Unit:",hintField="Golem")]
         ToolTipFactory.CreateToolTip(self.fieldsEntry[-1].entry, text = tooltipSound)
-        self.fieldsEntry+=[CommonClass.OptionMenu(leftFrame,"Attack type:",attackType,descAttack)]
-        self.fieldsEntry+=[CommonClass.OptionMenu(leftFrame,"Living:",living,descLiving)]
-        self.fieldsEntry+=[CommonClass.Field(leftFrame,titleField="Link:",hintField="Toadfrog")]
+        self.fieldsEntry+=[CommonClass.OptionMenu(standardField,"Attack type:",attackType,descAttack)]
+        self.fieldsEntry+=[CommonClass.OptionMenu(standardField,"Living:",living,descLiving)]
+        self.fieldsEntry+=[CommonClass.Field(standardField,titleField="Link:",hintField="Toadfrog")]
         ToolTipFactory.CreateToolTip(self.fieldsEntry[-1].entry, text = tooltipLink)
-        self.fieldsEntry+=[CommonClass.Field(leftFrame,titleField="Unit groups:",hintField="")]
-        
+        self.fieldsEntry+=[CommonClass.Field(standardField,titleField="Unit groups:",hintField="")]
 
-        leftFrame.update_idletasks()
-        self.canvas.create_window((0, 0), window=leftFrame, anchor='w')
-        self.canvas.configure(scrollregion=self.canvas.bbox("all"))
-        self.set_mousewheel(self.canvas)
-        self.set_mousewheel(self.scrollbar1)
 
         
+        self.fieldsEntry+=[UnitUtils.FieldAttackRange(standardField)]
 
 
     def onCheckBoxChange(self):
         if(self.checkBoxVar[0].get()==0):
             self.fieldsEntry[1].entry.configure(state=tk.NORMAL)
+            self.centerFieldsEntry[5].entry.configure(state=tk.NORMAL)
         else:
             self.fieldsEntry[1].entry.configure(state=tk.DISABLED)
+            self.centerFieldsEntry[5].entry.configure(state=tk.DISABLED)
+        self.updateStats()
 
-    def set_mousewheel(self,widget):
-        """Activate / deactivate mousewheel scrolling when
-        cursor is over / not over the widget respectively."""
-        widget.bind("<Enter>", lambda _: widget.bind_all('<MouseWheel>', self.onMouseWheel))
-        widget.bind("<Leave>", lambda _: widget.unbind_all('<MouseWheel>'))
-
-    def onMouseWheel(self,event):
-        self.canvas.yview_scroll(int(-1*(event.delta/120)), "units")
 
     def loadImages(self,path):
         data=" data.txt"
@@ -166,8 +243,8 @@ class TabUnitEditor(CommonClass.Tab):
         if(self.checkBoxVar[0].get()==0):
            self.addFrameUnit(path+"+ spritesheet.png",1)
 
-        CommonFunctions.setImage(self.framesUnit[0],self.framesUnitImage[0],side=tk.TOP)
-        CommonFunctions.setImage(self.framesUnit[1],self.framesUnitImage[1],side=tk.TOP)
+        CommonFunctions.setImage(self.framesUnit[0],self.framesUnitImage[0],side=tk.LEFT)
+        CommonFunctions.setImage(self.framesUnit[1],self.framesUnitImage[1],side=tk.LEFT)
 
     def addFrameUnit(self,pathUnit,i):
         gameImage=Image.new("RGBA", (24, 24), (0, 0, 0, 0))
@@ -200,6 +277,8 @@ class TabUnitEditor(CommonClass.Tab):
         filled=[]
         self.loadImages(self.filename)
 
+        self.updateStats()
+
         file1.close()
 
     ## Found the next line to read. Ignore blank line except if stopToBlank is True
@@ -224,9 +303,16 @@ class TabUnitEditor(CommonClass.Tab):
 
         file1 = open(self.filename, 'w')
         file1.close()
+    
     def onKeyRelease(self,event):
+        if(len(event.char)==1 and ord(event.char)==13 and CommonFunctions.checkIfInputField(type(self.oldFocus))):
+            self.updateStats()
+            return       
+        
+        self.oldFocus=self.focus_get()
          # If the user is on an entry / input field, skip the event.
         if(CommonFunctions.checkIfInputField(type(self.focus_get()))):
+
             return
 
         if(event.char=='d'):

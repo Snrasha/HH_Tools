@@ -33,24 +33,25 @@ class FileFrame(ttk.LabelFrame):
         saveButton.pack(side=tk.LEFT,padx=5,pady=5)
 
 class Field(ttk.Frame):
-    def __init__(self,master,titleField,hintField="",side=tk.TOP,width=None,**kwargs):
+    def __init__(self,master,titleField=None,hintField="",side=tk.TOP,width=None,**kwargs):
         ttk.Frame.__init__(self,master)
         self.pack(fill=tk.BOTH,side=side,padx=(1,1),pady=(1,1))
         self.titleField=titleField
-                
-        label=ttk.Label(self,text=titleField)
+        if(titleField!=None):
+            label=ttk.Label(self,text=titleField)
         if(width!=None):
             self.entry=tk.Entry(self, font='bold',width=width)
         else:
             self.entry=tk.Entry(self, font='bold')
         self.entry.pack(side=tk.RIGHT,padx=5)
-        
-        if(width!=None):
-            s=tk.RIGHT
-        else:
-            s=tk.LEFT
+        if(titleField!=None):    
+            if(width!=None):
+                s=tk.RIGHT
+            else:
+                s=tk.LEFT
+
             
-        label.pack(side=s,padx=5,pady=5)
+            label.pack(side=s,padx=5,pady=5)
 
         if(hintField!=None):
             self.set(hintField)
@@ -118,6 +119,8 @@ class FieldAdditiveList(Field):
         return self.items
     def getDescription(self):
         return self.description
+
+
 class Tab(ttk.Frame):
     def  __init__(self,master,window,**kwargs):
         ttk.Frame.__init__(self,master,**kwargs)
@@ -308,7 +311,7 @@ class AdditiveListPopup(Popup):
 
 
 class OptionMenu(ttk.Frame):
-    def __init__(self,parent,titleField,listItems,description,side=tk.TOP,**kwargs):
+    def __init__(self,parent,titleField,listItems,description,side=tk.TOP,command=None,**kwargs):
         ttk.Frame.__init__(self,parent)
         self.pack(fill=tk.BOTH,side=side,padx=(1,1),pady=(1,1))
         self.option_var = tk.StringVar(self)
@@ -316,8 +319,14 @@ class OptionMenu(ttk.Frame):
         if(titleField!=None):
             label=ttk.Label(self,text=titleField)
             label.pack(side=tk.LEFT,padx=5,pady=5)
+
+        first=None
+        for i in listItems:
+            first=i
+            break
+            
         
-        self.optionMenu=ttk.OptionMenu(self,self.option_var,listItems[0],*listItems)#,command=self.option_changed)
+        self.optionMenu=ttk.OptionMenu(self,self.option_var,first,*listItems,command=command)
 
         self.optionMenu.pack(fill=tk.X,side=tk.RIGHT,padx=(1,1),pady=(1,1),expand=True)
 
@@ -328,8 +337,6 @@ class OptionMenu(ttk.Frame):
                 index2=index+index2
                 description=description[:index2]+'\n'+description[index2-1:]
         ToolTipFactory.CreateToolTip(self.optionMenu, text = description)
-##    def option_changed(self,event):
-##        None
     def get(self):
         return self.option_var.get()
     def set(self,text):
