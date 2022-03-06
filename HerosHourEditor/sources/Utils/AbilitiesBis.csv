@@ -1,0 +1,10 @@
+#id; desc
+Fast;increases movement speed
+Flimsy;increases movement speed slightly, and decreases weight
+Feeble;decreases attack to 75%
+Health XXX;sets the units health to XXX
+Damage XXX;sets the units health to XXX
+Small;sets the size to 3
+Big ;increases size by 1
+Micro;sets size to 3 or lowers size by 1, whichever is less
+Shrink;decreases size by 1

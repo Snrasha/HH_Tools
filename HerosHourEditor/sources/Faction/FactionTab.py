@@ -5,6 +5,7 @@ from PIL import Image,ImageTk
 import Utils
 import Utils.CommonClass as CommonClass
 import Utils.CommonFunctions as CommonFunctions
+import Utils.ToolTipFactory as ToolTipFactory
 
 fields=["FACTION NAME","FACTION UNITS ALTERNATES","HERO NAMES",
         "DWELLING NAMES","STARTING TERRAIN","TOWN NAMES",
@@ -23,11 +24,14 @@ magic=["Water", "Air", "Fire", "Earth"]
 humanoidEliteTarget=["1","2","3","4","5","6","7","8","9"]
 
 
-descMagic="The guild of mages, archives of magic and archmage tribunal buildings in the town will offer different spells according to what element you specify here. For instance, if you pick fire, the three buildings will all be guaranteed to give a fire spell each, as well as teaching Fireskip and Rampaging Fire adventure map spells"
-descMusic="Here you can specify what type of music should play when the player has the town screen open."
-descTerrain="The starting terrain where you faction will start."
-descHumanoidEliteTarget="Specific mechanics within the game require an elite humanoid target from each faction. It should be the highest tier humanoid unit the faction has - and if there’s just one or two humanoid units, you could pick one that isn’t."
+descMagic="Determine where the magic building of your faction will choose their spells from"
+descMusic="Select what music will be played when in the town screen"
+descTerrain='Here you can choose the type of terrain that will be generated if you choose the "faction terrain" option during map generation'
+descHumanoidEliteTarget="Select what unit is the target of the bloodwarp skill for your faction's unit"
 descTownNames="Click on input field and write your town name. Then 'Enter' for add it. Double clic on a name on the list for modify it. Clic then 'Delete' for delete a name."
+descTownNamesBis="Select what set of town names will be used when generating town for your faction"
+descArchmageSkillBis="Determine what bonus skill will the Archmage Tribunale teach to heroes visiting it"
+descCheckBoxAlternativeUnit="Tiers with checked boxes will have two units to choose from in the appropriate buildings"
 
 class TabFactionEditor(CommonClass.Tab):
     def  __init__(self,master,window,**kwargs):
@@ -53,11 +57,14 @@ class TabFactionEditor(CommonClass.Tab):
 
         CommonClass.FileFrame(rightFrame,self,side=tk.TOP)
 
-        belowFrame=ttk.Frame(rightFrame,borderwidth=1,relief="sunken")
+        belowFrame=ttk.LabelFrame(rightFrame,text='Help', padding=(5, 5))
         belowFrame.pack(fill=tk.BOTH,side=tk.TOP,padx=(1,1),pady=(1,1),expand=True)
 
-        self.saveInfo=CommonClass.LabelSimplified(belowFrame)
-        self.saveInfo.pack(fill=tk.BOTH,side=tk.TOP,expand=True)
+        self.saveInfo=CommonClass.LabelSimplified(belowFrame,justify=tk.CENTER)
+        self.saveInfo.pack(fill=tk.BOTH,side=tk.TOP)
+##        belowFrame.update()
+        self.saveInfo.configure(wraplength=200)#(belowFrame.winfo_width()*0.9))
+        self.saveInfo.set("Put your mouse over some field")
 
     def initStandardField(self):
 
@@ -79,13 +86,17 @@ class TabFactionEditor(CommonClass.Tab):
         self.fieldsEntry+=[CommonClass.Field(leftFrame,titleField="Faction name:",hintField="Kingdom")]
         self.fieldsEntry+=[CommonClass.Field(leftFrame,titleField="Hero Name Fighter:",hintField="Fighter")]
         self.fieldsEntry+=[CommonClass.Field(leftFrame,titleField="Hero Name Caster:",hintField="Caster")]
-        self.fieldsEntry+=[CommonClass.FieldList(leftFrame,titleField="Starting Terrain:",listOfItems=terrains,description=descTerrain)]
-        self.fieldsEntry+=[CommonClass.FieldList(leftFrame,titleField="Humanoid Elite Target:",listOfItems=humanoidEliteTarget,description=descHumanoidEliteTarget)]
-        self.fieldsEntry+=[CommonClass.FieldList(leftFrame,titleField="Town Music:",listOfItems=music,description=descMusic)]
-        self.fieldsEntry+=[CommonClass.FieldList(leftFrame,titleField="Magic School Specialty:",listOfItems=magic,description=descMagic)]
+        self.fieldsEntry+=[CommonClass.OptionMenu(leftFrame,"Starting Terrain:",terrains,descTerrain)]
+        self.fieldsEntry+=[CommonClass.OptionMenu(leftFrame,"Humanoid Elite Target:",humanoidEliteTarget,descHumanoidEliteTarget)]
+        self.townNamesEntry=CommonClass.FieldAdditiveList(leftFrame,titleField="Town names:",description=descTownNames)
+        self.townNamesEntry.setItems(["City","DuckVille","OrderCity"])
+        ToolTipFactory.CreateToolTip(self.townNamesEntry.entry, text = descTownNamesBis)
 
+        self.fieldsEntry+=[CommonClass.OptionMenu(leftFrame,"Town Music:",music,descMusic)]
+        self.fieldsEntry+=[CommonClass.OptionMenu(leftFrame,"Magic School Specialty:",magic,descMagic)]
         self.skills=CommonFunctions.readSkills()
         self.fieldsEntry+=[CommonClass.FieldList(leftFrame,titleField="Archmage Tribunal Skill:",listOfItems=self.skills.keys(),dictionnary=self.skills)]
+        ToolTipFactory.CreateToolTip(self.fieldsEntry[-1].entry, text = descArchmageSkillBis)
 
         self.fieldsEntry+=[CommonClass.Field(leftFrame,titleField="Lore Name:",hintField="Empire (not Order)")]
         self.fieldsEntry+=[CommonClass.Field(leftFrame,titleField="Lore Main Race:",hintField="Human")]
@@ -93,9 +104,8 @@ class TabFactionEditor(CommonClass.Tab):
         self.fieldsEntry+=[CommonClass.FattyField(leftFrame,titleField="Lore Culture:",hintField="Bla bla religion")]
         self.fieldsEntry+=[CommonClass.FattyField(leftFrame,titleField="Lore Hero Fighter:",hintField="Bla bla Inquisitor")]
         self.fieldsEntry+=[CommonClass.FattyField(leftFrame,titleField="Lore Hero Caster:",hintField="Bla bla Idol of death")]
-        self.townNamesEntry=CommonClass.FieldAdditiveList(leftFrame,titleField="Town names:",description=descTownNames)
-
-        self.townNamesEntry.setItems(["City","DuckVille","OrderCity"])
+        
+        
 
 
         leftFrame.update_idletasks()
@@ -105,9 +115,11 @@ class TabFactionEditor(CommonClass.Tab):
         self.set_mousewheel(self.scrollbar1)
 
 
+
+
     def initContentFolder(self,middleFrame):
         contentFolder=ttk.LabelFrame(middleFrame,text='Folder Contents', padding=(5, 5))
-        contentFolder.pack(fill=tk.BOTH,side=tk.TOP,padx=(1,1),pady=(1,1),expand=True)
+        contentFolder.pack(fill=tk.BOTH,side=tk.TOP,expand=True)
 
         self.portraits=[]
 
@@ -138,7 +150,7 @@ class TabFactionEditor(CommonClass.Tab):
         CommonFunctions.setBackground(self.town,64,side=tk.LEFT)
 
     def initBuildings(self,middleFrame):
-        buildFrame=ttk.LabelFrame(middleFrame,text='Buildings', padding=(5, 5))
+        buildFrame=ttk.LabelFrame(middleFrame,text='Dwellings', padding=(5, 5))
         buildFrame.pack(fill=tk.BOTH,side=tk.TOP,padx=(1,1),pady=(1,1),expand=True)
 
         frames=[]
@@ -149,6 +161,8 @@ class TabFactionEditor(CommonClass.Tab):
         self.tiersUnitLabel=[]
         self.tiersUnitImage=[]
         self.buildingsName=[]
+
+        ToolTipFactory.CreateToolTip(self.fieldsEntry[-1].entry, text = descCheckBoxAlternativeUnit)
 
 
         for i in range(6):
@@ -257,7 +271,7 @@ class TabFactionEditor(CommonClass.Tab):
             path=pathDir+"Unit "+str(i+1)+" spritesheet.png"
             path2=pathDir+"Unit "+str(i+1)+"+ spritesheet.png"
             self.addFrameUnits(path,path2,i)
-        CommonFunctions.addImage(pathDir+"Town.png",self.town,48,True,tk.LEFT)
+        CommonFunctions.addImage(pathDir+"Town.png",self.town,48,False,tk.LEFT)
 
 
     def addFrameUnits(self,pathUnit,pathUnitUpgraded,i):
@@ -294,8 +308,6 @@ class TabFactionEditor(CommonClass.Tab):
 
         self.loadImages(self.filename)
 
-##        for field in self.fieldsEntry:
-##            field.empty()
 
         ## Made a backup of the opened file.
         CommonFunctions.madeBackUp("faction_backup.txt",self.filename)
@@ -330,9 +342,7 @@ class TabFactionEditor(CommonClass.Tab):
 
                 for i in range(6):
                     self.checkBoxVar[i].set(0)
-
                 while(answer !=None):
-                    print(answer)
                     try:
                         ans=int(answer)
                         self.checkBoxVar[ans-1].set(1)

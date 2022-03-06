@@ -1,6 +1,8 @@
 import tkinter as tk
 import tkinter.ttk as ttk
 import Utils.CommonFunctions as CommonFunctions
+import Utils.ToolTipFactory as ToolTipFactory
+
 ## Label do not have set and get method. This class will do that.     
 class LabelSimplified(ttk.Label):
     def __init__(self,master=None,**kwargs):
@@ -22,7 +24,7 @@ class FileFrame(ttk.LabelFrame):
         if(master==None):
             master=parent
         self.master=master
-        self.pack(side=side,anchor=anchor,padx=(1,1),pady=(1,1),fill=fill)
+        self.pack(side=side,anchor=anchor,padx=(1,1),fill=fill)
                 
         editButton=ttk.Button(self,text='Edit (D)',command=self.master.editFile,width=12)
         editButton.pack(side=tk.LEFT,padx=5,pady=5)
@@ -34,6 +36,7 @@ class Field(ttk.Frame):
     def __init__(self,master,titleField,hintField="",side=tk.TOP,width=None,**kwargs):
         ttk.Frame.__init__(self,master)
         self.pack(fill=tk.BOTH,side=side,padx=(1,1),pady=(1,1))
+        self.titleField=titleField
                 
         label=ttk.Label(self,text=titleField)
         if(width!=None):
@@ -42,25 +45,12 @@ class Field(ttk.Frame):
             self.entry=tk.Entry(self, font='bold')
         self.entry.pack(side=tk.RIGHT,padx=5)
         
-        
         if(width!=None):
             s=tk.RIGHT
         else:
             s=tk.LEFT
             
         label.pack(side=s,padx=5,pady=5)
-
-##        self.entry=tk.Text(self, font='bold',height=1,width=20)
-##        self.entry.pack(side=tk.RIGHT,padx=5)
-##        if(hintField!=None):
-##            self.set(hintField)
-##    def get(self):
-##        return self.entry.get("1.0",tk.END)
-##    def set(self,text):
-##        self.empty()        
-##        self.entry.insert("1.0",text)
-##    def empty(self):
-##        self.entry.delete("1.0", tk.END)
 
         if(hintField!=None):
             self.set(hintField)
@@ -80,7 +70,7 @@ class FattyField(Field):
         self.entry.bind("<Button-1>",self.onEnter)
     def onEnter(self,event):
         self.entry.configure(state=tk.DISABLED)
-        EntryPopup(self,event.x_root,event.y_root)
+        EntryPopup(self,self.titleField,event.x_root,event.y_root)
 
         
 class FieldList(Field):
@@ -99,7 +89,7 @@ class FieldList(Field):
         
     def onEnter(self,event):
         self.entry.configure(state=tk.DISABLED)
-        ListPopup(self,event.x_root,event.y_root)
+        ListPopup(self,self.titleField,event.x_root,event.y_root)
         
     def getKeys(self):
         return self.listOfItems
@@ -117,7 +107,7 @@ class FieldAdditiveList(Field):
 
     def onEnter(self,event):
         self.entry.configure(state=tk.DISABLED)
-        AdditiveListPopup(self,event.x_root,event.y_root)
+        AdditiveListPopup(self,self.titleField,event.x_root,event.y_root)
     def setItems(self,items):
         self.items=items
         for item in items:
@@ -142,12 +132,12 @@ class Tab(ttk.Frame):
         self.window.bind("<KeyRelease>", self.onKeyRelease)
 
 class Popup(tk.Toplevel):
-    def __init__(self,frame,x,y,width=200):
+    def __init__(self,frame,title,x,y,width=200):
         tk.Toplevel.__init__(self,frame)
         style = ttk.Style(self)
         self.configure(background=style.lookup('TFrame', 'background'))
 
-        self.title("Popup")
+        self.title(title)
         self.geometry(str(width)+"x200+"+str(x-100)+"+"+str(y-100))
         self.focus()
         
@@ -169,8 +159,8 @@ class Popup(tk.Toplevel):
 ##        label.set(text)
 ##        label.pack(side=tk.LEFT,padx=1,pady=1)
 class EntryPopup(Popup):
-    def __init__(self,field,x,y,width=600):
-        Popup.__init__(self,field,x,y)
+    def __init__(self,field,title,x,y,width=600):
+        Popup.__init__(self,field,title,x,y)
         self.field=field
         self.entry=tk.Text(self, font='bold')
         self.entry.delete('1.0', tk.END) 
@@ -194,8 +184,8 @@ class EntryPopup(Popup):
                 self.onEscape()
         
 class ListPopup(Popup):
-    def __init__(self,field,x,y):
-        Popup.__init__(self,field,x,y,width=400)
+    def __init__(self,field,title,x,y):
+        Popup.__init__(self,field,title,x,y,width=400)
 
         self.listbox = tk.Listbox(self)
         self.field=field
@@ -243,8 +233,8 @@ class ListPopup(Popup):
         self.labelDesc.configure(text=self.field.getDict()[value])
 
 class AdditiveListPopup(Popup):
-    def __init__(self,field,x,y):
-        Popup.__init__(self,field,x,y,width=400)
+    def __init__(self,field,title,x,y):
+        Popup.__init__(self,field,title,x,y,width=400)
 
         frame=ttk.Frame(self)
         frame.pack(side=tk.LEFT,fill=tk.BOTH,padx=5,expand=True)
@@ -315,4 +305,34 @@ class AdditiveListPopup(Popup):
                 
                 self.focus()
             return
+
+
+class OptionMenu(ttk.Frame):
+    def __init__(self,parent,titleField,listItems,description,side=tk.TOP,**kwargs):
+        ttk.Frame.__init__(self,parent)
+        self.pack(fill=tk.BOTH,side=side,padx=(1,1),pady=(1,1))
+        self.option_var = tk.StringVar(self)
+
+        if(titleField!=None):
+            label=ttk.Label(self,text=titleField)
+            label.pack(side=tk.LEFT,padx=5,pady=5)
+        
+        self.optionMenu=ttk.OptionMenu(self,self.option_var,listItems[0],*listItems)#,command=self.option_changed)
+
+        self.optionMenu.pack(fill=tk.X,side=tk.RIGHT,padx=(1,1),pady=(1,1),expand=True)
+
+        # Auto line break each 75 characters on the near space character.
+        for index in range(75,len(description),75):
+            index2=description[index:].find(' ')
+            if(index2!=-1):
+                index2=index+index2
+                description=description[:index2]+'\n'+description[index2-1:]
+        ToolTipFactory.CreateToolTip(self.optionMenu, text = description)
+##    def option_changed(self,event):
+##        None
+    def get(self):
+        return self.option_var.get()
+    def set(self,text):
+        return self.option_var.set(text)
+        
         

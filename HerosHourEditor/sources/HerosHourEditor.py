@@ -3,6 +3,8 @@ import tkinter.ttk as ttk
 import os
 import Hero.HeroTab as HeroTab
 import Faction.FactionTab as FactionTab
+import Unit.UnitTab as UnitTab
+
 import Utils.CommonClass as CommonClass
 import Utils.CommonFunctions as CommonFunctions
 
@@ -31,6 +33,11 @@ class Application(ttk.Notebook):
         style = ttk.Style(window)
         style.theme_use('clam')
         style.configure('TNotebook.Tab', width=window.winfo_screenwidth())
+##        style.configure('TMenubutton.Menubutton', background="red")
+##        style.configure('TMenubutton',w=2, background="red")
+##        style.configure('TMenubutton.Button', background="red")
+##        style.configure('TMenubutton.Label', background="red")
+
 ##        style.configure('TFrame', highlightthickness=0)
 ##        style.configure('TLabelframe', background="white")
 ##        style.configure('TLabelframe.Label', background="white")
@@ -48,7 +55,7 @@ class Application(ttk.Notebook):
         # Add Tabs.
         self.tabs+=[FactionTab.TabFactionEditor(self,window)]
         self.tabs+=[HeroTab.TabHeroEditor(self,window)]
-        self.tabs+=[EmptyTab(self,window)]
+        self.tabs+=[UnitTab.TabUnitEditor(self,window)]
         self.tabs+=[EmptyTab(self,window)]
         self.tabs+=[EmptyTab(self,window)]
         self.tabs+=[EmptyTab(self,window)]
@@ -57,6 +64,7 @@ class Application(ttk.Notebook):
 
         self.window.bind("<KeyPress>", self.onKeyDown)
         self.window.bind('<Escape>', self.onEscape)
+        self.bind("<<NotebookTabChanged>>", self.onTabChanged)
 
         
         self.add(self.tabs[0],text="Faction (1)")
@@ -72,6 +80,10 @@ class Application(ttk.Notebook):
     def onEscape(self,event):
         # Exit the input field or any Entry
         self.window.focus()
+    def onTabChanged(self,event):
+        tab = event.widget.tab('current')["text"]
+        
+        self.changeTab(tab[-2])
 
 
     # Switch the tab and disable key listener of the old tab and enable for the new tab.
@@ -86,13 +98,15 @@ class Application(ttk.Notebook):
             return
 
 
-        ordinal=ord(event.char)
+        self.changeTab(event.char)
+    def changeTab(self,char):
+        ordinal=ord(char)
         # begin to 49 for '1'
         for i in range(len(self.tabs)):
             if(ordinal== 49+i):
                 self.unBindKeyTabs()
                 self.select(self.tabs[i])
-                self.tabs[i].bindKey()  
+                self.tabs[i].bindKey() 
             
     def unBindKeyTabs(self):
         for i in range(0,len(self.tabs)):
@@ -112,5 +126,6 @@ class Windows(tk.Tk):
         
 
 if __name__ == '__main__':
+##    CommonFunctions.writeAllData()
     windows = Windows()
     windows.mainloop()

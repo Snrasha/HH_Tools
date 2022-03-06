@@ -3,8 +3,9 @@ from tkinter import filedialog as fd
 import tkinter as tk
 import tkinter.ttk as ttk
 import os
-import Utils.Skills as Skills
+import Utils.Data as Data
 import Utils.CommonClass as CommonClass
+
 
 # If the user is on an entry / input field, skip the event.
 def checkIfInputField(compare):
@@ -14,36 +15,65 @@ def checkIfInputField(compare):
            compare == CommonClass.EntrySimplified)
 
 ## For have a unique software without any data around, we transform the csv to a python data. We call never this function except for update the data.
-def writePythonData(descriptionsSkill,file):
-    backup = open("Skill.py", 'w')
-    backup.write(str(descriptionsSkill))
+def writePythonData(descSkills,descAbilities,descAbilitiesBis,descProjectiles,descSpells):
+    backup = open("Data2.py", 'w')
+    backup.write("skills="+str(descSkills)+'\n')
+    backup.write("abilities="+str(descAbilities)+'\n')
+    backup.write("abilitiesBis="+str(descAbilitiesBis)+'\n')
+    backup.write("spells="+str(descSpells)+'\n')
+    backup.write("projectiles="+str(descProjectiles)+'\n')
     backup.close()
 
-
-## Read the Skills.csv for all name skills followed per their description
-def readSkills(csv=False,overwritePythonData=False):
-    if(csv):  
-        descriptionsSkills={"None":"Click on a skill on the list or the skill tree for get the description"}
-
-        if(os.path.exists("Skills.csv")):
-            descriptionsSkills={"None":"Click on a skill on the list or the skill tree for get the description"}
-            file1 = open("Skills.csv", 'r')
-            lines=file1.readlines()
-            for line in lines:
-                if(line.startswith('#')):
-                   continue
-                split=line.split(";")
-                descriptionsSkills[split[0]]=split[1]
-                
-            file1.close()
-        else:
-            descriptionsSkills={"None":"Skills.csv has not be found. Put the Skills.csv on the same folder."}
-        if(overwritePythonData):
-            fillSkill(descriptionsSkills,"Skill.py")
-        return descriptionsSkills
+def writeAllData():
+    descSkills=getCSVData("Utils/Skills.csv")
+    if(descSkills==None):
+        descSkills={"None":"Skills.csv not found"}
+    descAbilities=getCSVData("Utils/Abilities.csv")
+    if(descAbilities==None):
+        descAbilities={"None":"Abilities.csv not found"}
+    descAbilitiesBis=getCSVData("Utils/AbilitiesBis.csv")
+    if(descAbilitiesBis==None):
+        descAbilitiesBis={"None":"AbilitiesBis.csv not found"}
+    descProjectiles=getCSVData("Utils/Projectiles.csv")
+    if(descProjectiles==None):
+        descProjectiles={"None":"Projectiles.csv not found"}
+    descSpells=getCSVData("Utils/Spells.csv")
+    if(descSpells==None):
+        descSpells={"None":"Spells.csv not found"}
+    writePythonData(descSkills,descAbilities,descAbilitiesBis,descProjectiles,descSpells)
+def getCSVData(file):
+    if(os.path.exists(file)):
+        datas={}
+        file1 = open(file, 'r')
+        lines=file1.readlines()
+        for line in lines:
+            if(line.startswith('#')):
+               continue
+            split=line.split(";")
+            if(len(split)==3):
+                if(split[2].lower().startswith("f")):
+                    continue
+            if(len(split)==1):
+                datas[split[0]]="//"
+            else:
+                datas[split[0]]=split[1].strip()
+        file1.close()
+        return datas
     else:
-        return Skills.get()
+        return None
+    
 
+
+def readSkills():
+    return Data.skills
+def readAbilities():
+    return Data.abilities
+def readSpells():
+    return Data.spells
+def readAbilitiesBis():
+    return Data.abilitiesBis
+def readProjectiles():
+    return Data.projectiles
 
 ## Made a backup of the opened file.
 def madeBackUp(backupname,filename):

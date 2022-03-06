@@ -1,12 +1,24 @@
 Name
-Krafty
+Olig Vlad
 
 Unit
-Seamare
+Ne-Drone
 
 Skills
-Hydromancy
-Creation
-Regeneration
 Legion
+Armorer
+Mastery
 Healing
+Plunder
+Oligarchy
+Destruction
+Recruitment
+Engineering
+Scouting
+Bodyguards
+Planning
+Logistics
+Royalty
+Regeneration
+Leadership
+Learning

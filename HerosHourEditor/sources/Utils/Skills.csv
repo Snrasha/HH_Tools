@@ -1,4 +1,5 @@
 #id; desc
+None;Click on a skill on the list or the skill tree for the description
 Armorer;Increases health of units in your army by 5% per rank, and for each rank, gives a 20% chance for each unit to avoid damage from the first ranged attack
 Offense;Increases attack speed of melee units by 5% per rank. As your units lose health, they gain extra damage and movement speed, up to 10% damage and 5% speed per rank
 Archery;Gives ranged units in your army a chance to fire true-strike projectiles, which strike a 4x larger area and deal extra damage scaling to the size of the enemy, starting at 2x. Also increases their range of attack by 8 per rank. (Base chance is 5% per rank and higher for higher rank units)

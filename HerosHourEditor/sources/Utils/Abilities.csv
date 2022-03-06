@@ -1,0 +1,84 @@
+#id; desc
+Ranged;This creature is able to fire a projectile, damaging enemies at a distance. It deals half its normal damage in melee combat, and there is an area where units are too close for ranged attacks and too far for melee attacks.
+Blaster;The projectiles fired by this creature strike a large area and knock around friends and foes alike - though only enemies are damaged.
+Flying;This creature is able to fly, moving faster and dodging whenever it can't attack. It is able to grab enemies close to death, then drop them from great heights. It can also fly over walls.
+Slow;This creature moves slowly across the battlefield.
+Tank;This creature has a lot of health and deals little damage.
+Sturdy;This creature is difficult to knock back and has more health than normal.
+Savage;This creature deals more damage and has less health.
+Wide Attacks;This creature deals damage in a larger area, and as such has a higher chance of striking several enemies.
+Lash;This creature lashes out when it attacks, striking enemies in all directions around them.
+Protected;This creature is shielded from the first attack against it.
+Projectile Protection;This creature is shielded from the first three ranged attacks against it.
+Retaliation;Whenever this creature takes damage and survives, it will be able to attack again faster.
+Quick Strikes;This creature is able to attack more often
+Healer;This creature is able to heal allies 5 times, each heal restoring health equal to 2x this creature's attack.
+First Aid;This creature is able to heal an ally once, restoring health equal to 2x this creature's attack.
+Charge;This creature charges into battle, dealing damage to all enemies it passes on its way.
+Leap;This creature leaps into battle, dealing damage to all enemies where it lands. This can also be used to jump over walls or between ships.
+Aura of Light;This creature periodically restores health to all nearby allies.
+Afterlife;When this creature dies, it summons Anima that will fight for you during battle and remain afterwards.
+Confusion;Enemies struck by this creature have a chance to become confused. Confused creatures will wander around aimlessly for a few seconds before returning to normal.
+Knockback;This creature deals extra knockback when it attacks.
+Summoning;This creature periodically summons a few temporary <UNITNAMES> that will fight for you during battle.
+Taunt;This creature attracts attention, and enemies are more likely to target it than other nearby allies.
+Versatile;This creature is able to fight in melee without incurring the normal ranged unit penalty.
+Teleswap;This creature is able to escape melee attackers either by switching place with a friendly melee unit or by swapping place with empty air.
+Venom;Enemies struck by this creature have a chance to become poisoned. Poisoned creatures will take damage for the rest of the battle. Stronger enemies take slightly more damage.
+Ethereal;This creature is able to avoid damage from some incoming attacks. Chance of this occuring is higher for creatures weaker than itself.
+Terror;Enemies struck by this creature have a chance to become terrified. Terrified creatures will run away from combat for a couple of seconds before returning to normal.
+Burning;Enemies struck by this creature have a chance to be lit on fire. Burning creatures will take damage five times, and there's a chance that the fire will spread to their allies.
+Slowing;Enemies struck by this creature have a chance to become slowed. Slowed creatures will move very slowly for the rest of the battle.
+Leech Life;When this creature deals damage, it will restore health to itself equal to one fourth of the damage dealt.
+Teleport;This creature will teleport around the battlefield from time to time.
+Critical Strike;When this creature attacks, enemies take additional damage equal to one tenth of their maximum health.
+Petrification;Enemies struck by this creature have a chance to become petrified. Petrified creatures will be unable to move or attack for a few seconds.
+Impenetrable;This creature takes half damage from all ranged attacks.
+Burst;This creature attacks by exploding, dealing damage to all nearby enemies and dying in the process.
+Cinderspirit;When this creature dies, it summons a group of fireflies. Fireflies attack by exploding.
+Arrow Rain;This creature has a chance to fire a rain of arrows, which strikes a larger area and thus damages more enemies.
+Forest Crown;This creature carries ranged units in its branches, which can shoot at enemies independently of the normal attacks.
+Retreat;When this creature would otherwise die, it instead starts fleeing combat. It will rejoin your army once combat is over.
+Wind Up;This creature attacks less often than other creatures, but its attacks deal more damage.
+Death Strike;This creature summons a Skeleton for every enemy struck by its attacks.
+Charm;Enemies struck by this creature that have low health may become charmed. Charmed creatures will join to fight for your side for the rest of the battle and will not return to their original owner.
+Rebirth;The first time this creature dies, it will return to life after some seconds. It is reborn in an explosion of fire.
+Aquatic;This creature is aquatic in nature. If knocked off a boat, it will re-enter combat unscathed.
+Caster;This creature is able to cast spells. It will group together with other creatures of the same type to cast larger spells.
+Bodyguards;At the start of battle, this creature summons two <UNITNAMES>.
+Blood Aura;When nearby friendly creatures die, this creature becomes larger, deals more damage and gets more health.
+Resurrection;This creature is able to resurrect some friendly creatures that have died close to it. This works similar to the First Aid tent.
+Hex;This creature turns enemy creatures at high health into frogs. As frogs, they are much weaker. When the frog dies, the original unit comes back.
+Warding;This creature has a chance to avoid damage from elite creatures and has a high chance of being unaffected by spells.
+Imitation;This creature turns into a copy of a nearby enemy. The same enemy unit cannot be imitated twice
+Mutation;When this creature enters combat, it mutates into one of several versions, each with different abilities
+Undying;When this creature would otherwise die, it goes dormant. After some time, or if the battle is won, it returns to its active state
+Midas Touch;Enemies struck by this creature have a chance to be turned to gold, instantly dying. When this creature dies, it turns to gold. When combat is won, the victor collects gold off the golden corpses
+Regeneration;This creature regenerates health over time. The more health regenerated, the slower the regeneration becomes
+Saviour;This creature can combine human corpses on the battlefield into permanent Survivors
+Release;When this creature goes below half health, it has a chance to cast a spell
+Immortal;When this creature would otherwise die, it goes into hibernation. It will wake up after 30 seconds or at the end of combat. Each time it goes into hibernation, the chance of surviving next time is halved
+Explosion;When this creature dies, it explodes, damaging nearby enemies and knocking friends away
+Harpoonprojectile;Enemies struck by this creature's ranged attack will be pulled towards this creature
+Infest;When this creature attacks, it has a chance to summon <UNITNAMES>
+Infest Half;same as above, but half chance of proccing (usually better since Infest is very powerful)
+Fortune;This creature has a much higher chance of having luck strikes. Luck strikes deal 3x damage, strike a larger area and have more knockback
+Budding;When this creature takes damage, it has a chance to summon <UNITNAMES>
+Budding Half;Same as above, but has half chance of proccing
+Splitting;When this creature dies, it summons two <UNITNAMES>
+Splitting Half;When this creature dies, it summons one <UNITNAMES>
+Long Ranged;This creature's ranged attacks can strike enemies further away than other ranged creatures would
+Short Ranged;This creature's ranged attacks have a shorter range than other ranged creatures, but can also hit enemies closer to them
+Aura of Power;Creatures close to this will have their health, attack and speed increased
+Rage;When this unit takes damage, its damage and speed increases
+Taxpayer;Each day, this creature pays 2 gold to its owner for each power it has,
+Thorns;Whenever this creature is hit by a melee attack, the attacker takes damage equal to half this creature's attack,
+Fire Shield;Whenever this creature is hit by a melee attack, the attacker is set on fire,
+Tower;This creature is unable to move but has infinite range,
+Chaos;Enemies struck by this creature have a chance to be teleported away,
+Displacement;Whenever this creature is hit by a melee attack, the attacker has a chance to be teleported away,
+Buffer;When the hero controlling these units casts a spell costing mana, each can refund 1 mana once per battle,
+Empower;Increases the effective spellpower of the hero controlling these units by 1 spellpower for every 10 power worth of these creatures
+Inert;This creature cannot be affected by poison, confusion, fear, petrification or burning
+Insensate;When this unit would otherwise die, it enters a shadow state for 5 seconds in which it keeps fighting. It gains Leech Life during that period. Triggers once per battle.
+Shadowmancy;This creature periodically summons shadowclones of nearby enemies that will fight for you during battle.

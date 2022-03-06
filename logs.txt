@@ -1,6 +1,9 @@
 
 06/03/2022:
   - For hero tab, add neutral and replacement checkbox.
+  - Upgrade hero, faction tab.
+  - Add tooltip everywhere.
+  - Begin the unit tab.
 
 05/03/2022:
   - Modify the style.

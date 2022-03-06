@@ -15,9 +15,6 @@ class SkillFields(ttk.Frame):
 
         self.master=master
         self.pack(fill=tk.BOTH,side=tk.LEFT,expand=True)
-        subframe0=ttk.Frame(self,borderwidth=1,relief=tk.GROOVE)
-        subframe0.pack(fill=tk.BOTH,side=tk.LEFT,padx=(1,1),pady=(1,1))
-
         self.currentSlot=None
         self.allSkills=[]
 
@@ -27,9 +24,14 @@ class SkillFields(ttk.Frame):
 ##        style = ttk.Style(self)
 ##        style.configure('TLabelframe', background="white")
 
-        self.searchBar=ListSearchBar.SearchBar(subframe0,self)
+        standardField=ttk.LabelFrame(self,text='Skills', padding=(5, 5))
+        standardField.pack(fill=tk.BOTH,side=tk.LEFT,padx=(1,1),pady=(1,1))
 
+        self.searchBar=ListSearchBar.SearchBar(standardField,self)
 
+        self.portrait = tk.Label(standardField,bg=bg)
+        self.portrait.pack(side=tk.TOP,anchor="n")
+        self.loadImageToPortrait("")
 
   
 
@@ -49,19 +51,16 @@ class SkillFields(ttk.Frame):
         
         
         subframe2=ttk.LabelFrame(frame_inner,text='Skill Tree', padding=(5, 5))
-        subframe2.pack(fill=tk.BOTH,side=tk.TOP,padx=(1,1),pady=(1,1))
-        subframe3=ttk.LabelFrame(frame_inner,text='Informations', padding=(5, 5))
-        subframe3.pack(fill=tk.BOTH,side=tk.TOP,padx=(1,1),pady=(1,1))
+        subframe2.pack(fill=tk.BOTH,side=tk.TOP, expand=True,padx=(1,1),pady=(1,1))
         subframe1=ttk.LabelFrame(frame_inner,text='Description Skill', padding=(5, 5))
-        subframe1.pack(fill=tk.BOTH,side=tk.TOP,padx=(1,1),pady=(1,1))
+        subframe1.pack(side=tk.LEFT,padx=(1,1),pady=(1,1))
+        
 
-        self.labelDesc=ttk.Label(subframe1,justify=tk.CENTER)
-        self.labelDesc.pack(side=tk.TOP,fill=tk.X,padx=5,pady=5)
+        self.labelDesc=ttk.Label(subframe1)
+        self.labelDesc.pack(side=tk.TOP,padx=5,pady=5)
         
         self.labelDesc.configure(text=self.searchBar.descriptionsSkills["None"])
         
-        self.portrait = ttk.Label(subframe3)
-        self.portrait.pack()
 
 
         # Create 4 frame below each other. Centered North on the parent.
@@ -85,11 +84,16 @@ class SkillFields(ttk.Frame):
 
 
             
+##        frame_inner.update_idletasks()
+##        subframe2.update()
+##        self.labelDesc.config(wraplength=subframe2.winfo_width()*0.9))
+        self.frames=[subframe2,frame_inner,canvas]
         frame_inner.update_idletasks()
         subframe2.update()
-        self.labelDesc.config(wraplength=(subframe2.winfo_width()*0.9))
-        canvas.create_window((0, 0), window=frame_inner, anchor='w')
+        canvas.create_window((0, 0), window=frame_inner, anchor='nw')
         canvas.configure(scrollregion=canvas.bbox("all"))
+        self.labelDesc.config(wraplength=200)
+        
             
     def createLabel(self,frame):
         v = tk.StringVar()
@@ -116,7 +120,15 @@ class SkillFields(ttk.Frame):
                     return
                 if(label.get() == "None"):
                     label.configure(background="red")
-
+    # Set the portrait
+    def loadImageToPortrait(self,path):
+        data="data.txt"
+        length=-len(data)
+        if(data in path.lower()):
+            path=path[:length]+"portrait.png"
+        else:
+            path=""
+        CommonFunctions.addImage(path,self.portrait,72,True) 
                 
 ## Contains edit, save and the three simple fields.
 class SimpleFields(ttk.Frame):
@@ -140,12 +152,16 @@ class SimpleFields(ttk.Frame):
         self.fieldsEntry+=[CommonClass.Field(subframe2,titleField="Name:",hintField="Hero name",width=15)]
         self.fieldsEntry+=[CommonClass.Field(subframe2,titleField="Unit:",hintField="Starting Unit",width=15)]
         self.fieldsEntry+=[CommonClass.Field(subframe2,titleField="Class:",width=15)]
+
+        self.fieldsEntry[2].entry.configure(state=tk.DISABLED)
         
         self.checkBoxVar=[tk.IntVar(),tk.IntVar()]
         checkbutton = tk.Checkbutton(subframe2, text="Neutral",variable = self.checkBoxVar[0], onvalue = 1, offvalue = 0,bg=bg,command=self.onCheckBoxChange)
         checkbutton.pack(side=tk.TOP)
         checkbutton = tk.Checkbutton(subframe2, text="Replacement",variable = self.checkBoxVar[1], onvalue = 1, offvalue = 0,bg=bg)
         checkbutton.pack(side=tk.TOP)
+
+
         
     def onCheckBoxChange(self):
         if(self.checkBoxVar[0].get()==0):
@@ -154,15 +170,7 @@ class SimpleFields(ttk.Frame):
             self.fieldsEntry[2].entry.configure(state=tk.NORMAL)
         
 
-    # Set the portrait
-    def loadImageToPortrait(self,path):
-        data="data.txt"
-        length=-len(data)
-        if(data in path.lower()):
-            path=path[:length]+"portrait.png"
-        else:
-            path=""
-        CommonFunctions.addImage(path,self.master.skillFields.portrait,72,True)          
+         
             
 
     ## Open a existing file for edit it.
@@ -172,7 +180,7 @@ class SimpleFields(ttk.Frame):
         if(self.filename==None):
             return None
 
-        self.loadImageToPortrait(self.filename)
+        self.master.skillFields.loadImageToPortrait(self.filename)
 
         for field in self.fieldsEntry:
             field.empty()
@@ -280,7 +288,7 @@ class SimpleFields(ttk.Frame):
             self.filename=None
             return
 
-        self.loadImageToPortrait(self.filename)
+        self.master.skillFields.loadImageToPortrait(self.filename)
         
         file1 = open(self.filename, 'w')
         file1.write(fields[0]+"\n")

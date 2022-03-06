@@ -1,16 +1,16 @@
 #id; desc;unit
 Haste;Affects friendly units. Increases movement speed greatly and attack speed slightly.;TRUE
 First Strike;Affects friendly units. Increases attack speed greatly;TRUE
-Good Omen;Affects friendly units. Increases luck, giving a higher chance of critical hits;TRUE
-Omen of Death;Affects friendly units. Increases movement, attack speed, damage, power and health;TRUE
+Fortune;Affects friendly units. Increases luck, giving a higher chance of critical hits;TRUE
+Bloodlust;Affects friendly units. Increases movement, attack speed, damage, power and health;TRUE
 Precision;Affects friendly units. Increases ranged units' attack greatly;TRUE
-Empower;Affects friendly units. Increases movement, attack speed, damage, power and health;TRUE
-Mirage;Affects friendly units. Creates copies of these units, but with less health and very little damage.;TRUE
+Bless;Affects friendly units. Increases movement, attack speed, damage, power and health;TRUE
+Disguise;Affects friendly units. Creates copies of these units, but with less health and very little damage.;TRUE
 Curse;Affects enemy units. Decreases movement, attack speed, damage, power and health;TRUE
-Weighten;Affects enemy units. Decreases movement speed greatly;TRUE
-Weaken;Affects enemy units. Decreases their health greatly;TRUE
-Hindrance;Affects enemy units. Decreases movement speed greatly;TRUE
-Disrupt;Affects enemy units. Decreases their health greatly;TRUE
+Slow;Affects enemy units. Decreases movement speed greatly;TRUE
+Weakeness;Affects enemy units. Decreases their health greatly;TRUE
+Quicksand;Affects enemy units. Decreases movement speed greatly;TRUE
+Disrupting Ray;Affects enemy units. Decreases their health greatly;TRUE
 Destroy Undead;Affects all units. Deals damage to undead units;TRUE
 Meteor Shower;Deals damage to ALL units;TRUE
 Inferno;Deals damage to ALL units;TRUE
@@ -58,9 +58,9 @@ Duplicate;Affects friendly units. Creates copies of these units (with less healt
 Rain of Frogs;Select an area of the battlefield. Frogs will fall from the skies, attacking enemies;TRUE
 Frog Torrent;Select an area of the battlefield. Frogs will fall from the skies, attacking enemies;TRUE
 Gigantism;Affects friendly units. Makes them into giants;TRUE
-Beam of Frost;Deals damage to all enemies in a line cast from your hero. This spell cannot be used if your hero is dead;TRUE
+Beam of Frost;Deals damage to all enemies in a line cast from your hero. This spell cannot be used if your hero is dead;FALSE
 Army of Giants;Affects friendly units. Makes them into giants;TRUE
-Sunbeam;Deals damage to all enemies in a line cast from your hero. This spell cannot be used if your hero is dead;TRUE
+Sunbeam;Deals damage to all enemies in a line cast from your hero. This spell cannot be used if your hero is dead;FALSE
 Chaos;Affects enemy units. Scatters them around the battefield and makes them confused;TRUE
 Comet Strikes;Select an area of the battlefield. Comets will strike, damaging friend and foe alike;TRUE
 Comet Rain;Select an area of the battlefield. Comets will strike, damaging friend and foe alike;TRUE
@@ -69,34 +69,34 @@ Transform;Affects enemies, turning them into random units weaker than the origin
 Evolve;Affects friendly units, turning them into random units stronger than the original for the rest of the battle;TRUE
 Hex;Affects enemies, turning them into frogs. When a frog dies, the original unit is restored;TRUE
 Second Life;Affects corpses, summoning ghosts of the dead units;TRUE
-Divine Vessel;Used out of combat. If your hero is next to a coastline, a boat is created there. If not, the spell will fail.;TRUE
-Riches;Used out of combat. Creates resources. Their type and amount depends on nearby mines.;TRUE
-Celerity;Used out of combat. Allows your hero to move 16 extra miles this day.;TRUE
-Fireskip;Used out of combat. Allows your hero to teleport to a desired spot within 8 miles, regardless of barriers.;TRUE
-Mana Spring;Used out of combat. Converts all the hero's movement today into mana points.;TRUE
-Earthen Guards;Used out of combat. Creates a stationary group of units that your enemies will have to fight to pass.;TRUE
-Hurricane;Used out of combat. Instantly teleports your hero to a random spot on the map.;TRUE
-Rampaging Fire;Used out of combat. Creates an army of fire elementals under your control. This army cannot exchange units in any way.;TRUE
-Town Portal;Used out of combat. Instantly teleports your hero to an owned town of your choice. Cannot be used to teleport to a recently captured town.;TRUE
+Divine Vessel;Used out of combat. If your hero is next to a coastline, a boat is created there. If not, the spell will fail.;FALSE
+Riches;Used out of combat. Creates resources. Their type and amount depends on nearby mines.;FALSE
+Celerity;Used out of combat. Allows your hero to move 16 extra miles this day.;FALSE
+Fireskip;Used out of combat. Allows your hero to teleport to a desired spot within 8 miles, regardless of barriers.;FALSE
+Mana Spring;Used out of combat. Converts all the hero's movement today into mana points.;FALSE
+Earthen Guards;Used out of combat. Creates a stationary group of units that your enemies will have to fight to pass.;FALSE
+Hurricane;Used out of combat. Instantly teleports your hero to a random spot on the map.;FALSE
+Rampaging Fire;Used out of combat. Creates an army of fire elementals under your control. This army cannot exchange units in any way.;FALSE
+Town Portal;Used out of combat. Instantly teleports your hero to an owned town of your choice. Cannot be used to teleport to a recently captured town.;FALSE
 Salt Shower;Select an area of the battlefield. A rain of salt will fall, dispelling magical effects and dealing damage to summoned units in that area;TRUE
-Salt Spray;Deals damage to all enemies in a line cast from your hero. This spell deals 3x damage to summoned units and dispels magic;TRUE
+Salt Spray;Deals damage to all enemies in a line cast from your hero. This spell deals 3x damage to summoned units and dispels magic;FALSE
 Salt Blast;Deals damage to ALL units. Deals 3x damage to summoned units and dispels magic;TRUE
 Salt Armor;Affects friendly units. Increases their health by 10% and gives them warding (protection against spells);TRUE
-Wild Call;Calls a group of animals to aid you in this battle. If they survive, they join your army as Anima;TRUE
-Conflagration;Sets all enemies on fire and makes a lot of them panic.;TRUE
-Magic Essence;Gives your hero +20 spellpower this battle.;TRUE
-Conflux;Creates a bridge to the elemental realm, periodically summoning elementals to fight for you for the rest of the battle.;TRUE
-Afterlife;Imbues all friendly units with the power of nature, making them summon Animas to fight for you when they die. Permanent units summon permanent anima;TRUE
-Firegating;Teleports a group of friendly units across the battlefield. They arrive in an explosion of fire.;TRUE
-Firetrapping;Teleports a group of enemy units across the battlefield. Units teleported are lit on fire - higher levels also confuse and reduce health. Short cooldown.;TRUE
-Charge;Your hero charges in a specified direction. Only works if your hero is alive.;TRUE
-Bellow;Your hero shouts, sending a shockwave in a specified direction. Only works if your hero is alive.;TRUE
-Freedom Call;Your hero shouts, triggering high morale for all nearby allies. Only works if your hero is alive.;TRUE
-Call of Champions;Your hero blesses several nearby troops to turn into their upgraded versions. Only works if your hero is alive.;TRUE
-Quake;Your hero makes the ground quake, scattering and confusing enemies. Only works if your hero is alive.;TRUE
-Shadowcloning;Creates shadowy clones of your hero and nearby allies and sends them to the selected spot. Only works if your hero is alive.;TRUE
-Shadowcasting;Causes a group of enemy units to be attacked by their own shadows.;TRUE
-Siren Song;Takes control of some enemy units close to your hero. They permanently join your army. Only works if your hero is alive;TRUE
-Devour;Devours a group of friendly units. Doing so gives a temporary boost to all units in battle, and gives permanent attack and defence bonuses to the hero. Devouring permanent units gives the largest boost;TRUE
-Dizzy Tune;Plays a tune that confuses enemies, making them unable to fight for a short time;TRUE
-Balance;Places a field of balance upon the battlefield. Friendly units about to die inside the field will have 20 health restored and become immune for 3 seconds. After a certain number of units have been saved, the field dissipates;TRUE
+Wild Call;Calls a group of animals to aid you in this battle. If they survive, they join your army as Anima;FALSE
+Conflagration;Sets all enemies on fire and makes a lot of them panic.;FALSE
+Magic Essence;Gives your hero +20 spellpower this battle.;FALSE
+Conflux;Creates a bridge to the elemental realm, periodically summoning elementals to fight for you for the rest of the battle.;FALSE
+Afterlife;Imbues all friendly units with the power of nature, making them summon Animas to fight for you when they die. Permanent units summon permanent anima;FALSE
+Firegating;Teleports a group of friendly units across the battlefield. They arrive in an explosion of fire.;FALSE
+Firetrapping;Teleports a group of enemy units across the battlefield. Units teleported are lit on fire - higher levels also confuse and reduce health. Short cooldown.;FALSE
+Charge;Your hero charges in a specified direction. Only works if your hero is alive.;FALSE
+Bellow;Your hero shouts, sending a shockwave in a specified direction. Only works if your hero is alive.;FALSE
+Freedom Call;Your hero shouts, triggering high morale for all nearby allies. Only works if your hero is alive.;FALSE
+Call of Champions;Your hero blesses several nearby troops to turn into their upgraded versions. Only works if your hero is alive.;FALSE
+Quake;Your hero makes the ground quake, scattering and confusing enemies. Only works if your hero is alive.;FALSE
+Shadowcloning;Creates shadowy clones of your hero and nearby allies and sends them to the selected spot. Only works if your hero is alive.;FALSE
+Shadowcasting;Causes a group of enemy units to be attacked by their own shadows.;FALSE
+Siren Song;Takes control of some enemy units close to your hero. They permanently join your army. Only works if your hero is alive;FALSE
+Devour;Devours a group of friendly units. Doing so gives a temporary boost to all units in battle, and gives permanent attack and defence bonuses to the hero. Devouring permanent units gives the largest boost;FALSE
+Dizzy Tune;Plays a tune that confuses enemies, making them unable to fight for a short time;FALSE
+Balance;Places a field of balance upon the battlefield. Friendly units about to die inside the field will have 20 health restored and become immune for 3 seconds. After a certain number of units have been saved, the field dissipates;FALSE
