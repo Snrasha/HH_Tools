@@ -46,10 +46,11 @@ class Application(ttk.Notebook):
         self.tabs=[]
 
         # Add Tabs.
+        self.tabs+=[FactionTab.TabFactionEditor(self,window)]
         self.tabs+=[HeroTab.TabHeroEditor(self,window)]
         self.tabs+=[EmptyTab(self,window)]
-##        self.tabs+=[EmptyTab(self,window)]
-        self.tabs+=[FactionTab.TabFactionEditor(self,window)]
+        self.tabs+=[EmptyTab(self,window)]
+        self.tabs+=[EmptyTab(self,window)]
         self.tabs+=[EmptyTab(self,window)]
         
         self.tabs[0].bindKey()
@@ -58,12 +59,12 @@ class Application(ttk.Notebook):
         self.window.bind('<Escape>', self.onEscape)
 
         
-        
-        self.add(self.tabs[0],text="Hero (1)")
-        self.add(self.tabs[1],text="Unit (2)")
-        self.add(self.tabs[2],text="Faction (3)")
+        self.add(self.tabs[0],text="Faction (1)")
+        self.add(self.tabs[1],text="Hero (2)")
+        self.add(self.tabs[2],text="Unit (3)")
         self.add(self.tabs[3],text="Artifact (4)")
-
+        self.add(self.tabs[4],text="Hero classes (5)")
+        self.add(self.tabs[5],text="Unit group(6)")
 
 
 ##        ,fg=c.white,bg=c.greenblue,
@@ -75,29 +76,23 @@ class Application(ttk.Notebook):
 
     # Switch the tab and disable key listener of the old tab and enable for the new tab.
     def onKeyDown(self,event):
+        if(len(event.char)!=1):
+            return
         # If the user is on an entry / input field, skip the event.
         if(CommonFunctions.checkIfInputField(type(self.focus_get()))):
             # When press Enter, remove the focus if Entry.
             if(ord(event.char)==13):
                 self.window.focus()
-            return            
-        
-        if(event.char=='1'):
-            self.unBindKeyTabs()
-            self.select(self.tabs[0])
-            self.tabs[0].bindKey()
-        if(event.char=='2'):
-            self.unBindKeyTabs()
-            self.select(self.tabs[1])
-            self.tabs[1].bindKey()
-        if(event.char=='3'):
-            self.unBindKeyTabs()
-            self.select(self.tabs[2])
-            self.tabs[2].bindKey()
-        if(event.char=='4'):
-            self.unBindKeyTabs()
-            self.select(self.tabs[3])
-            self.tabs[3].bindKey()
+            return
+
+
+        ordinal=ord(event.char)
+        # begin to 49 for '1'
+        for i in range(len(self.tabs)):
+            if(ordinal== 49+i):
+                self.unBindKeyTabs()
+                self.select(self.tabs[i])
+                self.tabs[i].bindKey()  
             
     def unBindKeyTabs(self):
         for i in range(0,len(self.tabs)):
