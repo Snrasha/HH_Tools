@@ -1,4 +1,7 @@
 
+06/03/2022:
+  - For hero tab, add neutral and replacement checkbox.
+
 05/03/2022:
   - Modify the style.
   - Finish the base of the faction editor.

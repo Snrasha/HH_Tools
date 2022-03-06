@@ -28,6 +28,7 @@ On open, you will have differents tabs. Click on these tabs for switching of edi
  * **Unit**: The unit which the Hero spawn at the start or linked to skills;
  * **Class**: For neutral heroes only. Look at the guide for know what insert;
  * **Skills**: Setup the 18 skills like in the game. You do not need to fill every slots, they will be randomized on game.
+ * **Neutral and Replacement Checkbox**: The first disable or enable the "class". If checked, the saved file will not contain Class. For replacement, will just check if the data end with the correct suffix.
 
  For the skills tree, click on the skill slot than you want fill, then double click on the skill on the skill list. A simple click on a skill slot or a skill from skill list will display the description.
 

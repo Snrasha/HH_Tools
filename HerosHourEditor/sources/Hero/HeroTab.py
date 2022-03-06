@@ -29,13 +29,9 @@ class SkillFields(ttk.Frame):
 
         self.searchBar=ListSearchBar.SearchBar(subframe0,self)
 
-        subframe1=ttk.LabelFrame(self.master.simpleFields,text='Description Skill', padding=(5, 5))
-        subframe1.pack(fill=tk.BOTH,expand=True,side=tk.TOP,padx=(1,1),pady=(1,1))
 
-        self.labelDesc=ttk.Label(subframe1,justify=tk.CENTER)
-        self.labelDesc.pack(side=tk.LEFT,fill=tk.Y,expand=True,padx=5,pady=5)
-        self.labelDesc.config(wraplength=200)
-        self.labelDesc.configure(text=self.searchBar.descriptionsSkills["None"])
+
+  
 
         frame_canvas = ttk.Frame(self)
         frame_canvas.pack(fill=tk.BOTH,side=tk.LEFT, expand=True)
@@ -55,8 +51,15 @@ class SkillFields(ttk.Frame):
         subframe2=ttk.LabelFrame(frame_inner,text='Skill Tree', padding=(5, 5))
         subframe2.pack(fill=tk.BOTH,side=tk.TOP,padx=(1,1),pady=(1,1))
         subframe3=ttk.LabelFrame(frame_inner,text='Informations', padding=(5, 5))
-        subframe3.pack(fill=tk.BOTH,side=tk.TOP,padx=(1,1),pady=(1,1),expand=True)
+        subframe3.pack(fill=tk.BOTH,side=tk.TOP,padx=(1,1),pady=(1,1))
+        subframe1=ttk.LabelFrame(frame_inner,text='Description Skill', padding=(5, 5))
+        subframe1.pack(fill=tk.BOTH,side=tk.TOP,padx=(1,1),pady=(1,1))
 
+        self.labelDesc=ttk.Label(subframe1,justify=tk.CENTER)
+        self.labelDesc.pack(side=tk.TOP,fill=tk.X,padx=5,pady=5)
+        
+        self.labelDesc.configure(text=self.searchBar.descriptionsSkills["None"])
+        
         self.portrait = ttk.Label(subframe3)
         self.portrait.pack()
 
@@ -79,8 +82,12 @@ class SkillFields(ttk.Frame):
             self.createLabel(level2)
         for i in range(0,6):
             self.createLabel(level3)
+
+
             
         frame_inner.update_idletasks()
+        subframe2.update()
+        self.labelDesc.config(wraplength=(subframe2.winfo_width()*0.9))
         canvas.create_window((0, 0), window=frame_inner, anchor='w')
         canvas.configure(scrollregion=canvas.bbox("all"))
             
@@ -119,6 +126,8 @@ class SimpleFields(ttk.Frame):
         self.filename=None
 
         self.fieldsEntry=[]
+        style = ttk.Style(self)
+        bg = style.lookup('TFrame', 'background')
         
         self.pack(side=tk.RIGHT,fill=tk.Y,expand=False)
 
@@ -128,9 +137,22 @@ class SimpleFields(ttk.Frame):
         subframe2.pack(fill=tk.BOTH,side=tk.TOP,padx=(1,1),pady=(1,1))
 
         # 0 Name, 1 Unit, 2 Class
-        self.fieldsEntry+=[CommonClass.Field(subframe2,titleField="Name:",hintField="Hero name")]
-        self.fieldsEntry+=[CommonClass.Field(subframe2,titleField="Unit:",hintField="Starting Unit")]
-        self.fieldsEntry+=[CommonClass.Field(subframe2,titleField="Class:")]
+        self.fieldsEntry+=[CommonClass.Field(subframe2,titleField="Name:",hintField="Hero name",width=15)]
+        self.fieldsEntry+=[CommonClass.Field(subframe2,titleField="Unit:",hintField="Starting Unit",width=15)]
+        self.fieldsEntry+=[CommonClass.Field(subframe2,titleField="Class:",width=15)]
+        
+        self.checkBoxVar=[tk.IntVar(),tk.IntVar()]
+        checkbutton = tk.Checkbutton(subframe2, text="Neutral",variable = self.checkBoxVar[0], onvalue = 1, offvalue = 0,bg=bg,command=self.onCheckBoxChange)
+        checkbutton.pack(side=tk.TOP)
+        checkbutton = tk.Checkbutton(subframe2, text="Replacement",variable = self.checkBoxVar[1], onvalue = 1, offvalue = 0,bg=bg)
+        checkbutton.pack(side=tk.TOP)
+        
+    def onCheckBoxChange(self):
+        if(self.checkBoxVar[0].get()==0):
+            self.fieldsEntry[2].entry.configure(state=tk.DISABLED)
+        else:
+            self.fieldsEntry[2].entry.configure(state=tk.NORMAL)
+        
 
     # Set the portrait
     def loadImageToPortrait(self,path):
@@ -154,6 +176,10 @@ class SimpleFields(ttk.Frame):
 
         for field in self.fieldsEntry:
             field.empty()
+
+        self.checkBoxVar[0].set(0)
+        self.fieldsEntry[2].entry.configure(state=tk.DISABLED)
+
         
         labels=self.master.skillFields.allSkills
         for i in range(0,len(labels)):
@@ -162,6 +188,12 @@ class SimpleFields(ttk.Frame):
 
         ## Made a backup of the opened file.
         CommonFunctions.madeBackUp("hero_backup.txt",self.filename)
+
+        if(self.filename.endswith(" Replacement data.txt")):
+            self.checkBoxVar[1].set(1)
+        else:
+            self.checkBoxVar[1].set(0)
+           
         
         file1 = open(self.filename, 'r')
         self.lines=file1.readlines()
@@ -190,6 +222,8 @@ class SimpleFields(ttk.Frame):
                 if(answer !=None):
                     self.fieldsEntry[2].set(answer)
                     filled+=[fields[2]]
+                    self.checkBoxVar[0].set(1)
+                    self.fieldsEntry[2].entry.configure(state=tk.NORMAL)
                 continue
 
             ## If found Skills, read all lines after it and stop when found a blank.
@@ -235,6 +269,11 @@ class SimpleFields(ttk.Frame):
             listOfSkills+=[label.get()]
             if(label.get() == "None"):
                 break
+        if(not self.filename.endswith(" Replacement data.txt") and self.checkBoxVar[1].get()==1):
+            self.filename=self.filename[:-len("data.txt")]+"Replacement data.txt"
+        if(self.filename.endswith(" Replacement data.txt") and self.checkBoxVar[1].get()==0):
+            self.filename=self.filename[:-len("Replacement data.txt")]+"data.txt"
+
 
         self.filename=CommonFunctions.askSaveFile(self.filename,"Save Hero file")
         if(self.filename==None):
@@ -247,7 +286,7 @@ class SimpleFields(ttk.Frame):
         file1.write(fields[0]+"\n")
         file1.write(self.fieldsEntry[0].get().strip()+"\n\n")
 
-        if(len(self.fieldsEntry[2].get().strip())>0):
+        if(self.checkBoxVar[0].get() == 1 and len(self.fieldsEntry[2].get().strip())>0):
             file1.write(fields[2]+"\n")
             file1.write(self.fieldsEntry[2].get().strip()+"\n\n")
 

@@ -1,13 +1,12 @@
 Name
-Jack Frost
-
-Class
-hh
+Krafty
 
 Unit
-Abominable
+Seamare
 
 Skills
+Hydromancy
+Creation
+Regeneration
+Legion
 Healing
-Diplomacy
-Warding
