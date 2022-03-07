@@ -49,8 +49,6 @@ class Field(ttk.Frame):
                 s=tk.RIGHT
             else:
                 s=tk.LEFT
-
-            
             label.pack(side=s,padx=5,pady=5)
 
         if(hintField!=None):
@@ -135,13 +133,13 @@ class Tab(ttk.Frame):
         self.window.bind("<KeyRelease>", self.onKeyRelease)
 
 class Popup(tk.Toplevel):
-    def __init__(self,frame,title,x,y,width=200):
+    def __init__(self,frame,title,x,y,width=200,height=200):
         tk.Toplevel.__init__(self,frame)
         style = ttk.Style(self)
         self.configure(background=style.lookup('TFrame', 'background'))
 
         self.title(title)
-        self.geometry(str(width)+"x200+"+str(x-100)+"+"+str(y-100))
+        self.geometry(str(width)+"x"+str(height)+"+"+str(x-100)+"+"+str(y-100))
         self.focus()
         
         self.bind("<KeyPress>", self.onKeyDown)

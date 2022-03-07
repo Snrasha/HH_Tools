@@ -56,6 +56,7 @@ class Application(ttk.Notebook):
         self.tabs+=[FactionTab.TabFactionEditor(self,window)]
         self.tabs+=[HeroTab.TabHeroEditor(self,window)]
         self.tabs+=[UnitTab.TabUnitEditor(self,window)]
+
         self.tabs+=[EmptyTab(self,window)]
         self.tabs+=[EmptyTab(self,window)]
         self.tabs+=[EmptyTab(self,window)]

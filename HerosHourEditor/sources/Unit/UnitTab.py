@@ -15,8 +15,7 @@ fields=["Names","Gold cost for base unit","Weekly Growth",
         ]
 
 
-rareResource=["Ore", "Lumber", "Sulphur", "Crystal","Mercury"]
-rareResourceId=["O", "L", "S", "C","M"]
+rareResource={"Ore":"O", "Lumber":"L", "Sulphur":"S", "Crystal":"C","Mercury":"M"}
 rareResourceNumber=["0","1","2","3","4","5","6","7","8","9"]
 
 attackType=["0: defensive","1: aggressive","2: magical"]
@@ -123,18 +122,15 @@ class TabUnitEditor(CommonClass.Tab):
             return False
     def toInt(self,value):
         if(value==None or value ==""):
-            return 0
+            return 1
         else:
             return int(value)
         
     def updateStats(self):
-        print("ok")
 
         gold=self.toInt(self.centerFieldsEntry[0].get())
-        print(gold)
         balanceStat1=self.toInt(self.centerFieldsEntry[4].get())/100.
 
-        
         balanceStat2=1.16*self.toInt(self.centerFieldsEntry[5].get())/100.
         if(self.checkBoxVar[0].get()==1):
             balanceStat2*=0
@@ -220,15 +216,20 @@ class TabUnitEditor(CommonClass.Tab):
 
         
         self.fieldsEntry+=[UnitUtils.FieldAttackRange(standardField)]
+        self.fieldsEntry+=[UnitUtils.FieldSpell(standardField)]
 
 
     def onCheckBoxChange(self):
         if(self.checkBoxVar[0].get()==0):
             self.fieldsEntry[1].entry.configure(state=tk.NORMAL)
             self.centerFieldsEntry[5].entry.configure(state=tk.NORMAL)
+            self.fieldsEntry[7].setNeutral(0)
+            self.fieldsEntry[8].setNeutral(0)
         else:
             self.fieldsEntry[1].entry.configure(state=tk.DISABLED)
             self.centerFieldsEntry[5].entry.configure(state=tk.DISABLED)
+            self.fieldsEntry[7].setNeutral(1)
+            self.fieldsEntry[8].setNeutral(1)
         self.updateStats()
 
 
@@ -271,15 +272,15 @@ class TabUnitEditor(CommonClass.Tab):
 
         ## Made a backup of the opened file.
         CommonFunctions.madeBackUp("unit_backup.txt",self.filename)
-        file1 = open(self.filename, 'r')
+        
         self.lines=file1.readlines()
         self.count=0
         filled=[]
         self.loadImages(self.filename)
 
         self.updateStats()
-
-        file1.close()
+##        file1 = open(self.filename, 'r')
+##        file1.close()
 
     ## Found the next line to read. Ignore blank line except if stopToBlank is True
     def getNextLine(self):
@@ -302,6 +303,70 @@ class TabUnitEditor(CommonClass.Tab):
         self.loadImages(self.filename)
 
         file1 = open(self.filename, 'w')
+        inc=0
+        notneutral= self.checkBoxVar[0].get()==0
+
+        
+        # Names
+        file1.write(fields[inc]+"\n")
+        file1.write(self.fieldsEntry[0].get().strip()+"\n")
+        if(notneutral):
+            file1.write(self.fieldsEntry[1].get().strip()+"\n")
+        file1.write("\n")
+        inc+=1
+
+        # Gold cost
+        file1.write(fields[inc]+"\n")
+        file1.write(self.centerFieldsEntry[0].get().strip()+"\n\n")
+        inc+=1
+
+        if(notneutral):
+            # weekly growth
+            file1.write(fields[inc]+"\n")
+            file1.write(self.centerFieldsEntry[1].get().strip()+"\n\n")
+            # Rare resource
+            file1.write(fields[inc+1]+"\n")
+            file1.write(self.centerFieldsEntry[2].get().strip()+"")
+            file1.write(rareResource[self.centerFieldsEntry[3].get()]+"\n\n")            
+        inc+=2
+        
+        # Balance modifiers
+        file1.write(fields[inc]+"\n")
+        file1.write(self.centerFieldsEntry[4].get().strip()+"\n")
+        if(notneutral):
+            file1.write(self.centerFieldsEntry[5].get().strip()+"\n")
+        file1.write("\n")
+        inc+=1
+        
+        # Abilities
+        file1.write(fields[inc]+"\n\n")
+        inc+=1
+
+        if(notneutral):
+            file1.write(fields[inc]+"\n\n")
+            inc+=1
+
+        # Sound
+        file1.write(fields[inc]+"\n")
+        file1.write(self.fieldsEntry[2].get().strip()+"\n\n")
+        inc+=1
+        # Attack type
+        file1.write(fields[inc]+"\n")
+        file1.write(self.fieldsEntry[3].get().strip()+"\n\n")
+        inc+=1
+        # Living
+        file1.write(fields[inc]+"\n")
+        file1.write(self.fieldsEntry[4].get().strip()+"\n\n")
+        inc+=1
+        # Link
+        file1.write(fields[inc]+"\n")
+        file1.write(self.fieldsEntry[5].get().strip()+"\n\n")
+        inc+=1
+        # Unit groups
+        file1.write(fields[inc]+"\n")
+        file1.write(self.fieldsEntry[6].get().strip()+"\n\n")
+        inc+=1
+        
         file1.close()
     
     def onKeyRelease(self,event):
