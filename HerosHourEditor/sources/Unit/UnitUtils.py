@@ -10,13 +10,14 @@ tooltipAttack="Set the range of the attack. Tower give infinite range but become
 
 attacks={"Melee":"This creature do melee attack","Ranged":"This creature is able to fire a projectile, damaging enemies at a distance.It deals half its normal damage in melee combat,and there is an area where units are too close for ranged attacks and too far for melee attacks.","Long Ranged":"This creature's ranged attacks can strike enemies further away than other ranged creatures would","Short Ranged":"This creature's ranged attacks have a shorter range than other ranged creatures, but can also hit enemies closer to them","Tower":"This creature is unable to move but has infinite range"}
 
-tooltipSpell="Doublie click for add/remove.\n [Alt] for base + upgraded list.\n Right Double click after have select a spell for add to the second list"
+tooltipSpell="Double click for add/remove.\n Left/Right or click list for select it. Ctrl for all list."
+tooltipSpellNeutral="Double click for add/remove."
 
-
+color="#f2d8c1"
 
 class FieldAttackRange(CommonClass.Field):
     def __init__(self,master,side=tk.TOP,**kwargs):
-        CommonClass.Field.__init__(self,master,"Attack")
+        CommonClass.Field.__init__(self,master,"Attack",width=10)
         self.entry.bind("<Button-1>",self.onEnter)
         
         label=ttk.Label(self,text="Upg.")
@@ -161,7 +162,7 @@ class AttackRangePopup(CommonClass.Popup):
 
 class FieldSpell(CommonClass.Field):
     def __init__(self,master,side=tk.TOP,**kwargs):
-        CommonClass.Field.__init__(self,master,"Spells")
+        CommonClass.Field.__init__(self,master,"Spells",width=10)
         self.entry.bind("<Button-1>",self.onEnter)
         
         label=ttk.Label(self,text="Upg.")
@@ -218,16 +219,18 @@ class SpellsPopup(CommonClass.Popup):
         self.spells=CommonFunctions.readSpells()
 
         self.params,self.paramsUpgr=self.field.getParams()
-        frame=ttk.Frame(self,relief="sunken",borderwidth=1,padding=(5,5))
+        frame=ttk.Frame(self,padding=(5,5))
         frame.pack(side=tk.LEFT,fill=tk.BOTH,padx=5,pady=5)
-        frame2=ttk.Frame(self,relief="sunken",borderwidth=1,padding=(5,5))
-        frame2.pack(side=tk.LEFT,fill=tk.BOTH,padx=5,pady=5,expand=True)
-
-        
+        frame2=ttk.Frame(self,padding=(5,5))
+        frame2.pack(side=tk.LEFT,fill=tk.BOTH,expand=True)
+        frame3=ttk.Frame(frame2,relief="sunken",borderwidth=1)
+        frame3.pack(side=tk.TOP,fill=tk.BOTH,pady=(0,1),expand=True)
+        frame4=ttk.Frame(frame2,relief="sunken",borderwidth=1)
+        frame4.pack(side=tk.TOP,fill=tk.BOTH,pady=(1,0),expand=True)        
         self.listboxSpell = tk.Listbox(frame)
         self.listboxSpell.bind('<Double-Button-1>', self.onDoubleClickSpell)
-        if(self.field.neutral==0):
-            self.listboxSpell.bind('<Double-Button-3>', self.onDoubleClickSpell)
+##        if(self.field.neutral==0):
+##            self.listboxSpell.bind('<Double-Button-3>', self.onDoubleClickSpell)
 
         self.listboxSpell.pack(side=tk.LEFT,fill=tk.BOTH,padx=5,expand=True)
         self.listboxSpell.bind('<<ListboxSelect>>', self.onSelectListBox)
@@ -253,19 +256,53 @@ class SpellsPopup(CommonClass.Popup):
             for item in self.paramsUpg:
                 self.listbox2.insert( tk.END, item)
         
-        self.labelDesc=ttk.Label(frame2,justify=tk.CENTER)
+        self.labelDesc=ttk.Label(frame3,justify=tk.CENTER)
         self.labelDesc.pack(side=tk.TOP,fill=tk.Y,expand=True,padx=5,pady=5)
         self.labelDesc.config(wraplength=200)
-        self.labelDesc.configure(text=tooltipSpell)
-        self.labelDesc=ttk.Label(frame2,justify=tk.CENTER)
+        if(self.field.neutral==0):
+            self.labelDesc.configure(text=tooltipSpell)
+        else:
+            self.labelDesc.configure(text=tooltipSpellNeutral)
+        
+        self.labelDesc=ttk.Label(frame4,justify=tk.CENTER)
         self.labelDesc.pack(side=tk.TOP,fill=tk.Y,expand=True,padx=5,pady=5)
         self.labelDesc.config(wraplength=200)
 
         
-
+        self.idx=0
         self.labelDesc.configure(text=self.spells[first])
         self.protocol("WM_DELETE_WINDOW", self.onEscape)
         self.bind('<Escape>', self.onEscape)
+        if(self.field.neutral==0):
+            self.bind("<KeyRelease>", self.onKeyRelease)
+            self.listbox2.bind('<Button-1>', self.onClickList2)
+            self.listbox1.bind('<Button-1>', self.onClickList1)
+            self.listbox1.configure(background=color)
+            self.listbox2.configure(background="white")
+    def onKeyRelease(self,event):
+##        print(event)
+        if(event.keycode==39):
+            self.idx=1
+            self.listbox2.configure(background=color)
+            self.listbox1.configure(background="white")
+        if(event.keycode==37):
+            self.idx=0
+            self.listbox1.configure(background=color)
+            self.listbox2.configure(background="white")
+        if(event.keycode==17):
+            self.idx=2
+            self.listbox1.configure(background=color)
+            self.listbox2.configure(background=color)            
+            
+    def onClickList1(self,event):
+        self.idx=0
+        self.listbox1.configure(background=color)
+        self.listbox2.configure(background="white")
+    def onClickList2(self,event):
+        self.idx=1
+        self.listbox2.configure(background=color)
+        self.listbox1.configure(background="white")               
+        
 
             
     def onSelectListBox(self,event):
@@ -278,26 +315,30 @@ class SpellsPopup(CommonClass.Popup):
         
     def onDoubleClickSpell(self,event):
         w = event.widget
+        if(len(w.curselection())==0):
+            return
         index = int(w.curselection()[0])
         value = w.get(index)
-        if(event.num==1):
+        if(self.idx==0):
             if(value not in self.params):
                 self.listbox1.insert(tk.END, value)
                 self.params+=[value]
-            if(event.state==131080 and self.field.neutral==0):
-                if(value not in self.paramsUpg):
-                    self.listbox2.insert( tk.END, value)
-                    self.paramsUpg+=[value]
-        elif(event.num==3):
-            if(event.state==131080 and value not in self.params):
-                self.listbox1.insert(tk.END, value)
-                self.params+=[value]
-            if(self.field.neutral==0 and value not in self.paramsUpg):
+        if(self.idx==1):
+             if(value not in self.paramsUpg):
                 self.listbox2.insert( tk.END, value)
-                self.paramsUpg+=[value]           
+                self.paramsUpg+=[value]
+        if(self.idx==2):
+            if(value not in self.params):
+                self.listbox1.insert(tk.END, value)
+                self.params+=[value]        
+            if(value not in self.paramsUpg):
+                self.listbox2.insert( tk.END, value)
+                self.paramsUpg+=[value]       
                     
     def onDoubleClickList1(self,event):
         w = event.widget
+        if(len(w.curselection())==0):
+            return
         
         index = int(w.curselection()[0])
         value = w.get(index)
@@ -307,27 +348,14 @@ class SpellsPopup(CommonClass.Popup):
         self.listbox1.delete(0, tk.END)
         for item in self.params:
             self.listbox1.insert( tk.END, item)
-        if(event.state==131080 and self.field.neutral==0):
-            if(value in self.paramsUpg):
-                self.paramsUpg.remove(value)
-                
-            self.listbox2.delete(0, tk.END)
-            for item in self.paramsUpgr:
-                self.listbox2.insert(tk.END, item)
         
     def onDoubleClickList2(self,event):
         w = event.widget
+        if(len(w.curselection())==0):
+            return
         index = int(w.curselection()[0])
         value = w.get(index)
 
-        if(event.state==131080):
-            if(value in self.params):
-                self.params.remove(value)
-
-            self.listbox1.delete(0, tk.END)
-            for item in self.params:
-                self.listbox1.insert( tk.END, item)
-        
         if(value in self.paramsUpg):
             self.paramsUpg.remove(value)
             

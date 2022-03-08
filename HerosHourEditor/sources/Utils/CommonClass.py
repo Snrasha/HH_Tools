@@ -33,7 +33,7 @@ class FileFrame(ttk.LabelFrame):
         saveButton.pack(side=tk.LEFT,padx=5,pady=5)
 
 class Field(ttk.Frame):
-    def __init__(self,master,titleField=None,hintField="",side=tk.TOP,width=None,**kwargs):
+    def __init__(self,master,titleField=None,hintField="",side=tk.TOP,width=None,sideLabel=tk.LEFT,**kwargs):
         ttk.Frame.__init__(self,master)
         self.pack(fill=tk.BOTH,side=side,padx=(1,1),pady=(1,1))
         self.titleField=titleField
@@ -45,11 +45,7 @@ class Field(ttk.Frame):
             self.entry=tk.Entry(self, font='bold')
         self.entry.pack(side=tk.RIGHT,padx=5)
         if(titleField!=None):    
-            if(width!=None):
-                s=tk.RIGHT
-            else:
-                s=tk.LEFT
-            label.pack(side=s,padx=5,pady=5)
+            label.pack(side=sideLabel,padx=5,pady=5)
 
         if(hintField!=None):
             self.set(hintField)
