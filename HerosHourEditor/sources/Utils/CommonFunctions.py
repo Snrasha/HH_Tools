@@ -46,17 +46,32 @@ def getCSVData(file):
         datas={}
         file1 = open(file, 'r')
         lines=file1.readlines()
+        firstLine=False
+        tags=[]
         for line in lines:
+            if not firstLine:
+                firstLine=True
+                tags=line.split(";")
+                
             if(line.startswith('#')):
                continue
             split=line.split(";")
-            if(len(split)==3):
-                if(split[2].lower().startswith("f")):
-                    continue
-            if(len(split)==1):
+            length=len(split)
+            if(length>2 and split[2].lower().startswith("f")):
+                continue
+            if(length==1):
                 datas[split[0]]="//"
             else:
-                datas[split[0]]=split[1].strip()
+                text=split[1].strip()
+                
+                if(len(text)>1):
+                    text=text[0].upper()+text[1:]
+##                else:
+##                    print(split[0]+";"+split[1])
+                datas[split[0]]=text
+                
+                for i in range(3,length,1):
+                    datas[split[0]]+="\n"+tags[i].strip()+": "+split[i].strip()
         file1.close()
         return datas
     else:

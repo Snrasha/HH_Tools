@@ -8,14 +8,18 @@ import Utils.CommonFunctions as CommonFunctions
 import Utils.ToolTipFactory as ToolTipFactory
 import Unit.UnitUtils as UnitUtils
 
+
 fields=["Names","Gold cost for base unit","Weekly Growth",
         "Rare Resource Cost","Balance modifier","Abilities for base unit",
         "Abilities for upgrade","Use sound effects from X unit","Attack type",
         "Living","Link","Unit groups"
         ]
-
+fieldsUp=['NAMES', 'GOLD COST FOR BASE UNIT', 'WEEKLY GROWTH', 'RARE RESOURCE COST', 'BALANCE MODIFIER', 'ABILITIES FOR BASE UNIT',
+ 'ABILITIES FOR UPGRADE', 'USE SOUND EFFECTS FROM X UNIT', 'ATTACK TYPE', 'LIVING', 'LINK', 'UNIT GROUPS']
 
 rareResource={"Ore":"O", "Lumber":"L", "Sulphur":"S", "Crystal":"C","Mercury":"M"}
+rareResourceEdit={"O":"Ore","L": "Lumber", "S":"Sulphur", "C":"Crystal","M":"Mercury"}
+
 rareResourceNumber=["0","1","2","3","4","5","6","7","8","9"]
 
 attackType=["0: defensive","1: aggressive","2: magical"]
@@ -82,6 +86,7 @@ class TabUnitEditor(CommonClass.Tab):
             label=CommonClass.LabelSimplified(frame2,relief=tk.SUNKEN,borderwidth=1,width=20,anchor="center")
             label.pack(side=tk.LEFT,fill=tk.BOTH)
             self.labels+=[label]
+        
 
         self.labels[0].set("Power")
         self.labels[1].set("Damage")
@@ -104,9 +109,34 @@ class TabUnitEditor(CommonClass.Tab):
             label.pack(side=tk.LEFT,fill=tk.BOTH)
             label.set("0")
             self.labelsStatsUpgraded+=[label]
-            
-        frameAbilities=ttk.LabelFrame(middleFrame,text='Abilities')
-        frameAbilities.pack(fill=tk.BOTH,side=tk.TOP)
+
+        frame2=ttk.Frame(frameStat,padding=(5,0))
+        frame2.pack(fill=tk.BOTH,side=tk.TOP,padx=(1,1),pady=(1,0))
+        for i in range(5):
+            label=CommonClass.LabelSimplified(frame2,relief=tk.SUNKEN,borderwidth=1,width=20,anchor="center")
+            label.pack(side=tk.LEFT,fill=tk.BOTH)
+            self.labels+=[label]
+        self.labels[6].set("Gold")
+        self.labels[5].set("Weight")
+        self.labels[7].set("Attack Speed")
+        self.labels[8].set("Weekly Growth Max")
+        self.labels[9].set("Knockback")
+        
+        frame3=ttk.Frame(frameStat,padding=(5,0))
+        frame3.pack(fill=tk.BOTH,side=tk.TOP,padx=(1,1),pady=(0,1))
+        frame4=ttk.Frame(frameStat,padding=(5,0))
+        frame4.pack(fill=tk.BOTH,side=tk.TOP,padx=(1,1),pady=(0,1))
+
+        for i in range(5):
+            label=CommonClass.LabelSimplified(frame3,relief=tk.SUNKEN,borderwidth=1,width=20,anchor="center")
+            label.pack(side=tk.LEFT,fill=tk.BOTH)
+            label.set("0")
+            self.labelsStats+=[label]
+        for i in range(5):
+            label=CommonClass.LabelSimplified(frame4,relief=tk.SUNKEN,borderwidth=1,width=20,anchor="center")
+            label.pack(side=tk.LEFT,fill=tk.BOTH)
+            label.set("0")
+            self.labelsStatsUpgraded+=[label]
         
     def validate(self, action, index, value_if_allowed,
                        prior_value, text, validation_type, trigger_type, widget_name):
@@ -127,40 +157,41 @@ class TabUnitEditor(CommonClass.Tab):
             return int(value)
         
     def updateStats(self):
+        None
 
-        gold=self.toInt(self.centerFieldsEntry[0].get())
-        balanceStat1=self.toInt(self.centerFieldsEntry[4].get())/100.
-
-        balanceStat2=1.16*self.toInt(self.centerFieldsEntry[5].get())/100.
-        if(self.checkBoxVar[0].get()==1):
-            balanceStat2*=0
-
-        #Power
-        power=2
-        self.labelsStats[0].set(str(power*balanceStat1))
-        self.labelsStatsUpgraded[0].set(str(power*balanceStat2))
-        #Damage
-        damage=5.5
-        self.labelsStats[1].set(str(power*balanceStat1))
-        self.labelsStatsUpgraded[1].set(str(power*balanceStat2))
-        #Health
-        health=31.0
-        self.labelsStats[2].set(str(power*balanceStat1))
-        self.labelsStatsUpgraded[2].set(str(power*balanceStat2))
-        # Size
-        size=3
-        if(power>21):
-            size=6
-        elif (power>9):
-            size=5
-        elif (power>5):
-            size=4
-        self.labelsStats[3].set(str(size))
-        self.labelsStatsUpgraded[3].set(str(size))
-        # Speed
-        speed=(0.1*(size/3)*50)
-        self.labelsStats[4].set(str(speed))
-        self.labelsStatsUpgraded[4].set(str(speed))
+##        gold=self.toInt(self.centerFieldsEntry[0].get())
+##        balanceStat1=self.toInt(self.centerFieldsEntry[4].get())/100.
+##
+##        balanceStat2=1.16*self.toInt(self.centerFieldsEntry[5].get())/100.
+##        if(self.checkBoxVar[0].get()==1):
+##            balanceStat2*=0
+##
+##        #Power
+##        power=2
+##        self.labelsStats[0].set(str(power*balanceStat1))
+##        self.labelsStatsUpgraded[0].set(str(power*balanceStat2))
+##        #Damage
+##        damage=5.5
+##        self.labelsStats[1].set(str(power*balanceStat1))
+##        self.labelsStatsUpgraded[1].set(str(power*balanceStat2))
+##        #Health
+##        health=31.0
+##        self.labelsStats[2].set(str(power*balanceStat1))
+##        self.labelsStatsUpgraded[2].set(str(power*balanceStat2))
+##        # Size
+##        size=3
+##        if(power>21):
+##            size=6
+##        elif (power>9):
+##            size=5
+##        elif (power>5):
+##            size=4
+##        self.labelsStats[3].set(str(size))
+##        self.labelsStatsUpgraded[3].set(str(size))
+##        # Speed
+##        speed=(0.1*(size/3)*50)
+##        self.labelsStats[4].set(str(speed))
+##        self.labelsStatsUpgraded[4].set(str(speed))
         
         
 
@@ -196,13 +227,6 @@ class TabUnitEditor(CommonClass.Tab):
         standardField=ttk.LabelFrame(self,text='Fields', padding=(5, 5))
         standardField.pack(fill=tk.BOTH,side=tk.LEFT,padx=(1,1),pady=(1,1))
 
-
-##    fields=["Gold cost for base unit","Weekly Growth",
-##            "Rare Resource Cost","Balance modifier","Abilities for base unit",
-##            "Abilities for upgrade","Attack type",
-##            "Living","Link","Unit groups"
-##            ]
-
         self.fieldsEntry+=[CommonClass.Field(standardField,titleField="Unit Name:",hintField="Calf")]
         self.fieldsEntry+=[CommonClass.Field(standardField,titleField="Upgrade Name:",hintField="Cow")]
         self.fieldsEntry+=[CommonClass.Field(standardField,titleField="Sound Effect from a Unit:",hintField="Golem")]
@@ -213,23 +237,24 @@ class TabUnitEditor(CommonClass.Tab):
         ToolTipFactory.CreateToolTip(self.fieldsEntry[-1].entry, text = tooltipLink)
         self.fieldsEntry+=[CommonClass.Field(standardField,titleField="Unit groups:",hintField="")]
 
-
+        self.specialsFieldsEntry=[]
         
-        self.fieldsEntry+=[UnitUtils.FieldAttackRange(standardField)]
-        self.fieldsEntry+=[UnitUtils.FieldSpell(standardField)]
-
+        self.specialsFieldsEntry+=[UnitUtils.FieldAttackRange(standardField)]
+        self.specialsFieldsEntry+=[UnitUtils.FieldSpell(standardField)]
+        self.specialsFieldsEntry+=[UnitUtils.FieldAbilities(standardField)]
+        self.specialsFieldsEntry+=[UnitUtils.FieldAbilitiesBis(standardField)]
 
     def onCheckBoxChange(self):
         if(self.checkBoxVar[0].get()==0):
             self.fieldsEntry[1].entry.configure(state=tk.NORMAL)
             self.centerFieldsEntry[5].entry.configure(state=tk.NORMAL)
-            self.fieldsEntry[7].setNeutral(0)
-            self.fieldsEntry[8].setNeutral(0)
+            for i in range(len(self.specialsFieldsEntry)):
+                self.specialsFieldsEntry[i].setNeutral(0)
         else:
             self.fieldsEntry[1].entry.configure(state=tk.DISABLED)
             self.centerFieldsEntry[5].entry.configure(state=tk.DISABLED)
-            self.fieldsEntry[7].setNeutral(1)
-            self.fieldsEntry[8].setNeutral(1)
+            for i in range(len(self.specialsFieldsEntry)):
+                self.specialsFieldsEntry[i].setNeutral(1)
         self.updateStats()
 
 
@@ -270,17 +295,145 @@ class TabUnitEditor(CommonClass.Tab):
         if(self.filename==None):
             return None
 
+        self.loadImages(self.filename)
+
+
         ## Made a backup of the opened file.
         CommonFunctions.madeBackUp("unit_backup.txt",self.filename)
-        
+        file1 = open(self.filename, 'r')
         self.lines=file1.readlines()
         self.count=0
         filled=[]
-        self.loadImages(self.filename)
+        listBaseAbilities=[]
+        listUpgrAbilities=[]
+
+        while self.count<len(self.lines):
+            line=self.lines[self.count].strip()
+            ## If found Name, check the next line. If the next line do not exist because it
+            ## check than this is illegal, continue without increment.
+            
+            # NAMES
+            if(line.upper().startswith(fieldsUp[0]) and fields[0] not in filled):
+                filled+=[fields[0]]
+                answer=self.getNextLine()
+                self.fieldsEntry[0].set(answer)
+                answer=self.getNextLine()
+                if(answer!=None):
+                    self.checkBoxVar[0].set(0)
+                    self.fieldsEntry[1].set(answer)
+                else:
+                    self.checkBoxVar[0].set(1)
+                    self.fieldsEntry[1].set("")
+                continue
+            # Gold cost for base unit
+            if(line.upper().startswith(fieldsUp[1]) and fields[1] not in filled):
+                answer=self.getNextLine()
+                if(answer !=None):
+                    self.centerFieldsEntry[0].set(answer)
+                    filled+=[fields[1]]
+                continue
+            # Weekly Growth
+            if(line.upper().startswith(fieldsUp[2]) and fields[2] not in filled):
+                answer=self.getNextLine()
+                if(answer !=None):
+                    self.centerFieldsEntry[1].set(answer)
+                    filled+=[fields[2]]
+                continue
+            # Rare Resource Cost
+            if(line.upper().startswith(fieldsUp[3]) and fields[3] not in filled):
+                answer=self.getNextLine()
+                if(answer !=None and len(answer.strip())==2):
+                    if(answer[1] in rareResourceEdit and answer[0] in rareResourceNumber):
+                        self.centerFieldsEntry[2].set(answer[0])
+                        self.centerFieldsEntry[3].set(rareResourceEdit[answer[1]])
+                    else:
+                        self.centerFieldsEntry[2].set("0")
+                        self.centerFieldsEntry[3].set("O")
+                    filled+=[fields[3]]
+                continue
+            # Balance modifier
+            if(line.upper().startswith(fieldsUp[4]) and fields[4] not in filled):
+                filled+=[fields[4]]
+                answer=self.getNextLine()
+                self.fieldsEntry[4].set(answer)
+                answer=self.getNextLine()
+                if(answer!=None):
+                    self.checkBoxVar[0].set(0)
+                    self.fieldsEntry[5].set(answer)
+                else:
+                    self.checkBoxVar[0].set(1)
+                    self.fieldsEntry[5].set("100")
+                continue
+            # Abilities for base unit
+            if(line.upper().startswith(fieldsUp[5]) and fields[5] not in filled):
+                answer=self.getNextLine()
+                filled+=[fields[5]]
+                li=[]
+                while(answer !=None):
+                    li+=[answer]
+                    answer=self.getNextLine()
+                listBaseAbilities=li
+                continue
+            # Abilities for upgrade
+            if(line.upper().startswith(fieldsUp[6]) and fields[6] not in filled):
+                answer=self.getNextLine()
+                filled+=[fields[6]]
+                li=[]
+                while(answer !=None):
+                    li+=[answer]
+                    answer=self.getNextLine()
+                listUpgrAbilities=li
+
+                continue
+            
+            # Use sound effects
+            if(line.upper().startswith(fieldsUp[7]) and fields[7] not in filled):
+                answer=self.getNextLine()
+                if(answer !=None):
+                    self.fieldsEntry[2].set(answer)
+                filled+=[fields[7]]
+                continue
+            # Attack type
+            if(line.upper().startswith(fieldsUp[8]) and fields[8] not in filled):
+                answer=self.getNextLine()
+                if(answer !=None):
+                    for item in attackType:
+                        if(item.startswith(answer)):
+                            self.fieldsEntry[3].set(answer)
+                filled+=[fields[8]]
+                continue
+            # Living
+            if(line.upper().startswith(fieldsUp[9]) and fields[9] not in filled):
+                answer=self.getNextLine()
+                if(answer !=None):
+                    for item in living:
+                        if(item.startswith(answer)):
+                            self.fieldsEntry[4].set(answer)
+                filled+=[fields[9]]
+                continue
+            # Link
+            if(line.upper().startswith(fieldsUp[10]) and fields[10] not in filled):
+                answer=self.getNextLine()
+                if(answer !=None):
+                    self.fieldsEntry[5].set(answer)
+                filled+=[fields[10]]
+                continue
+            # Unit groups
+            if(line.upper().startswith(fieldsUp[11]) and fields[11] not in filled):
+                answer=self.getNextLine()
+                if(answer !=None):
+                    self.fieldsEntry[6].set(answer)
+                filled+=[fields[11]]
+                continue
+            self.count+=1
+        file1.close()
+
+        self.specialsFieldsEntry[0].setParams(UnitUtils.loadAttackRange(listBaseAbilities),UnitUtils.loadAttackRange(listUpgrAbilities))
+        self.specialsFieldsEntry[1].setParams(UnitUtils.loadSpell(listBaseAbilities),UnitUtils.loadSpell(listUpgrAbilities))
+        self.specialsFieldsEntry[2].setParams(UnitUtils.loadStandardAbilities(listBaseAbilities),UnitUtils.loadStandardAbilities(listUpgrAbilities))
+        self.specialsFieldsEntry[3].setParams(UnitUtils.loadAbilitiesBis(listBaseAbilities),UnitUtils.loadAbilitiesBis(listUpgrAbilities))
 
         self.updateStats()
-##        file1 = open(self.filename, 'r')
-##        file1.close()
 
     ## Found the next line to read. Ignore blank line except if stopToBlank is True
     def getNextLine(self):
@@ -288,6 +441,7 @@ class TabUnitEditor(CommonClass.Tab):
         if(self.count<len(self.lines)):
             line=self.lines[self.count].strip()
             if(len(line)>0):
+                
                 return line
             else:
                 return None
@@ -339,12 +493,31 @@ class TabUnitEditor(CommonClass.Tab):
         inc+=1
         
         # Abilities
-        file1.write(fields[inc]+"\n\n")
-        inc+=1
+        attackrange,attackrangeUpgr=self.specialsFieldsEntry[0].getParams()
+        spells,spellsUpgr=self.specialsFieldsEntry[1].getParams()
+        abilities,abilitiesUpgr=self.specialsFieldsEntry[2].getParams()
+        abilitiesBis,abilitiesUpgrBis=self.specialsFieldsEntry[3].getParams()
 
+        file1.write(fields[inc]+"\n")
+        inc+=1
+        li=UnitUtils.getAttackRangeList(attackrange)
+        li+=UnitUtils.getSpellList(spells)
+        li+=abilities
+        li+=abilitiesBis
+        for item in li:
+            file1.write(item+"\n")            
+        file1.write("\n")
+        
         if(notneutral):
-            file1.write(fields[inc]+"\n\n")
+            file1.write(fields[inc]+"\n")
             inc+=1
+            li=UnitUtils.getAttackRangeList(attackrangeUpgr)
+            li+=UnitUtils.getSpellList(spellsUpgr)
+            li+=abilitiesUpgr
+            li+=abilitiesUpgrBis
+            for item in li:
+                file1.write(item+"\n")
+            file1.write("\n")
 
         # Sound
         file1.write(fields[inc]+"\n")
@@ -352,11 +525,11 @@ class TabUnitEditor(CommonClass.Tab):
         inc+=1
         # Attack type
         file1.write(fields[inc]+"\n")
-        file1.write(self.fieldsEntry[3].get().strip()+"\n\n")
+        file1.write(self.fieldsEntry[3].get().strip().split(":")[0]+"\n\n")
         inc+=1
         # Living
         file1.write(fields[inc]+"\n")
-        file1.write(self.fieldsEntry[4].get().strip()+"\n\n")
+        file1.write(self.fieldsEntry[4].get().strip().split(":")[0]+"\n\n")
         inc+=1
         # Link
         file1.write(fields[inc]+"\n")

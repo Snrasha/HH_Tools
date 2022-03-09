@@ -38,7 +38,7 @@ Cinderspirit;When this creature dies, it summons a group of fireflies. Fireflies
 Arrow Rain;This creature has a chance to fire a rain of arrows, which strikes a larger area and thus damages more enemies.
 Forest Crown;This creature carries ranged units in its branches, which can shoot at enemies independently of the normal attacks.
 Retreat;When this creature would otherwise die, it instead starts fleeing combat. It will rejoin your army once combat is over.
-Wind Up;This creature attacks less often than other creatures, but its attacks deal more damage.
+Windup;This creature attacks less often than other creatures, but its attacks deal more damage.
 Death Strike;This creature summons a Skeleton for every enemy struck by its attacks.
 Charm;Enemies struck by this creature that have low health may become charmed. Charmed creatures will join to fight for your side for the rest of the battle and will not return to their original owner.
 Rebirth;The first time this creature dies, it will return to life after some seconds. It is reborn in an explosion of fire.

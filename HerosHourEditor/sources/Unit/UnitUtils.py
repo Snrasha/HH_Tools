@@ -12,12 +12,70 @@ attacks={"Melee":"This creature do melee attack","Ranged":"This creature is able
 
 tooltipSpell="Double click for add/remove.\n Left/Right or click list for select it. Ctrl for all list."
 tooltipSpellNeutral="Double click for add/remove."
+tooltipMore="A infinite number of these abilities can be put."
 
 color="#f2d8c1"
 
+def getAttackRangeList(params):
+    li=[]
+    if(params!=None and params[0].upper()!="MELEE"):
+        if not(params[0].startswith("Rang")):
+            li+=["Ranged"]
+        li+=[params[0]]
+    if(params[1]!=None and params[1] != "None"):
+        li+=[params[1]]
+    return li
+
+def getSpellList(params):
+    li=[]
+    if(params!=None and len(params)!=0 and params[0]!="None"):
+        li+=["Caster"]
+        li+=params
+    return li
+
+def loadSpell(li):
+    param=[]
+    spells=CommonFunctions.readSpells()
+    for item in li:
+        if item in spells:
+            param+=[item]
+    return param
+def loadStandardAbilities(li):
+    param=[]
+    abilities=CommonFunctions.readAbilities()
+    for item in li:
+        if item in abilities:
+            param+=[item]
+    return param
+def loadAbilitiesBis(li):
+    param=[]
+    abilities=CommonFunctions.readAbilitiesBis()
+    for item in li:
+        if item in abilities:
+            param+=[item]
+    return param
+def loadAttackRange(li):
+    param=["Melee","None"]
+    nextIsProj=False
+    for item in li:
+        if(item in attacks and item!="Melee"):
+            param[0]=item
+            nextIsProj=True
+            continue
+        if(nextIsProj):
+            param[1]=item
+            return param
+    return param
+        
+        
+        
+        
+        
+
+
 class FieldAttackRange(CommonClass.Field):
     def __init__(self,master,side=tk.TOP,**kwargs):
-        CommonClass.Field.__init__(self,master,"Attack",width=10)
+        CommonClass.Field.__init__(self,master,"Attack Range",width=10)
         self.entry.bind("<Button-1>",self.onEnter)
         
         label=ttk.Label(self,text="Upg.")
@@ -41,7 +99,7 @@ class FieldAttackRange(CommonClass.Field):
     def onEnter(self,event):
         self.entry.configure(state=tk.DISABLED)
         self.entryUnUpgr.configure(state=tk.DISABLED)
-        AttackRangePopup(self,"Attack",event.x_root,event.y_root)
+        AttackRangePopup(self,"Attack Range",event.x_root,event.y_root)
 
     def getParams(self):
         return (self.params,self.paramsUpgr)
@@ -159,12 +217,10 @@ class AttackRangePopup(CommonClass.Popup):
         
         self.field.setParams(params,paramsUpgr)
         self.destroy()
-
-class FieldSpell(CommonClass.Field):
-    def __init__(self,master,side=tk.TOP,**kwargs):
-        CommonClass.Field.__init__(self,master,"Spells",width=10)
+class FieldTripleList(CommonClass.Field):
+    def __init__(self,master,side=tk.TOP,title="",**kwargs):
+        CommonClass.Field.__init__(self,master,title,width=10)
         self.entry.bind("<Button-1>",self.onEnter)
-        
         label=ttk.Label(self,text="Upg.")
         label.pack(side=tk.RIGHT,padx=5,pady=5)
         self.entryUnUpgr=tk.Entry(self, font='bold',width=10)
@@ -186,7 +242,7 @@ class FieldSpell(CommonClass.Field):
     def onEnter(self,event):
         self.entry.configure(state=tk.DISABLED)
         self.entryUnUpgr.configure(state=tk.DISABLED)
-        SpellsPopup(self,"Spells",event.x_root,event.y_root)
+        self.onEnterPost(event)
 
     def getParams(self):
         return (self.params,self.paramsUpgr)
@@ -207,8 +263,10 @@ class FieldSpell(CommonClass.Field):
             return
         self.entryUnUpgr.insert(0,text)
 
-class SpellsPopup(CommonClass.Popup):
-    def __init__(self,field,title,x,y):
+
+        
+class PopupTripleList(CommonClass.Popup):
+    def __init__(self,field,title,x,y,values,textMore="",unlimited=False):
         width=800
         if(field.neutral==1):
             width=600
@@ -216,7 +274,8 @@ class SpellsPopup(CommonClass.Popup):
         CommonClass.Popup.__init__(self,field,title,x,y,width=width,height=200)
         self.field=field
 
-        self.spells=CommonFunctions.readSpells()
+        self.values=values
+        self.unlimited=unlimited
 
         self.params,self.paramsUpgr=self.field.getParams()
         frame=ttk.Frame(self,padding=(5,5))
@@ -227,31 +286,33 @@ class SpellsPopup(CommonClass.Popup):
         frame3.pack(side=tk.TOP,fill=tk.BOTH,pady=(0,1),expand=True)
         frame4=ttk.Frame(frame2,relief="sunken",borderwidth=1)
         frame4.pack(side=tk.TOP,fill=tk.BOTH,pady=(1,0),expand=True)        
-        self.listboxSpell = tk.Listbox(frame)
-        self.listboxSpell.bind('<Double-Button-1>', self.onDoubleClickSpell)
-##        if(self.field.neutral==0):
-##            self.listboxSpell.bind('<Double-Button-3>', self.onDoubleClickSpell)
+        self.listbox0 = tk.Listbox(frame)
+        self.listbox0.bind('<Double-Button-1>', self.onDoubleClick)
 
-        self.listboxSpell.pack(side=tk.LEFT,fill=tk.BOTH,padx=5,expand=True)
-        self.listboxSpell.bind('<<ListboxSelect>>', self.onSelectListBox)
+        self.listbox0.pack(side=tk.LEFT,fill=tk.BOTH,padx=5,expand=True)
+        self.listbox0.bind('<<ListboxSelect>>', self.onSelectListBox)
 
         first=None
-        for item in self.spells.keys():
+        for item in self.values.keys():
             if(first==None):
                 first=item
-            self.listboxSpell.insert( tk.END, item)
+            self.listbox0.insert( tk.END, item)
 
         self.params,self.paramsUpg=self.field.getParams()
 
         
         self.listbox1 = tk.Listbox(frame)
         self.listbox1.bind('<Double-Button-1>', self.onDoubleClickList1)
+        self.listbox1.bind('<<ListboxSelect>>', self.onSelectListBox)
+
         self.listbox1.pack(side=tk.LEFT,fill=tk.BOTH,padx=5,expand=True)
         for item in self.params:
             self.listbox1.insert( tk.END, item)
         if(self.field.neutral==0):
             self.listbox2 = tk.Listbox(frame)
             self.listbox2.bind('<Double-Button-1>', self.onDoubleClickList2)
+            self.listbox2.bind('<<ListboxSelect>>', self.onSelectListBox)
+
             self.listbox2.pack(side=tk.LEFT,fill=tk.BOTH,padx=5,expand=True)
             for item in self.paramsUpg:
                 self.listbox2.insert( tk.END, item)
@@ -260,9 +321,9 @@ class SpellsPopup(CommonClass.Popup):
         self.labelDesc.pack(side=tk.TOP,fill=tk.Y,expand=True,padx=5,pady=5)
         self.labelDesc.config(wraplength=200)
         if(self.field.neutral==0):
-            self.labelDesc.configure(text=tooltipSpell)
+            self.labelDesc.configure(text=tooltipSpell+textMore)
         else:
-            self.labelDesc.configure(text=tooltipSpellNeutral)
+            self.labelDesc.configure(text=tooltipSpellNeutral+textMore)
         
         self.labelDesc=ttk.Label(frame4,justify=tk.CENTER)
         self.labelDesc.pack(side=tk.TOP,fill=tk.Y,expand=True,padx=5,pady=5)
@@ -270,7 +331,7 @@ class SpellsPopup(CommonClass.Popup):
 
         
         self.idx=0
-        self.labelDesc.configure(text=self.spells[first])
+        self.labelDesc.configure(text=self.values[first])
         self.protocol("WM_DELETE_WINDOW", self.onEscape)
         self.bind('<Escape>', self.onEscape)
         if(self.field.neutral==0):
@@ -280,7 +341,6 @@ class SpellsPopup(CommonClass.Popup):
             self.listbox1.configure(background=color)
             self.listbox2.configure(background="white")
     def onKeyRelease(self,event):
-##        print(event)
         if(event.keycode==39):
             self.idx=1
             self.listbox2.configure(background=color)
@@ -311,27 +371,27 @@ class SpellsPopup(CommonClass.Popup):
             return
         index = int(w.curselection()[0])
         value = w.get(index)
-        self.labelDesc.configure(text=self.spells[value])
+        self.labelDesc.configure(text=self.values[value])
         
-    def onDoubleClickSpell(self,event):
+    def onDoubleClick(self,event):
         w = event.widget
         if(len(w.curselection())==0):
             return
         index = int(w.curselection()[0])
         value = w.get(index)
         if(self.idx==0):
-            if(value not in self.params):
+            if(self.unlimited or value not in self.params):
                 self.listbox1.insert(tk.END, value)
                 self.params+=[value]
         if(self.idx==1):
-             if(value not in self.paramsUpg):
+             if(self.unlimited or value not in self.paramsUpg):
                 self.listbox2.insert( tk.END, value)
                 self.paramsUpg+=[value]
         if(self.idx==2):
-            if(value not in self.params):
+            if(self.unlimited or value not in self.params):
                 self.listbox1.insert(tk.END, value)
                 self.params+=[value]        
-            if(value not in self.paramsUpg):
+            if(self.unlimited or value not in self.paramsUpg):
                 self.listbox2.insert( tk.END, value)
                 self.paramsUpg+=[value]       
                     
@@ -371,3 +431,29 @@ class SpellsPopup(CommonClass.Popup):
 
         self.field.setParams(self.params,self.paramsUpgr)
         self.destroy()
+        
+class FieldSpell(FieldTripleList):
+    def __init__(self,master,side=tk.TOP,**kwargs):
+        FieldTripleList.__init__(self,master,side,title="Spells")
+    def onEnterPost(self,event):
+        SpellsPopup(self,"Spells",event.x_root,event.y_root)
+class SpellsPopup(PopupTripleList):
+    def __init__(self,field,title,x,y):
+        PopupTripleList.__init__(self,field,title,x,y,CommonFunctions.readSpells())
+class FieldAbilities(FieldTripleList):
+    def __init__(self,master,side=tk.TOP,**kwargs):
+        FieldTripleList.__init__(self,master,side,title="Abilities")
+    def onEnterPost(self,event):
+        AbilitiesPopup(self,"Abilities",event.x_root,event.y_root)
+class AbilitiesPopup(PopupTripleList):
+    def __init__(self,field,title,x,y):
+        PopupTripleList.__init__(self,field,title,x,y,CommonFunctions.readAbilities())
+        
+class FieldAbilitiesBis(FieldTripleList):
+    def __init__(self,master,side=tk.TOP,**kwargs):
+        FieldTripleList.__init__(self,master,side,title="Technical Abilities")
+    def onEnterPost(self,event):
+        AbilitiesBisPopup(self,"Technical Abilities",event.x_root,event.y_root)
+class AbilitiesBisPopup(PopupTripleList):
+    def __init__(self,field,title,x,y):
+        PopupTripleList.__init__(self,field,title,x,y,CommonFunctions.readAbilitiesBis(),tooltipMore,True)
