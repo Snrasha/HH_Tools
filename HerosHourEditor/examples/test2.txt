@@ -1,0 +1,33 @@
+Names
+Calf
+
+Gold cost for base unit
+100
+
+Balance modifier
+130
+
+Abilities for base unit
+Ranged
+Short Ranged
+Flying
+Sturdy
+Feeble
+Feeble
+Big 
+
+Abilities for upgrade
+Golem
+
+Use sound effects from X unit
+0
+
+Attack type
+-2
+
+Living
+Toadfrog
+
+Link
+
+

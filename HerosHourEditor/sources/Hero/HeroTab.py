@@ -141,7 +141,7 @@ class SimpleFields(ttk.Frame):
         style = ttk.Style(self)
         bg = style.lookup('TFrame', 'background')
         
-        self.pack(side=tk.RIGHT,fill=tk.Y,expand=False)
+        self.pack(fill=tk.BOTH,side=tk.RIGHT,padx=(1,1),pady=(1,1),expand=False)
 
         CommonClass.FileFrame(self,fill=tk.X)
 

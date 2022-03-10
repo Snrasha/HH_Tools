@@ -54,16 +54,16 @@ class TabUnitEditor(CommonClass.Tab):
         frame0=ttk.LabelFrame(middleFrame,text='Unit cost')
         frame0.pack(fill=tk.BOTH,side=tk.TOP)
         frame=ttk.Frame(frame0)
-        frame.pack(fill=tk.BOTH,side=tk.TOP,padx=(1,1),pady=(1,1))
+        frame.pack(side=tk.TOP,padx=(1,1),pady=(1,1),anchor="n")
         frame1=ttk.Frame(frame0)
-        frame1.pack(fill=tk.BOTH,side=tk.TOP,padx=(1,1),pady=(1,1))        
+        frame1.pack(side=tk.TOP,padx=(1,1),pady=(1,1),anchor="n")        
         self.centerFieldsEntry=[]
         vcmd = (self.register(self.validate),
                 '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
-        self.centerFieldsEntry+=[CommonClass.Field(frame,titleField="Gold cost: ",hintField="100",side=tk.LEFT)]
+        self.centerFieldsEntry+=[CommonClass.Field(frame,titleField="Gold cost: ",hintField="100",side=tk.LEFT,width=10)]
         self.centerFieldsEntry[-1].entry.configure( validate = 'key',validatecommand = vcmd)
 
-        self.centerFieldsEntry+=[CommonClass.Field(frame,titleField="Weekly Growth: ",hintField="30",side=tk.LEFT)]
+        self.centerFieldsEntry+=[CommonClass.Field(frame,titleField="Weekly Growth: ",hintField="30",side=tk.LEFT,width=10)]
         self.centerFieldsEntry[-1].entry.configure( validate = 'key',validatecommand = vcmd)
 ##        self.centerFieldsEntry+=[CommonClass.OptionMenu(leftFrame,"Living:",living,descLiving)]
         self.centerFieldsEntry+=[CommonClass.OptionMenu(frame1,"Rare resource: ",rareResourceNumber,tooltipRareRes,side=tk.LEFT)]
@@ -72,18 +72,20 @@ class TabUnitEditor(CommonClass.Tab):
         frameStat=ttk.LabelFrame(middleFrame,text='Stats')
         frameStat.pack(fill=tk.BOTH,side=tk.TOP)
         frame1=ttk.Frame(frameStat)
-        frame1.pack(fill=tk.BOTH,side=tk.TOP,padx=(1,1),pady=(1,1))
+        frame1.pack(side=tk.TOP,padx=(1,1),pady=(1,1),anchor="n")
        
-        self.centerFieldsEntry+=[CommonClass.Field(frame1,titleField="Balance modifier: ",hintField="100",side=tk.LEFT)]
+        self.centerFieldsEntry+=[CommonClass.Field(frame1,titleField="Balance modifier: ",hintField="100",side=tk.LEFT,width=10)]
         self.centerFieldsEntry[-1].entry.configure( validate = 'key',validatecommand = vcmd)
-        self.centerFieldsEntry+=[CommonClass.Field(frame1,titleField=None,hintField="100",side=tk.LEFT)]
+        self.centerFieldsEntry+=[CommonClass.Field(frame1,titleField=None,hintField="100",side=tk.LEFT,width=10)]
         self.centerFieldsEntry[-1].entry.configure( validate = 'key',validatecommand = vcmd)
+
+        widthLabel=15
         
         frame2=ttk.Frame(frameStat,padding=(5,0))
-        frame2.pack(fill=tk.BOTH,side=tk.TOP,padx=(1,1),pady=(1,0))
+        frame2.pack(side=tk.TOP,padx=(1,1),pady=(1,0),anchor="n")
         self.labels=[]
         for i in range(5):
-            label=CommonClass.LabelSimplified(frame2,relief=tk.SUNKEN,borderwidth=1,width=20,anchor="center")
+            label=CommonClass.LabelSimplified(frame2,relief=tk.SUNKEN,borderwidth=1,width=widthLabel,anchor="center")
             label.pack(side=tk.LEFT,fill=tk.BOTH)
             self.labels+=[label]
         
@@ -94,26 +96,26 @@ class TabUnitEditor(CommonClass.Tab):
         self.labels[3].set("Size")
         self.labels[4].set("Speed")
         frame3=ttk.Frame(frameStat,padding=(5,0))
-        frame3.pack(fill=tk.BOTH,side=tk.TOP,padx=(1,1),pady=(0,1))
+        frame3.pack(side=tk.TOP,padx=(1,1),pady=(0,1),anchor="n")
         frame4=ttk.Frame(frameStat,padding=(5,0))
-        frame4.pack(fill=tk.BOTH,side=tk.TOP,padx=(1,1),pady=(0,1))
+        frame4.pack(side=tk.TOP,padx=(1,1),pady=(0,1),anchor="n")
         self.labelsStats=[]
         self.labelsStatsUpgraded=[]
         for i in range(5):
-            label=CommonClass.LabelSimplified(frame3,relief=tk.SUNKEN,borderwidth=1,width=20,anchor="center")
+            label=CommonClass.LabelSimplified(frame3,relief=tk.SUNKEN,borderwidth=1,width=widthLabel,anchor="center")
             label.pack(side=tk.LEFT,fill=tk.BOTH)
             label.set("0")
             self.labelsStats+=[label]
         for i in range(5):
-            label=CommonClass.LabelSimplified(frame4,relief=tk.SUNKEN,borderwidth=1,width=20,anchor="center")
+            label=CommonClass.LabelSimplified(frame4,relief=tk.SUNKEN,borderwidth=1,width=widthLabel,anchor="center")
             label.pack(side=tk.LEFT,fill=tk.BOTH)
             label.set("0")
             self.labelsStatsUpgraded+=[label]
 
         frame2=ttk.Frame(frameStat,padding=(5,0))
-        frame2.pack(fill=tk.BOTH,side=tk.TOP,padx=(1,1),pady=(1,0))
+        frame2.pack(side=tk.TOP,padx=(1,1),pady=(1,0),anchor="n")
         for i in range(5):
-            label=CommonClass.LabelSimplified(frame2,relief=tk.SUNKEN,borderwidth=1,width=20,anchor="center")
+            label=CommonClass.LabelSimplified(frame2,relief=tk.SUNKEN,borderwidth=1,width=widthLabel,anchor="center")
             label.pack(side=tk.LEFT,fill=tk.BOTH)
             self.labels+=[label]
         self.labels[6].set("Gold")
@@ -123,17 +125,17 @@ class TabUnitEditor(CommonClass.Tab):
         self.labels[9].set("Knockback")
         
         frame3=ttk.Frame(frameStat,padding=(5,0))
-        frame3.pack(fill=tk.BOTH,side=tk.TOP,padx=(1,1),pady=(0,1))
+        frame3.pack(side=tk.TOP,padx=(1,1),pady=(0,1),anchor="n")
         frame4=ttk.Frame(frameStat,padding=(5,0))
-        frame4.pack(fill=tk.BOTH,side=tk.TOP,padx=(1,1),pady=(0,1))
+        frame4.pack(side=tk.TOP,padx=(1,1),pady=(0,1),anchor="n")
 
         for i in range(5):
-            label=CommonClass.LabelSimplified(frame3,relief=tk.SUNKEN,borderwidth=1,width=20,anchor="center")
+            label=CommonClass.LabelSimplified(frame3,relief=tk.SUNKEN,borderwidth=1,width=widthLabel,anchor="center")
             label.pack(side=tk.LEFT,fill=tk.BOTH)
             label.set("0")
             self.labelsStats+=[label]
         for i in range(5):
-            label=CommonClass.LabelSimplified(frame4,relief=tk.SUNKEN,borderwidth=1,width=20,anchor="center")
+            label=CommonClass.LabelSimplified(frame4,relief=tk.SUNKEN,borderwidth=1,width=widthLabel,anchor="center")
             label.pack(side=tk.LEFT,fill=tk.BOTH)
             label.set("0")
             self.labelsStatsUpgraded+=[label]
@@ -198,7 +200,7 @@ class TabUnitEditor(CommonClass.Tab):
 
     def initRightFrame(self):
         rightFrame=ttk.Frame(self)
-        rightFrame.pack(fill=tk.BOTH,side=tk.RIGHT,padx=(1,1),pady=(1,1),anchor="n")
+        rightFrame.pack(fill=tk.BOTH,side=tk.RIGHT,padx=(1,1),pady=(1,1),anchor="n",expand=False)
 
         CommonClass.FileFrame(rightFrame,self,side=tk.TOP)
 
@@ -248,11 +250,17 @@ class TabUnitEditor(CommonClass.Tab):
         if(self.checkBoxVar[0].get()==0):
             self.fieldsEntry[1].entry.configure(state=tk.NORMAL)
             self.centerFieldsEntry[5].entry.configure(state=tk.NORMAL)
+            self.centerFieldsEntry[1].entry.configure(state=tk.NORMAL)
+            for i in range(2):
+                self.centerFieldsEntry[i+2].optionMenu.configure(state=tk.NORMAL)
             for i in range(len(self.specialsFieldsEntry)):
                 self.specialsFieldsEntry[i].setNeutral(0)
         else:
             self.fieldsEntry[1].entry.configure(state=tk.DISABLED)
             self.centerFieldsEntry[5].entry.configure(state=tk.DISABLED)
+            self.centerFieldsEntry[1].entry.configure(state=tk.DISABLED)
+            for i in range(2):
+                self.centerFieldsEntry[i+2].optionMenu.configure(state=tk.DISABLED)
             for i in range(len(self.specialsFieldsEntry)):
                 self.specialsFieldsEntry[i].setNeutral(1)
         self.updateStats()

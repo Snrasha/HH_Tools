@@ -12,7 +12,7 @@ attacks={"Melee":"This creature do melee attack","Ranged":"This creature is able
 
 tooltipSpell="Double click for add/remove.\n Left/Right or click list for select it. Ctrl for all list."
 tooltipSpellNeutral="Double click for add/remove."
-tooltipMore="A infinite number of these abilities can be put."
+tooltipMore="\nA infinite number of these abilities can be put."
 
 color="#f2d8c1"
 
@@ -447,7 +447,7 @@ class FieldAbilities(FieldTripleList):
         AbilitiesPopup(self,"Abilities",event.x_root,event.y_root)
 class AbilitiesPopup(PopupTripleList):
     def __init__(self,field,title,x,y):
-        PopupTripleList.__init__(self,field,title,x,y,CommonFunctions.readAbilities())
+        PopupTripleList.__init__(self,field,title,x,y,CommonFunctions.readAbilities(),tooltipMore,True)
         
 class FieldAbilitiesBis(FieldTripleList):
     def __init__(self,master,side=tk.TOP,**kwargs):
