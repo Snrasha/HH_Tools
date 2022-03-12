@@ -28,7 +28,7 @@ living=["-2: blight","-1: undead","0: elemental","1: living","2: humanoid","3: b
 descLiving="Specify whether the unit should be considered undead, constructed, living, etc"
 descAttack="No difference currently for aggressive and defensive. Magical is for the Hero Potency Skill"
 
-tooltipRareRes="Rare resource cost when you buy a unit"
+tooltipRareRes="Rare resource cost when you buy a unit\nDecrease gold cost except when you can buy only with gold"
 
 tooltipSound="Press F+X in the HH main menu to bring up the list of all sounds"
 tooltipLink="Unit summoned via Summoning, Bodyguards, or similar"
@@ -65,11 +65,12 @@ class TabUnitEditor(CommonClass.Tab):
         self.centerFieldsEntry+=[CommonClass.Field(frame,titleField="Gold cost: ",hintField="100",side=tk.LEFT,width=10)]
         self.centerFieldsEntry[-1].entry.configure( validate = 'key',validatecommand = vcmd)
 
-        self.centerFieldsEntry+=[CommonClass.Field(frame,titleField="Weekly Growth: ",hintField="30",side=tk.LEFT,width=10)]
+        self.centerFieldsEntry+=[CommonClass.Field(frame,titleField="Weekly Growth: ",hintField="30",command=self.updateStats,side=tk.LEFT,width=10)]
         self.centerFieldsEntry[-1].entry.configure( validate = 'key',validatecommand = vcmd)
 ##        self.centerFieldsEntry+=[CommonClass.OptionMenu(leftFrame,"Living:",living,descLiving)]
-        self.centerFieldsEntry+=[CommonClass.OptionMenu(frame1,"Rare resource: ",rareResourceNumber,tooltipRareRes,side=tk.LEFT)]
+        self.centerFieldsEntry+=[CommonClass.OptionMenu(frame1,"Rare resource: ",rareResourceNumber,tooltipRareRes,command=self.updateStats,side=tk.LEFT)]
         self.centerFieldsEntry+=[CommonClass.OptionMenu(frame1,None,rareResource,tooltipRareRes,side=tk.LEFT)]
+
 
         frameStat=ttk.LabelFrame(middleFrame,text='Stats')
         frameStat.pack(fill=tk.BOTH,side=tk.TOP)
@@ -78,8 +79,14 @@ class TabUnitEditor(CommonClass.Tab):
        
         self.centerFieldsEntry+=[CommonClass.Field(frame1,titleField="Balance modifier: ",hintField="100",side=tk.LEFT,width=10)]
         self.centerFieldsEntry[-1].entry.configure( validate = 'key',validatecommand = vcmd)
+        ToolTipFactory.CreateToolTip(self.centerFieldsEntry[-1].entry, text = "version 2.0.5 and before, balance modifier are wrong. See modding guide")
         self.centerFieldsEntry+=[CommonClass.Field(frame1,titleField=None,hintField="100",side=tk.LEFT,width=10)]
         self.centerFieldsEntry[-1].entry.configure( validate = 'key',validatecommand = vcmd)
+        ToolTipFactory.CreateToolTip(self.centerFieldsEntry[-1].entry, text = "version 2.0.5 and before, balance modifier are wrong. See modding guide")
+
+        self.centerFieldsEntry+=[CommonClass.Field(frame1,titleField="Gold upgrade cost: ",hintField="35",side=tk.LEFT,width=10)]
+        self.centerFieldsEntry[-1].entry.configure( validate = 'key',validatecommand = vcmd)
+        ToolTipFactory.CreateToolTip(self.centerFieldsEntry[-1].entry, text = "Always 35% except Colony mod which is 50%")
 
         widthLabel=15
         
@@ -162,7 +169,7 @@ class TabUnitEditor(CommonClass.Tab):
         else:
             return int(value)
         
-    def updateStats(self):
+    def updateStats(self,event=None):
         attacktype,attacktypeUpgr=self.specialsFieldsEntry[0].getParams()
         
         abilities,abilitiesUpgr=self.specialsFieldsEntry[2].getParams()
@@ -188,6 +195,9 @@ class TabUnitEditor(CommonClass.Tab):
             balanceStat2*=0
         rankStrength=UnitStats.calculateRankStrength(rank)
 
+        power=UnitStats.calculatePower(gold,rank,False)
+        powerUpgr=UnitStats.calculatePower(gold,rank,True)
+
         damage=UnitStats.calculateDamage(rankStrength)*balanceStat1
         damageUpgr=UnitStats.calculateDamage(rankStrength*1.16)*balanceStat2
         health=UnitStats.calculateHealth(rankStrength)*balanceStat1
@@ -208,10 +218,9 @@ class TabUnitEditor(CommonClass.Tab):
         knockbackUpgr=weightUpgr
         attackSpeed,attackRange,weight,knockback,damage,health,speed,size=UnitStats.calculateAbilities(abilities,attackRange,weight,knockback,damage,health,speed,size)
         attackSpeedUpgr,attackRangeUpgr,weightUpgr,knockbackUpgr,damageUpgr,healthUpgr,speedUpgr,sizeUpgr=UnitStats.calculateAbilities(abilitiesUpgr,attackRangeUpgr,weightUpgr,knockbackUpgr,damageUpgr,healthUpgr,speedUpgr,sizeUpgr)
-##        #Power
-##        power=2
-##        self.labelsStats[0].set(str(power*balanceStat1))
-##        self.labelsStatsUpgraded[0].set(str(power*balanceStat2))
+        #Power
+        self.labelsStats[0].set(str(power))
+        self.labelsStatsUpgraded[0].set(str(powerUpgr)+"+")
         
         #Damage
         self.labelsStats[1].set(str(round(damage)))
@@ -229,8 +238,11 @@ class TabUnitEditor(CommonClass.Tab):
         self.labelsStats[5].set(str(weight))
         self.labelsStatsUpgraded[5].set(str(weightUpgr))
         # Gold
-        self.labelsStats[6].set(str(gold))
-        self.labelsStatsUpgraded[6].set(str(UnitStats.roundGold(gold*4/3)))        
+        gold2=UnitStats.calculateGold(gold,1,int(self.centerFieldsEntry[2].get()),rareResource[self.centerFieldsEntry[3].get()])
+        goldUpgr=UnitStats.calculateGold(gold,1+int(self.centerFieldsEntry[6].get())/100,int(self.centerFieldsEntry[2].get()),rareResource[self.centerFieldsEntry[3].get()])
+        
+        self.labelsStats[6].set(str(gold2))
+        self.labelsStatsUpgraded[6].set(str(goldUpgr))      
         # Attack Speed
         self.labelsStats[7].set(attackSpeed)
         self.labelsStatsUpgraded[7].set(attackSpeedUpgr)
@@ -284,10 +296,10 @@ class TabUnitEditor(CommonClass.Tab):
 
         self.specialsFieldsEntry=[]
         
-        self.specialsFieldsEntry+=[UnitUtils.FieldAttackRange(standardField)]
+        self.specialsFieldsEntry+=[UnitUtils.FieldAttackRange(standardField,command=self.updateStats)]
         self.specialsFieldsEntry+=[UnitUtils.FieldSpell(standardField)]
-        self.specialsFieldsEntry+=[UnitUtils.FieldAbilities(standardField)]
-        self.specialsFieldsEntry+=[UnitUtils.FieldAbilitiesBis(standardField)]
+        self.specialsFieldsEntry+=[UnitUtils.FieldAbilities(standardField,command=self.updateStats)]
+        self.specialsFieldsEntry+=[UnitUtils.FieldAbilitiesBis(standardField,command=self.updateStats)]
 
     def onCheckBoxChange(self):
         if(self.checkBoxVar[0].get()==0):

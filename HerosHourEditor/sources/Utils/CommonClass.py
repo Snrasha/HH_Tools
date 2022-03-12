@@ -37,6 +37,7 @@ class Field(ttk.Frame):
         ttk.Frame.__init__(self,master)
         self.pack(fill=tk.BOTH,side=side,padx=(1,1),pady=(1,1))
         self.titleField=titleField
+        
         if(titleField!=None):
             label=ttk.Label(self,text=titleField)
         if(width!=None):
@@ -49,6 +50,7 @@ class Field(ttk.Frame):
 
         if(hintField!=None):
             self.set(hintField)
+
     def get(self):
         return self.entry.get()
     def set(self,text):

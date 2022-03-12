@@ -74,7 +74,7 @@ def loadAttackRange(li):
 
 
 class FieldAttackRange(CommonClass.Field):
-    def __init__(self,master,side=tk.TOP,**kwargs):
+    def __init__(self,master,side=tk.TOP,command=None,**kwargs):
         CommonClass.Field.__init__(self,master,"Attack Range",width=10)
         self.entry.bind("<Button-1>",self.onEnter)
         
@@ -83,7 +83,7 @@ class FieldAttackRange(CommonClass.Field):
         self.entryUnUpgr=tk.Entry(self, font='bold',width=10)
         self.entryUnUpgr.pack(side=tk.RIGHT,padx=5)
         self.entryUnUpgr.bind("<Button-1>",self.onEnter)
-        
+        self.command=command
         self.params=["Melee","None"]
         self.paramsUpgr=["Melee","None"]
         self.set(self.params[0])
@@ -99,7 +99,7 @@ class FieldAttackRange(CommonClass.Field):
     def onEnter(self,event):
         self.entry.configure(state=tk.DISABLED)
         self.entryUnUpgr.configure(state=tk.DISABLED)
-        AttackRangePopup(self,"Attack Range",event.x_root,event.y_root)
+        AttackRangePopup(self,"Attack Range",command,event.x_root,event.y_root)
 
     def getParams(self):
         return (self.params,self.paramsUpgr)
@@ -117,7 +117,7 @@ class FieldAttackRange(CommonClass.Field):
         self.entryUnUpgr.insert(0,text)
         
 class AttackRangePopup(CommonClass.Popup):
-    def __init__(self,field,title,x,y):
+    def __init__(self,field,title,command,x,y):
         height=250
         if(field.neutral==1):
             height=150
@@ -135,6 +135,7 @@ class AttackRangePopup(CommonClass.Popup):
         self.attackmenu=CommonClass.OptionMenu(frame,"Attack Range:",attacks,tooltipAttack,command=self.attack_changed)
         self.projmenu=CommonClass.OptionMenu(frame,"Projectile:",self.projs,tooltipProjec,command=self.proj_changed)
         self.customProj=CommonClass.Field(frame,titleField="Custom Proj:",hintField="")
+        self.command=command
 
 
         self.attackmenu.set(self.params[0])
@@ -216,9 +217,11 @@ class AttackRangePopup(CommonClass.Popup):
 
         
         self.field.setParams(params,paramsUpgr)
+        if(self.command!=None):
+            self.command()
         self.destroy()
 class FieldTripleList(CommonClass.Field):
-    def __init__(self,master,side=tk.TOP,title="",**kwargs):
+    def __init__(self,master,side=tk.TOP,command=None,title="",**kwargs):
         CommonClass.Field.__init__(self,master,title,width=10)
         self.entry.bind("<Button-1>",self.onEnter)
         label=ttk.Label(self,text="Upg.")
@@ -226,6 +229,7 @@ class FieldTripleList(CommonClass.Field):
         self.entryUnUpgr=tk.Entry(self, font='bold',width=10)
         self.entryUnUpgr.pack(side=tk.RIGHT,padx=5)
         self.entryUnUpgr.bind("<Button-1>",self.onEnter)
+        self.command=command
         
         self.params=[]
         self.paramsUpgr=[]
@@ -266,13 +270,14 @@ class FieldTripleList(CommonClass.Field):
 
         
 class PopupTripleList(CommonClass.Popup):
-    def __init__(self,field,title,x,y,values,textMore="",unlimited=False):
+    def __init__(self,field,title,x,y,values,textMore="",unlimited=False,command=None):
         width=800
         if(field.neutral==1):
             width=600
             
         CommonClass.Popup.__init__(self,field,title,x,y,width=width,height=200)
         self.field=field
+        self.command=command
 
         self.values=values
         self.unlimited=unlimited
@@ -430,6 +435,8 @@ class PopupTripleList(CommonClass.Popup):
         self.field.entryUnUpgr.configure(state=tk.NORMAL)
 
         self.field.setParams(self.params,self.paramsUpgr)
+        if(self.command!=None):
+            self.command()
         self.destroy()
         
 class FieldSpell(FieldTripleList):
@@ -441,19 +448,19 @@ class SpellsPopup(PopupTripleList):
     def __init__(self,field,title,x,y):
         PopupTripleList.__init__(self,field,title,x,y,CommonFunctions.readSpells())
 class FieldAbilities(FieldTripleList):
-    def __init__(self,master,side=tk.TOP,**kwargs):
-        FieldTripleList.__init__(self,master,side,title="Abilities")
+    def __init__(self,master,side=tk.TOP,command=None,**kwargs):
+        FieldTripleList.__init__(self,master,side,title="Abilities",command=command)
     def onEnterPost(self,event):
-        AbilitiesPopup(self,"Abilities",event.x_root,event.y_root)
+        AbilitiesPopup(self,"Abilities",event.x_root,event.y_root,command=self.command)
 class AbilitiesPopup(PopupTripleList):
-    def __init__(self,field,title,x,y):
-        PopupTripleList.__init__(self,field,title,x,y,CommonFunctions.readAbilities(),tooltipMore,True)
+    def __init__(self,field,title,x,y,command):
+        PopupTripleList.__init__(self,field,title,x,y,CommonFunctions.readAbilities(),tooltipMore,True,command=command)
         
 class FieldAbilitiesBis(FieldTripleList):
-    def __init__(self,master,side=tk.TOP,**kwargs):
-        FieldTripleList.__init__(self,master,side,title="Technical Abilities")
+    def __init__(self,master,side=tk.TOP,command=None,**kwargs):
+        FieldTripleList.__init__(self,master,side,title="Technical Abilities",command=command)
     def onEnterPost(self,event):
-        AbilitiesBisPopup(self,"Technical Abilities",event.x_root,event.y_root)
+        AbilitiesBisPopup(self,"Technical Abilities",event.x_root,event.y_root,command=self.command)
 class AbilitiesBisPopup(PopupTripleList):
-    def __init__(self,field,title,x,y):
-        PopupTripleList.__init__(self,field,title,x,y,CommonFunctions.readAbilitiesBis(),tooltipMore,True)
+    def __init__(self,field,title,x,y,command):
+        PopupTripleList.__init__(self,field,title,x,y,CommonFunctions.readAbilitiesBis(),tooltipMore,True,command=command)

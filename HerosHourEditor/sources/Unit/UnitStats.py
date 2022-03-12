@@ -14,8 +14,36 @@ import random
 
 def roundGold(gold):
     return int(round(gold/5.))*5
+def round2(val):
+    return int(round(gold/2.))*2
 def calculateCost(rank):
     return round(15*(1+0.5*(rank**2)+0.1*(rank**3)))*5
+def calculatePower(gold,rank,upgr):
+    v = max(1,round(gold/75))
+    if upgr:
+        v = math.floor(v*1.15)
+    if rank >= 5.5:
+        v -= rank-4.5
+    v -= (v-10)/ 5
+    if v > 50:
+        v = 50+(v-50)**.75
+    if v >= 35:
+        v=roundGold(v)
+    elif v > 10:
+        v=round2(v)
+    return(v)
+
+def calculateGold(gold,percent,numberRes,res):
+    goldUpgr=gold*percent
+    goldUpgr=roundGold(goldUpgr)
+    if(res=="L" or res=="O"):
+        goldUpgr-=numberRes*100
+    else:
+        goldUpgr-=numberRes*200
+    if(goldUpgr<0):
+        goldUpgr=0
+    return goldUpgr
+        
     
 def calculateRank(gold):
     rank=0
@@ -36,17 +64,21 @@ def calculateRank(gold):
 def calculateRankStrength(rank):
     return (math.ceil(rank+1)+(max(rank,0)**1.25)*.8+2-rank/4)
 def calculateHealth(rankStrength):
-    return round(5*(rankStrength**1.5)+5,1)
+    return roundDec1(5*(rankStrength**1.5)+5)
 def calculateDamage(rankStrength):
-    return round(1.5*(rankStrength)+1,1)
+    return roundDec1(1.5*(rankStrength)+1)
 def calculateSize(rank):
-    return round(max(1,1+math.floor(rank*.6)/3),1)
+    return roundDec1(max(1,1+math.floor(rank*.6)/3))
 def calculateAttackRange(size):
-    return round(20*size,1)
+    return roundDec1(20*size)
 def calculateSpeed(size):
-    return round(20*size*.125,1)
+    return roundDec1(20*size*.125)
 def calculateWeight(rank):
-    return abs(round(rank,1))
+    return abs(roundDec1(rank))
+
+def roundDec1(v):
+    return round(v,1)
+    
 
 ##def calculatePower(rank):
 ##    return (math.ceil(rank)*1.5+2)
@@ -170,7 +202,7 @@ def calculateAbilities(abilities,attackrange,weight,knockback,damage,health,spee
             mdamage *= .8
             continue             
             
-    return (attackSpeed1+attackSpeed2,attackrange,weight,knockback,damage*mdamage,health*mhealth,speed*mspeed,size)
+    return (attackSpeed1+attackSpeed2,roundDec1(attackrange),roundDec1(weight),roundDec1(knockback),damage*mdamage,health*mhealth,roundDec1(speed*mspeed),roundDec1(size))
         
 
 ##			case "Wide Attacks": atw += 3 ; damage *= .85 ; mhealth *= .85 ; addicon(mii_aoe,7) ; break; 
