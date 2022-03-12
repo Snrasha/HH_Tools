@@ -41,9 +41,7 @@ On open, you will have differents tabs. Click on these tabs for switching of edi
   * **Town names**: Look the description popup.
 
 ### Unit Tab
-Currently lacking:
-**Stats**: Lack of the balance modifier, the gold cost upgrade, qew rare abilities link and the power.
-**Button**: Lack of a button for update the stats.
+Description to add. If someone wish to do it.
 
 ## Unit Animation Tool
 I do not own this tool, this is from HH. I keep it here like a tool.
