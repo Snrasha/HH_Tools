@@ -876,10 +876,6 @@
    'c:\\users\\guillaume '
    'willefert\\appdata\\local\\programs\\python\\python39\\lib\\ast.py',
    'PYMODULE'),
-  ('tracemalloc',
-   'c:\\users\\guillaume '
-   'willefert\\appdata\\local\\programs\\python\\python39\\lib\\tracemalloc.py',
-   'PYMODULE'),
   ('bz2',
    'c:\\users\\guillaume '
    'willefert\\appdata\\local\\programs\\python\\python39\\lib\\bz2.py',
@@ -887,6 +883,10 @@
   ('stringprep',
    'c:\\users\\guillaume '
    'willefert\\appdata\\local\\programs\\python\\python39\\lib\\stringprep.py',
+   'PYMODULE'),
+  ('tracemalloc',
+   'c:\\users\\guillaume '
+   'willefert\\appdata\\local\\programs\\python\\python39\\lib\\tracemalloc.py',
    'PYMODULE'),
   ('_py_abc',
    'c:\\users\\guillaume '

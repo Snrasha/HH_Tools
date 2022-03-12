@@ -255,7 +255,7 @@ class ModsField(ttk.Frame):
         self.listbox1.pack(side=tk.TOP,padx=5,pady=5)
         
         label=ttk.Label(frame2,text="Mods enabled")
-        label.pack(fill=tk.BOTH,side=tk.TOP,padx=5,pady=5)
+        label.pack(side=tk.TOP,padx=5,pady=5)
         self.listbox2 = tk.Listbox(frame2)
         self.listbox2.pack(fill=tk.BOTH,side=tk.TOP,padx=5,pady=5,expand=True)
         button=ttk.Button(frame3,text="Save",command=self.onClick)
@@ -305,8 +305,8 @@ def checkIfInputField(compare):
            compare == ttk.Entry)
 
 description="Do not install mods you already installed via the Steam Workshop."\
-            "\nMods from Steam will not appear here."\
-            "\nHH Steam Path: Program Files/Steam/steamapps/common/Hero's Hour."\
+            "\n\nMods from Steam will not appear here."\
+            "\n\nHH Steam Path: Program Files/Steam/steamapps/common/Hero's Hour."\
             
 class Application(ttk.Frame):
     def  __init__(self,window):
@@ -362,8 +362,8 @@ class Application(ttk.Frame):
         frame4=ttk.Frame(frame2,borderwidth=1,relief="sunken",padding=(5,5))
         frame4.pack(fill=tk.BOTH,side=tk.RIGHT,padx=(3,3),pady=(3,3),expand=True)
         
-        label=ttk.Label(frame4,text=description)
-        label.pack(side=tk.TOP,padx=5,pady=5)
+        label=ttk.Label(frame4,text=description,wraplength=300)
+        label.pack(fill=tk.BOTH,side=tk.TOP,padx=5,pady=5)
         
         self.mf=ModsField(frame3,self.folderModField)
         self.mf.pack(fill=tk.BOTH,side=tk.LEFT)
