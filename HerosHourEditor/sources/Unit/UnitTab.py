@@ -411,7 +411,7 @@ class TabUnitEditor(CommonClass.Tab):
                         self.centerFieldsEntry[3].set(rareResourceEdit[answer[1]])
                     else:
                         self.centerFieldsEntry[2].set("0")
-                        self.centerFieldsEntry[3].set("O")
+                        self.centerFieldsEntry[3].set("Ore")
                     filled+=[fields[3]]
                 continue
             # Balance modifier

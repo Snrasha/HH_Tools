@@ -85,6 +85,7 @@ class Application(ttk.Notebook):
         tab = event.widget.tab('current')["text"]
         
         self.changeTab(tab[-2])
+        self.window.focus()
 
 
     # Switch the tab and disable key listener of the old tab and enable for the new tab.
@@ -127,6 +128,6 @@ class Windows(tk.Tk):
         
 
 if __name__ == '__main__':
-    CommonFunctions.writeAllData()
+##    CommonFunctions.writeAllData()
     windows = Windows()
     windows.mainloop()
