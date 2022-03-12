@@ -28,10 +28,9 @@ def askSaveFile(oldFilename):
     return filename
 
 def getImages(pathUnit,choice):
-    images=[]
-    gameImage=Image.new("RGBA", (24, 24), (0, 0, 0, 0))
-    
+    images=[]    
     image=Image.open(pathUnit)
+    image=image.convert('RGBA')
     w=image.size[0]
     h=image.size[1]
     pixels = image.load()
@@ -151,8 +150,8 @@ class Application(ttk.Frame):
 ## Windows with the settings and title.
 class Windows(tk.Tk):
     def __init__(self):
+        
         super().__init__()
-
         # root window
         self.title("Hero's Hour Tool Animation")
         self.geometry("350x80+300+300")
