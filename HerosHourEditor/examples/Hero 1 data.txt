@@ -1,9 +1,0 @@
-Name
-Jack Frost
-
-Unit
-Abominable
-
-Skills
-Healing
-Diplomacy

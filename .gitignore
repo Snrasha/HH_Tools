@@ -1,6 +1,7 @@
 *.gif
 *.zip
 *.exe
+*/__pycache__
 HerosHourEditor/build
 HHModManager/build
 AnimationTool/build

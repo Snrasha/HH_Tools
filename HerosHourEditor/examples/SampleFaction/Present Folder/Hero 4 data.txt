@@ -1,9 +1,0 @@
-Name
-Mischief
-
-Unit
-Mimic
-
-Skills
-Hydromancy
-Destruction

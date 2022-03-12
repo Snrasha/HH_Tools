@@ -3,6 +3,7 @@
   - Create the mod manager
   - Add stats on unit Editor
   - Fix typo and wrap length of the desc
+  - Create a tool animation for unit and hero
 
 10/03/2022:
   - Abilities can be infinite.
