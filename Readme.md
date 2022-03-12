@@ -43,9 +43,12 @@ On open, you will have differents tabs. Click on these tabs for switching of edi
 ### Unit Tab
 Description to add. If someone wish to do it.
 
-## Unit Animation Tool
+## Animation Tool
+Unit:
 Transform your 20 frames to a gif-alike in HH game. Will add multiples loop of walk, idle, hurt, attack.
 Option with a death animation without looping.
+Hero:
+Create a long gif with 3 times each animation.
 
 ## HH Mod Manager
 For Itch, Gog or Steam, you can easily install your mod with this tool.
