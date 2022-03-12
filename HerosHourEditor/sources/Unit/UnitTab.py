@@ -7,6 +7,7 @@ import Utils.CommonClass as CommonClass
 import Utils.CommonFunctions as CommonFunctions
 import Utils.ToolTipFactory as ToolTipFactory
 import Unit.UnitUtils as UnitUtils
+import Unit.UnitStats as UnitStats
 
 
 fields=["Names","Gold cost for base unit","Weekly Growth",
@@ -47,6 +48,7 @@ class TabUnitEditor(CommonClass.Tab):
         self.initMiddleFrame()
 
         self.initRightFrame()
+        self.updateStats()
 
     def initMiddleFrame(self):
         middleFrame=ttk.Frame(self)
@@ -121,7 +123,7 @@ class TabUnitEditor(CommonClass.Tab):
         self.labels[6].set("Gold")
         self.labels[5].set("Weight")
         self.labels[7].set("Attack Speed")
-        self.labels[8].set("Weekly Growth Max")
+        self.labels[8].set("Attack Range")
         self.labels[9].set("Knockback")
         
         frame3=ttk.Frame(frameStat,padding=(5,0))
@@ -139,6 +141,8 @@ class TabUnitEditor(CommonClass.Tab):
             label.pack(side=tk.LEFT,fill=tk.BOTH)
             label.set("0")
             self.labelsStatsUpgraded+=[label]
+
+        
         
     def validate(self, action, index, value_if_allowed,
                        prior_value, text, validation_type, trigger_type, widget_name):
@@ -159,44 +163,83 @@ class TabUnitEditor(CommonClass.Tab):
             return int(value)
         
     def updateStats(self):
-        None
+        attacktype,attacktypeUpgr=self.specialsFieldsEntry[0].getParams()
+        
+        abilities,abilitiesUpgr=self.specialsFieldsEntry[2].getParams()
+        abilities=UnitUtils.getAttackRangeList(attacktype)+abilities
+        abilitiesUpgr=UnitUtils.getAttackRangeList(attacktypeUpgr)+abilitiesUpgr
 
-##        gold=self.toInt(self.centerFieldsEntry[0].get())
-##        balanceStat1=self.toInt(self.centerFieldsEntry[4].get())/100.
-##
-##        balanceStat2=1.16*self.toInt(self.centerFieldsEntry[5].get())/100.
-##        if(self.checkBoxVar[0].get()==1):
-##            balanceStat2*=0
-##
+        abilitiesBis,abilitiesUpgrBis=self.specialsFieldsEntry[3].getParams()
+        abilities+=abilitiesBis
+        abilitiesUpgr+=abilitiesUpgrBis
+
+        gold=self.toInt(self.centerFieldsEntry[0].get())
+        gold=UnitStats.roundGold(gold)
+        self.centerFieldsEntry[0].set(gold)
+
+        
+
+        rank=UnitStats.calculateRank(gold)
+        
+        balanceStat1=self.toInt(self.centerFieldsEntry[4].get())/100.
+        balanceStat2=self.toInt(self.centerFieldsEntry[5].get())/100.
+        
+        if(self.checkBoxVar[0].get()==1):
+            balanceStat2*=0
+        rankStrength=UnitStats.calculateRankStrength(rank)
+
+        damage=UnitStats.calculateDamage(rankStrength)*balanceStat1
+        damageUpgr=UnitStats.calculateDamage(rankStrength*1.16)*balanceStat2
+        health=UnitStats.calculateHealth(rankStrength)*balanceStat1
+        healthUpgr=UnitStats.calculateHealth(rankStrength*1.16)*balanceStat2
+        size=UnitStats.calculateSize(rank)
+        sizeUpgr=UnitStats.calculateSize(rank)
+        speed=UnitStats.calculateSpeed(size)
+        speedUpgr=UnitStats.calculateSpeed(sizeUpgr)
+        speed=UnitStats.calculateSpeed(size)
+        speedUpgr=UnitStats.calculateSpeed(sizeUpgr)
+        weight=UnitStats.calculateWeight(rank)
+        weightUpgr=UnitStats.calculateWeight(rank)
+        attackSpeed="1.3s"
+        attackSpeedUpgr="1.3s"
+        attackRange=UnitStats.calculateAttackRange(size)
+        attackRangeUpgr=UnitStats.calculateAttackRange(sizeUpgr)
+        knockback=weight
+        knockbackUpgr=weightUpgr
+        attackSpeed,attackRange,weight,knockback,damage,health,speed,size=UnitStats.calculateAbilities(abilities,attackRange,weight,knockback,damage,health,speed,size)
+        attackSpeedUpgr,attackRangeUpgr,weightUpgr,knockbackUpgr,damageUpgr,healthUpgr,speedUpgr,sizeUpgr=UnitStats.calculateAbilities(abilitiesUpgr,attackRangeUpgr,weightUpgr,knockbackUpgr,damageUpgr,healthUpgr,speedUpgr,sizeUpgr)
 ##        #Power
 ##        power=2
 ##        self.labelsStats[0].set(str(power*balanceStat1))
 ##        self.labelsStatsUpgraded[0].set(str(power*balanceStat2))
-##        #Damage
-##        damage=5.5
-##        self.labelsStats[1].set(str(power*balanceStat1))
-##        self.labelsStatsUpgraded[1].set(str(power*balanceStat2))
-##        #Health
-##        health=31.0
-##        self.labelsStats[2].set(str(power*balanceStat1))
-##        self.labelsStatsUpgraded[2].set(str(power*balanceStat2))
-##        # Size
-##        size=3
-##        if(power>21):
-##            size=6
-##        elif (power>9):
-##            size=5
-##        elif (power>5):
-##            size=4
-##        self.labelsStats[3].set(str(size))
-##        self.labelsStatsUpgraded[3].set(str(size))
-##        # Speed
-##        speed=(0.1*(size/3)*50)
-##        self.labelsStats[4].set(str(speed))
-##        self.labelsStatsUpgraded[4].set(str(speed))
         
-        
-
+        #Damage
+        self.labelsStats[1].set(str(round(damage)))
+        self.labelsStatsUpgraded[1].set(str(round(damageUpgr)))
+        #Health
+        self.labelsStats[2].set(str(round(health)))
+        self.labelsStatsUpgraded[2].set(str(round(healthUpgr)))
+        # Size
+        self.labelsStats[3].set(str(size))
+        self.labelsStatsUpgraded[3].set(str(sizeUpgr))
+        # Speed
+        self.labelsStats[4].set(str(speed))
+        self.labelsStatsUpgraded[4].set(str(speedUpgr))
+        # Weight
+        self.labelsStats[5].set(str(weight))
+        self.labelsStatsUpgraded[5].set(str(weightUpgr))
+        # Gold
+        self.labelsStats[6].set(str(gold))
+        self.labelsStatsUpgraded[6].set(str(UnitStats.roundGold(gold*4/3)))        
+        # Attack Speed
+        self.labelsStats[7].set(attackSpeed)
+        self.labelsStatsUpgraded[7].set(attackSpeedUpgr)
+        # Attack Range
+        self.labelsStats[8].set(str(attackRange))
+        self.labelsStatsUpgraded[8].set(str(attackRangeUpgr))
+        # Knockback
+        self.labelsStats[9].set(str(knockback))
+        self.labelsStatsUpgraded[9].set(str(knockbackUpgr))
 
     def initRightFrame(self):
         rightFrame=ttk.Frame(self)

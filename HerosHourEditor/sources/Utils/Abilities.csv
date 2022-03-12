@@ -43,7 +43,6 @@ Death Strike;This creature summons a Skeleton for every enemy struck by its atta
 Charm;Enemies struck by this creature that have low health may become charmed. Charmed creatures will join to fight for your side for the rest of the battle and will not return to their original owner.
 Rebirth;The first time this creature dies, it will return to life after some seconds. It is reborn in an explosion of fire.
 Aquatic;This creature is aquatic in nature. If knocked off a boat, it will re-enter combat unscathed.
-Caster;This creature is able to cast spells. It will group together with other creatures of the same type to cast larger spells.
 Bodyguards;At the start of battle, this creature summons two <UNITNAMES>.
 Blood Aura;When nearby friendly creatures die, this creature becomes larger, deals more damage and gets more health.
 Resurrection;This creature is able to resurrect some friendly creatures that have died close to it. This works similar to the First Aid tent.

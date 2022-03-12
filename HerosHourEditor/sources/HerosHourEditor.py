@@ -127,6 +127,6 @@ class Windows(tk.Tk):
         
 
 if __name__ == '__main__':
-##    CommonFunctions.writeAllData()
+    CommonFunctions.writeAllData()
     windows = Windows()
     windows.mainloop()

@@ -1,7 +1,10 @@
-For unit, todo:
--> For abilities, check if compatible between them. Re-order them too.
-      -> Example: Blaster, only compatible if Ranged.
 
+12/03/2022:
+  - Add stats where i can.
+
+10/03/2022:
+  - Abilities can be infinite.
+  - Disable unusable neutral field
 09/03/2022:
   - Finish the unit tab without stats.
 
