@@ -10,7 +10,7 @@ tooltipAttack="Set the range of the attack. Tower give infinite range but become
 
 attacks={"Melee":"This creature do melee attack","Ranged":"This creature is able to fire a projectile, damaging enemies at a distance.It deals half its normal damage in melee combat,and there is an area where units are too close for ranged attacks and too far for melee attacks.","Long Ranged":"This creature's ranged attacks can strike enemies further away than other ranged creatures would","Short Ranged":"This creature's ranged attacks have a shorter range than other ranged creatures, but can also hit enemies closer to them","Tower":"This creature is unable to move but has infinite range"}
 
-tooltipSpell="Double click for add/remove.\n Left/Right or click list for select it. Ctrl for all list."
+tooltipSpell="Double click to add/remove.\n Left/Right or click list for select it. Ctrl for all list."
 tooltipSpellNeutral="Double click for add/remove."
 tooltipMore="\nA infinite number of these abilities can be put."
 
@@ -324,7 +324,7 @@ class PopupTripleList(CommonClass.Popup):
         
         self.labelDesc=ttk.Label(frame3,justify=tk.CENTER)
         self.labelDesc.pack(side=tk.TOP,fill=tk.Y,expand=True,padx=5,pady=5)
-        self.labelDesc.config(wraplength=200)
+        self.labelDesc.config(wraplength=300)
         if(self.field.neutral==0):
             self.labelDesc.configure(text=tooltipSpell+textMore)
         else:
