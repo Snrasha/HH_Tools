@@ -4,15 +4,16 @@ import Utils.CommonFunctions as CommonFunctions
 import Utils.CommonClass as CommonClass
 import Utils.ToolTipFactory as ToolTipFactory
 
-tooltipProjec="Projectiles used per the unit. Bullet Projectile is straight line."
+tooltipProjec="Projectiles used per the unit. Bullet Projectile is a straight line."
 
-tooltipAttack="Set the range of the attack. Tower give infinite range but become immobile"
+tooltipAttack="Set the range of the attack. Tower gives infinite range but the unit becomes immobile"
 
 attacks={"Melee":"This creature do melee attack","Ranged":"This creature is able to fire a projectile, damaging enemies at a distance.It deals half its normal damage in melee combat,and there is an area where units are too close for ranged attacks and too far for melee attacks.","Long Ranged":"This creature's ranged attacks can strike enemies further away than other ranged creatures would","Short Ranged":"This creature's ranged attacks have a shorter range than other ranged creatures, but can also hit enemies closer to them","Tower":"This creature is unable to move but has infinite range"}
 
-tooltipSpell="Double click to add/remove.\n Left/Right or click list for select it. Ctrl for all list."
-tooltipSpellNeutral="Double click for add/remove."
-tooltipMore="\nA infinite number of these abilities can be put."
+
+tooltipSpell="Double click to add/remove.\nLeft/Right click ability on the list to select it. Ctrl for entire list."
+tooltipSpellNeutral="Double click to add/remove."
+tooltipMore="\nAn unlimited number of these abilities can be put in."
 
 color="#f2d8c1"
 

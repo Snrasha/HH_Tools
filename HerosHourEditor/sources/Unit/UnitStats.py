@@ -1,13 +1,3 @@
-##cost = ROUND(15*(1+0.5*POWER(rank,2)+0.1*POWER(rank,3)))*5
-##rankstrength = (min(rank+1)+power(max(rank,0),1.25)*.8+2-rank/4)*(upgr ? 1.16 : 1)
-##damage = 1.5*rankstrength+1
-##max health = 5*power(rankstrength,1.5)+5
-##weight = rank
-##attack power = rank
-##size = max(1,1+floor(rank*.6)/3)
-##attackrange = 20*size
-##speed = 20*size*.125
-
 import math
 import random
 

@@ -28,7 +28,9 @@ living=["-2: blight","-1: undead","0: elemental","1: living","2: humanoid","3: b
 descLiving="Specify whether the unit should be considered undead, constructed, living, etc"
 descAttack="No difference currently for aggressive and defensive. Magical is for the Hero Potency Skill"
 
-tooltipRareRes="Rare resource cost when you buy a unit\nDecrease gold cost except when you can buy only with gold"
+tooltipRareRes="Resource cost when you buy a unit\nIt decreases the gold cost of the unit by 100 for wood/ore and 200 for other resources"
+tooltipIncreaseGoldCost="Always 35% except Colony mod which is 50%"
+tooltipBalanceModifiers="version 2.0.5 and before, balance modifiers are wrong. See modding guide"
 
 tooltipSound="Press F+X in the HH main menu to bring up the list of all sounds"
 tooltipLink="Unit summoned via Summoning, Bodyguards, or similar"
@@ -79,14 +81,14 @@ class TabUnitEditor(CommonClass.Tab):
        
         self.centerFieldsEntry+=[CommonClass.Field(frame1,titleField="Balance modifier: ",hintField="100",side=tk.LEFT,width=10)]
         self.centerFieldsEntry[-1].entry.configure( validate = 'key',validatecommand = vcmd)
-        ToolTipFactory.CreateToolTip(self.centerFieldsEntry[-1].entry, text = "version 2.0.5 and before, balance modifier are wrong. See modding guide")
+        ToolTipFactory.CreateToolTip(self.centerFieldsEntry[-1].entry, text =tooltipBalanceModifiers )
         self.centerFieldsEntry+=[CommonClass.Field(frame1,titleField=None,hintField="100",side=tk.LEFT,width=10)]
         self.centerFieldsEntry[-1].entry.configure( validate = 'key',validatecommand = vcmd)
-        ToolTipFactory.CreateToolTip(self.centerFieldsEntry[-1].entry, text = "version 2.0.5 and before, balance modifier are wrong. See modding guide")
+        ToolTipFactory.CreateToolTip(self.centerFieldsEntry[-1].entry, text =tooltipBalanceModifiers )
 
         self.centerFieldsEntry+=[CommonClass.Field(frame1,titleField="Gold upgrade cost: ",hintField="35",side=tk.LEFT,width=10)]
         self.centerFieldsEntry[-1].entry.configure( validate = 'key',validatecommand = vcmd)
-        ToolTipFactory.CreateToolTip(self.centerFieldsEntry[-1].entry, text = "Always 35% except Colony mod which is 50%")
+        ToolTipFactory.CreateToolTip(self.centerFieldsEntry[-1].entry, text = tooltipIncreaseGoldCost)
 
         widthLabel=15
         
