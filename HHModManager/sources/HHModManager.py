@@ -78,7 +78,7 @@ def askZipFile():
     if(filename==None or filename.strip()==""):
         filename=None
     return filename
-def askPathDir(txt,initialdir):
+def askPathDir(txt,initialdir=None):
     filename=fd.askdirectory(initialdir=initialdir,title=txt)
     if(filename==None or filename.strip()==""):
         filename=None
@@ -155,9 +155,10 @@ class ZipField(Field):
             self.set(filename)
         self.master.focus()
 class PathField(Field):
-    def __init__(self,master,titleField,side=tk.TOP,**kwargs):
+    def __init__(self,master,titleField,modlist,side=tk.TOP,**kwargs):
         Field.__init__(self,master,titleField)
         self.entry.bind("<Button-1>",self.onEnter)
+        self.mf=modlist
         self.informations=[]
         self.modsPresent=None
         self.modsEnabled=None
@@ -165,13 +166,12 @@ class PathField(Field):
         filename=askPathDir("Select the path where install mod")
         self.setPath(filename)
 
-
     def setPath(self,filename):
-        self.set(filename)
-        if(filename!=None):
-            self.set(filename)
+        if(filename==None):
+            return
         # Check if correct folder
-        if(os.path.exists(filename+"/Hero's Hour.exe")):
+        if(filename!=None and os.path.exists(filename+"/Hero's Hour.exe")):
+            self.set(filename)
             self.entry.configure(background="green")
             directory=filename
             directory+="/mods"
@@ -183,15 +183,17 @@ class PathField(Field):
                 createModSettings(directory+"/MOD SETTINGS.txt")
             self.modsEnabled,self.informations=getModsEnabledInSettings(directory+"/MOD SETTINGS.txt")
             self.modsPresent=getAllDir(directory)
+            self.mf.update(self.modsPresent,self.modsEnabled)
         else:
             self.entry.configure(background="red")
             self.modsPresent=None
             self.modsEnabled=None
-        
+
         self.master.focus()
     def updateModsPresent(self):
-        self.modsPresent=getAllDir(directory)
+        self.modsPresent=getAllDir(self.get()+"/mods")
     def save(self):
+        
         if(self.modsEnabled!=None and self.informations!=None):
             writeModsInSettings(self.get()+"/mods/MOD SETTINGS.txt",self.modsEnabled,self.informations)
 class LocalPathField(Field):
@@ -213,12 +215,15 @@ class LocalPathField(Field):
         
     def onEnter(self,event):
         filename=askPathDir("Select the AppData/Local/Game",os.getenv('LOCALAPPDATA'))
-        if(os.path.exists(filename+"/opt.txt")):
+        
+        if(filename!=None and os.path.exists(filename+"/opt.txt")):
             self.entry.configure(background="green")
             self.customPath=filename
+            self.set(filename)
         else:
             self.entry.configure(background="red")
         self.master.focus()
+
     def getCustom(self):
         return self.customPath
     def setCustom(self,customPath):
@@ -282,14 +287,16 @@ class ModsField(ttk.Frame):
     def onClick(self):
         self.folderField.save()
         
-
     def update(self,mods,modsEnabled):
+        
         self.listbox1.delete( 0, tk.END)
-        for item in mods:
-            self.listbox1.insert( tk.END, item)
+        if(mods!=None):
+            for item in mods:
+                self.listbox1.insert( tk.END, item)
         self.listbox2.delete( 0, tk.END)
-        for item in modsEnabled:
-            self.listbox2.insert( tk.END, item)       
+        if(modsEnabled!=None):
+            for item in modsEnabled:    
+                self.listbox2.insert( tk.END, item)       
         
 
 def checkIfInputField(compare):
@@ -297,7 +304,10 @@ def checkIfInputField(compare):
            compare == tk.Entry or\
            compare == ttk.Entry)
 
-description="Do not install mods you already installed via the Steam Workshop.\nMods from Steam will not appear here."
+description="Do not install mods you already installed via the Steam Workshop."\
+            "\nMods from Steam will not appear here."\
+            "\nHH Steam Path: Program Files/Steam/steamapps/common/Hero's Hour."\
+            
 class Application(ttk.Frame):
     def  __init__(self,window):
         ttk.Frame.__init__(self,window)
@@ -330,13 +340,12 @@ class Application(ttk.Frame):
         button=ttk.Button(subframe1,text="Install",command=self.onInstall)
         button.pack(fill=tk.BOTH,side=tk.RIGHT)
 
-        self.folderModField=PathField(subframe2,"Hero's Hour Path")
+        self.folderModField=PathField(subframe2,"Hero's Hour Path",None)
         self.folderModField.pack(fill=tk.BOTH,side=tk.LEFT,expand=True)
-        self.folderModField.setPath(self.params[0])
+        
         self.localField=LocalPathField(subframe3,"Local Path")
         self.localField.pack(fill=tk.BOTH,side=tk.BOTTOM,expand=True)
 
-        self.localField.setCustom(self.params[1])
               
     
         self.checkBoxVar=tk.IntVar()
@@ -359,10 +368,14 @@ class Application(ttk.Frame):
         self.mf=ModsField(frame3,self.folderModField)
         self.mf.pack(fill=tk.BOTH,side=tk.LEFT)
 
+        self.folderModField.mf=self.mf
+        self.folderModField.setPath(self.params[0])
+        self.localField.setCustom(self.params[1])
+
         v=readIfModEnable(self.localField.get()+"/opt.txt")
         self.checkBoxVar.set(v)
 
-        self.mf.update(self.folderModField.modsPresent,self.folderModField.modsEnabled)
+##        self.mf.update(self.folderModField.modsPresent,self.folderModField.modsEnabled)
 
         
     def onCheckBoxChange(self):
@@ -383,10 +396,12 @@ class Application(ttk.Frame):
         self.window.destroy()
 
     def onInstall(self):
-        zifile=self.zipField.get()
+        
+        zifile=self.zipField.get().strip()
         directory=self.folderModField.get()
         mods=self.folderModField.modsPresent
-        if(mods==None):
+        
+        if(mods==None or len(zifile)==0):
             return
         else:
             
