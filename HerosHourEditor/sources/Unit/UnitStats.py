@@ -15,7 +15,7 @@ import random
 def roundGold(gold):
     return int(round(gold/5.))*5
 def round2(val):
-    return int(round(gold/2.))*2
+    return int(round(val/2.))*2
 def calculateCost(rank):
     return round(15*(1+0.5*(rank**2)+0.1*(rank**3)))*5
 def calculatePower(gold,rank,upgr):
@@ -24,14 +24,14 @@ def calculatePower(gold,rank,upgr):
         v = math.floor(v*1.15)
     if rank >= 5.5:
         v -= rank-4.5
-    v -= (v-10)/ 5
+    v -= math.floor((v-10)/ 5)
     if v > 50:
         v = 50+(v-50)**.75
     if v >= 35:
-        v=roundGold(v)
+        v=(round(v/5.))*5
     elif v > 10:
-        v=round2(v)
-    return(v)
+        v=(round(v/2.))*2
+    return round(v)
 
 def calculateGold(gold,percent,numberRes,res):
     goldUpgr=gold*percent

@@ -1,6 +1,6 @@
 
 12/03/2022:
-  - Add stats where i can.
+  - Add stats.
 
 10/03/2022:
   - Abilities can be infinite.
