@@ -23,7 +23,7 @@ def getAttackRangeList(params):
         if not(params[0].startswith("Rang")):
             li+=["Ranged"]
         li+=[params[0]]
-    if(params[1]!=None and params[1] != "None"):
+    if(params!=None and params[1]!=None and params[1] != "None"):
         li+=[params[1]]
     return li
 
@@ -100,16 +100,20 @@ class FieldAttackRange(CommonClass.Field):
     def onEnter(self,event):
         self.entry.configure(state=tk.DISABLED)
         self.entryUnUpgr.configure(state=tk.DISABLED)
-        AttackRangePopup(self,"Attack Range",command,event.x_root,event.y_root)
+        AttackRangePopup(self,"Attack Range",self.command,event.x_root,event.y_root)
 
     def getParams(self):
         return (self.params,self.paramsUpgr)
     def setParams(self,params,paramsUpgr):
+        
+        
         self.params=params
         self.paramsUpgr=paramsUpgr
         if(self.params!=None):
+            self.entryUnUpgr.configure(state=tk.NORMAL)
             self.set2(self.params[0].replace("anged","")+":"+self.params[1].replace("rojectile",""))  
         if(self.paramsUpgr!=None):
+            self.entry.configure(state=tk.NORMAL)
             self.set(self.paramsUpgr[0].replace("anged","")+":"+self.paramsUpgr[1].replace("rojectile",""))        
     def set2(self,text):
         self.entryUnUpgr.delete(0, tk.END)
@@ -255,10 +259,12 @@ class FieldTripleList(CommonClass.Field):
         self.params=params
         self.paramsUpgr=paramsUpgr
         if(self.params!=None):
+            self.entryUnUpgr.configure(state=tk.NORMAL)
             self.set2(str(self.params)[1:-1])
         else:
             self.set2("None")
         if(self.paramsUpgr!=None):
+            self.entry.configure(state=tk.NORMAL)
             self.set(str(self.paramsUpgr)[1:-1])
         else:
             self.set("None")

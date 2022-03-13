@@ -1,0 +1,27 @@
+Name
+Young Rover
+
+Gold cost for base unit (also decides basic strength of unit)
+75
+
+Balance modifier
+100
+
+Abilities
+Fortune
+
+Use sound effects from X unit
+Imp
+
+Attack type			(0: defensive || 1: aggressive || 2: magical (for potency))
+1
+
+Living				(-2: blight || -1: undead || 0: elemental || 1: living || 2: humanoid || 3: beast)
+2
+
+Link				(unit summoned via Summoning, Bodyguards, or similar)
+Toadfrog
+
+Unit groups
+Alliance of the Frontier
+Myriad Swarm

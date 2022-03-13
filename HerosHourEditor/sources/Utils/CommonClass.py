@@ -149,7 +149,7 @@ class Popup(tk.Toplevel):
         if(len(event.char)!=1):
             return
         if(ord(event.char)==13):
-            self.destroy()
+            self.onEscape()
             
 ##class TextPopup(Popup):
 ##    def __init__(self,frame,x,y,text):

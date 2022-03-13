@@ -498,7 +498,7 @@ class TabUnitEditor(CommonClass.Tab):
         self.specialsFieldsEntry[2].setParams(UnitUtils.loadStandardAbilities(listBaseAbilities),UnitUtils.loadStandardAbilities(listUpgrAbilities))
         self.specialsFieldsEntry[3].setParams(UnitUtils.loadAbilitiesBis(listBaseAbilities),UnitUtils.loadAbilitiesBis(listUpgrAbilities))
 
-        self.updateStats()
+        self.onCheckBoxChange()
 
     ## Found the next line to read. Ignore blank line except if stopToBlank is True
     def getNextLine(self):

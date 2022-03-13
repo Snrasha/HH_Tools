@@ -1,4 +1,10 @@
 
+13/03/2022:
+  - Fix Popup which do not save value if you press Enter
+  - Fix gray field issues.
+  - Fix Attack Range Field Error.
+
+
 12/03/2022:
   - Create the mod manager
   - Add stats on unit Editor
