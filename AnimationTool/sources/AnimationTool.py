@@ -31,17 +31,22 @@ def getImages(path,choice):
     isUnit=False
     images=[]    
     image=Image.open(path)
+    print(image)
     image=image.convert('RGBA')
     w=image.size[0]
     h=image.size[1]
+    
+    
     pixels = image.load()
     for i in range(w):
         for j in range(h):
+##            if(i<16 and j<16):
+##                print(pixels[i,j])
             if(pixels[i,j]==(0,0,0,0)):
                 pixels[i, j] =(125,125,125,255)
 ##            elif(pixels[i,j][3]!=0):
 ##                pixels[i, j] =(pixels[i, j][0],pixels[i, j][1],pixels[i, j][2],0)
-    image=image.resize((w*8, h*8),resample=Image.BOX)
+    
     w=image.size[0]
     h=image.size[1]
     cut=20
@@ -51,14 +56,17 @@ def getImages(path,choice):
     else:
         cut=32
         widthImg=w/cut
-        
-    
+    print(isUnit)
     if(widthImg<1):
-        return None
+        return (None,False)
     for i in range(0,cut):
         img=image.crop((i*widthImg,0,(i+1)*widthImg,h))
-        images+=[img]
+        img2=Image.new("RGBA", (24, 24),(125,125,125,255))
+        Image.Image.paste(img2,img,((24-img.size[0])//2,24-img.size[1]))
+        images+=[img2.resize((24*6, 24*6),resample=Image.BOX)]
+
     return (images,isUnit)
+
 
 def toGif(path,choice):
     if not(os.path.exists(path)):
@@ -106,15 +114,12 @@ def toGif(path,choice):
         for i in range(0,8):
             for c in range(0,3):
                 imgs+=directions[i]
-            
-            
-        
-        
-    image.save(fp=savePath, format='GIF',background=(125,125,125,0), append_images=imgs,
+
+    image.save(fp=savePath, format='GIF', append_images=imgs,
         save_all=True, duration=200, loop=choice[0]) 
      
 
-description="Set what you want then load a spritesheet."
+description="Set what you want then load a spritesheet.\nFor unit: do idle, walk, attack and hurt.\nIf death only, will display the death without looping.\nFor hero, will display the animation a bit much longer."
             
 class Application(ttk.Frame):
     def  __init__(self,window):
@@ -174,7 +179,7 @@ class Windows(tk.Tk):
         super().__init__()
         # root window
         self.title("Hero's Hour Tool Animation")
-        self.geometry("350x80+300+300")
+        self.geometry("400x120+300+300")
         
         app=Application(self)
         self.protocol("WM_DELETE_WINDOW", app.onClosing)
