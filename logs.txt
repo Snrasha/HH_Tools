@@ -3,6 +3,7 @@
   - Fix Popup which do not save value if you press Enter
   - Fix gray field issues.
   - Fix Attack Range Field Error.
+  - Add logo on faction editor
 
 
 12/03/2022:

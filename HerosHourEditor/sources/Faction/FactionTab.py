@@ -123,11 +123,13 @@ class TabFactionEditor(CommonClass.Tab):
 
         self.portraits=[]
 
+        
+        horFrame1=ttk.Frame(contentFolder)
+        horFrame1.pack(fill=tk.BOTH,side=tk.TOP,padx=(1,1),pady=(1,1))
+        horFrame2=ttk.Frame(contentFolder)
+        horFrame2.pack(fill=tk.BOTH,side=tk.TOP,padx=(1,1),pady=(1,1))        
 
-        horFrame=ttk.Frame(contentFolder)
-        horFrame.pack(fill=tk.BOTH,side=tk.TOP,padx=(1,1),pady=(1,1))
-
-        subhorFrame=ttk.Frame(horFrame,borderwidth=1,relief="sunken")
+        subhorFrame=ttk.Frame(horFrame1,borderwidth=1,relief="sunken")
         subhorFrame.pack(fill=tk.BOTH,side=tk.LEFT,padx=(1,1),pady=(1,1))
         label=ttk.Label(subhorFrame,text="Fighter: ")
         label.pack(fill=tk.BOTH,side=tk.LEFT)
@@ -135,19 +137,26 @@ class TabFactionEditor(CommonClass.Tab):
         for i in range(0,3):
             self.portraits+=[ttk.Label(subhorFrame)]
             CommonFunctions.setBackground(self.portraits[i],48,side=tk.LEFT)
-        subhorFrame=ttk.Frame(horFrame,borderwidth=1,relief="sunken")
+        subhorFrame=ttk.Frame(horFrame1,borderwidth=1,relief="sunken")
         subhorFrame.pack(fill=tk.BOTH,side=tk.LEFT,padx=(1,1),pady=(1,1))
         label=ttk.Label(subhorFrame,text="Caster: ")
         label.pack(fill=tk.BOTH,side=tk.LEFT)
         for i in range(3,6):
             self.portraits+=[ttk.Label(subhorFrame)]
             CommonFunctions.setBackground(self.portraits[i],48,side=tk.LEFT)
-        subhorFrame=ttk.Frame(horFrame,borderwidth=1,relief="sunken")
+        subhorFrame=ttk.Frame(horFrame2,borderwidth=1,relief="sunken")
         subhorFrame.pack(fill=tk.BOTH,side=tk.LEFT,padx=(1,1),pady=(1,1))
         self.town=ttk.Label(subhorFrame)
         label=ttk.Label(subhorFrame,text="Town: ")
         label.pack(fill=tk.BOTH,side=tk.LEFT)
-        CommonFunctions.setBackground(self.town,64,side=tk.LEFT)
+        CommonFunctions.setBackground(self.town,48,side=tk.LEFT)
+
+        subhorFrame=ttk.Frame(horFrame2,borderwidth=1,relief="sunken")
+        subhorFrame.pack(fill=tk.BOTH,side=tk.LEFT,padx=(1,1),pady=(1,1))
+        self.logo=ttk.Label(subhorFrame)
+        label=ttk.Label(subhorFrame,text="Logo: ")
+        label.pack(fill=tk.BOTH,side=tk.LEFT)
+        CommonFunctions.setBackground(self.logo,64,side=tk.LEFT)
 
     def initBuildings(self,middleFrame):
         buildFrame=ttk.LabelFrame(middleFrame,text='Dwellings', padding=(5, 5))
@@ -162,7 +171,6 @@ class TabFactionEditor(CommonClass.Tab):
         self.tiersUnitImage=[]
         self.buildingsName=[]
 
-        ToolTipFactory.CreateToolTip(self.fieldsEntry[-1].entry, text = descCheckBoxAlternativeUnit)
 
 
         for i in range(6):
@@ -177,6 +185,8 @@ class TabFactionEditor(CommonClass.Tab):
 
             checkbutton = tk.Checkbutton(frame1, variable = self.checkBoxVar[i], onvalue = 1, offvalue = 0,bg=self.bg,command=self.onCheckBoxChange)
             checkbutton.pack(side=tk.LEFT)
+            ToolTipFactory.CreateToolTip(checkbutton, text = descCheckBoxAlternativeUnit)
+
             self.checkbuttons+=[checkbutton]
             if(i in self.buildings):
                 self.checkBoxVar[i].set(1)
@@ -272,6 +282,7 @@ class TabFactionEditor(CommonClass.Tab):
             path2=pathDir+"Unit "+str(i+1)+"+ spritesheet.png"
             self.addFrameUnits(path,path2,i)
         CommonFunctions.addImage(pathDir+"Town.png",self.town,48,False,tk.LEFT)
+        CommonFunctions.addImage(pathDir+"Icon.png",self.logo,64,False,tk.LEFT)
 
 
     def addFrameUnits(self,pathUnit,pathUnitUpgraded,i):

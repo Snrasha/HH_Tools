@@ -11,11 +11,11 @@ import Unit.UnitStats as UnitStats
 
 
 fields=["Names","Gold cost for base unit","Weekly Growth",
-        "Rare Resource Cost","Balance modifier","Abilities for base unit",
+        "Rare Resource Cost","Balance modifier","Abilities",
         "Abilities for upgrade","Use sound effects from X unit","Attack type",
         "Living","Link","Unit groups"
         ]
-fieldsUp=['NAMES', 'GOLD COST FOR BASE UNIT', 'WEEKLY GROWTH', 'RARE RESOURCE COST', 'BALANCE MODIFIER', 'ABILITIES FOR BASE UNIT',
+fieldsUp=['NAMES', 'GOLD COST FOR BASE UNIT', 'WEEKLY GROWTH', 'RARE RESOURCE COST', 'BALANCE MODIFIER', 'ABILITIES',
  'ABILITIES FOR UPGRADE', 'USE SOUND EFFECTS FROM X UNIT', 'ATTACK TYPE', 'LIVING', 'LINK', 'UNIT GROUPS']
 
 rareResource={"Ore":"O", "Lumber":"L", "Sulphur":"S", "Crystal":"C","Mercury":"M"}
@@ -353,6 +353,8 @@ class TabUnitEditor(CommonClass.Tab):
         self.framesUnitImage[i]=image
     def defaultImg(self):
         return Image.new("RGBA", (24, 24), (0, 0, 0, 255))
+
+    
     
     ## Open a existing file for edit it.
     def editFile(self):
@@ -566,23 +568,25 @@ class TabUnitEditor(CommonClass.Tab):
         file1.write(fields[inc]+"\n")
         inc+=1
         li=UnitUtils.getAttackRangeList(attackrange)
-        li+=UnitUtils.getSpellList(spells)
         li+=abilities
         li+=abilitiesBis
+        li+=UnitUtils.getSpellList(spells)
         for item in li:
             file1.write(item+"\n")            
         file1.write("\n")
         
         if(notneutral):
             file1.write(fields[inc]+"\n")
-            inc+=1
+            
             li=UnitUtils.getAttackRangeList(attackrangeUpgr)
-            li+=UnitUtils.getSpellList(spellsUpgr)
             li+=abilitiesUpgr
             li+=abilitiesUpgrBis
+            li+=UnitUtils.getSpellList(spellsUpgr)
+
             for item in li:
                 file1.write(item+"\n")
             file1.write("\n")
+        inc+=1
 
         # Sound
         file1.write(fields[inc]+"\n")

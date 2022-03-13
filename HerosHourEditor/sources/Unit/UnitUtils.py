@@ -37,9 +37,13 @@ def getSpellList(params):
 def loadSpell(li):
     param=[]
     spells=CommonFunctions.readSpells()
+    hasCaster=False
     for item in li:
-        if item in spells:
-            param+=[item]
+        if(item.startswith("Caster")):
+            hasCaster=True
+        if(hasCaster):     
+            if item in spells:
+                param+=[item]
     return param
 def loadStandardAbilities(li):
     param=[]

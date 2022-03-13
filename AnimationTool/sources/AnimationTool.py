@@ -31,24 +31,13 @@ def getImages(path,choice):
     isUnit=False
     images=[]    
     image=Image.open(path)
-    print(image)
     image=image.convert('RGBA')
     w=image.size[0]
     h=image.size[1]
-    
-    
-    pixels = image.load()
-    for i in range(w):
-        for j in range(h):
-##            if(i<16 and j<16):
-##                print(pixels[i,j])
-            if(pixels[i,j]==(0,0,0,0)):
-                pixels[i, j] =(125,125,125,255)
-##            elif(pixels[i,j][3]!=0):
-##                pixels[i, j] =(pixels[i, j][0],pixels[i, j][1],pixels[i, j][2],0)
-    
-    w=image.size[0]
-    h=image.size[1]
+    alpha = image.split()[3]
+    mask = Image.eval(alpha, lambda a: 255 if a <=128 else 0)
+    image = image.convert('RGB').convert('P', palette=Image.ADAPTIVE, colors=255)
+    image.paste(255, mask)
     cut=20
     widthImg=w/cut
     if(widthImg==round(widthImg)):
@@ -56,15 +45,17 @@ def getImages(path,choice):
     else:
         cut=32
         widthImg=w/cut
-    print(isUnit)
     if(widthImg<1):
         return (None,False)
+    c=image.getpalette()[-1]
+    
     for i in range(0,cut):
         img=image.crop((i*widthImg,0,(i+1)*widthImg,h))
-        img2=Image.new("RGBA", (24, 24),(125,125,125,255))
+        img2=Image.new("P", (24, 24),255)
+        img2.putpalette(image.getpalette())
         Image.Image.paste(img2,img,((24-img.size[0])//2,24-img.size[1]))
-        images+=[img2.resize((24*6, 24*6),resample=Image.BOX)]
-
+        img2=img2.resize((24*6, 24*6),resample=Image.BOX)
+        images+=[img2]
     return (images,isUnit)
 
 
@@ -78,8 +69,6 @@ def toGif(path,choice):
     savePath=askSaveFile(path)
     if(savePath==None):
         return None
-    image=imgs[0]
-    
 
     if(isUnit):
         idleAnim=[imgs[i] for i in range(0,4)]
@@ -114,10 +103,10 @@ def toGif(path,choice):
         for i in range(0,8):
             for c in range(0,3):
                 imgs+=directions[i]
+    imgs[0].save(fp=savePath, format='GIF', append_images=imgs[1:],
+        save_all=True, duration=200, loop=choice[0],transparency=255, disposal=2,optimize=False) 
 
-    image.save(fp=savePath, format='GIF', append_images=imgs,
-        save_all=True, duration=200, loop=choice[0]) 
-     
+#transparency=255, disposal=2,optimize=False) 
 
 description="Set what you want then load a spritesheet.\nFor unit: do idle, walk, attack and hurt.\nIf death only, will display the death without looping.\nFor hero, will display the animation a bit much longer."
             
