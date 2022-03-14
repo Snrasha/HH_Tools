@@ -108,6 +108,7 @@ def madeBackUp(backupname,filename):
 ## For hero portrait, we add black outline around each pixel.
 def addBlackOutline(path):
     image=Image.open(path)
+    image=image.convert('RGBA')
     w=image.size[0]
     h=image.size[1]
     gameImage=Image.new("RGBA", (w, h), (0, 0, 0, 0)) 
@@ -160,6 +161,7 @@ def addImage(path,label,size,outline=False,side=tk.TOP):
             image = addBlackOutline(path)
         else:
             image=Image.open(path)
+            image=image.convert('RGBA')
         n_image = image.resize((size, size),resample=Image.BOX)
         photo = ImageTk.PhotoImage(n_image)
         setImage(label,photo,side)

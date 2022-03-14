@@ -103,8 +103,15 @@ def toGif(path,choice):
         for i in range(0,8):
             for c in range(0,3):
                 imgs+=directions[i]
-    imgs[0].save(fp=savePath, format='GIF', append_images=imgs[1:],
-        save_all=True, duration=200, loop=choice[0],transparency=255, disposal=2,optimize=False) 
+
+    if(choice[0]==1):
+        imgs[0].save(fp=savePath, format='GIF', append_images=imgs[1:],
+        save_all=True, duration=200, transparency=255, disposal=2,optimize=False) 
+    else:
+        imgs[0].save(fp=savePath, format='GIF', append_images=imgs[1:],
+        save_all=True, duration=200, loop=0,transparency=255, disposal=2,optimize=False) 
+    
+    
 
 #transparency=255, disposal=2,optimize=False) 
 
