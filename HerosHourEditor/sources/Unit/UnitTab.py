@@ -8,6 +8,7 @@ import Utils.CommonFunctions as CommonFunctions
 import Utils.ToolTipFactory as ToolTipFactory
 import Unit.UnitUtils as UnitUtils
 import Unit.UnitStats as UnitStats
+import math
 
 
 fields=["Names","Gold cost for base unit","Weekly Growth",
@@ -234,8 +235,8 @@ class TabUnitEditor(CommonClass.Tab):
         self.labelsStats[3].set(str(size))
         self.labelsStatsUpgraded[3].set(str(sizeUpgr))
         # Speed
-        self.labelsStats[4].set(str(speed))
-        self.labelsStatsUpgraded[4].set(str(speedUpgr))
+        self.labelsStats[4].set(str(math.ceil(speed*2)))
+        self.labelsStatsUpgraded[4].set(str(math.ceil(speedUpgr*2)))
         # Weight
         self.labelsStats[5].set(str(weight))
         self.labelsStatsUpgraded[5].set(str(weightUpgr))
@@ -422,14 +423,16 @@ class TabUnitEditor(CommonClass.Tab):
             if(line.upper().startswith(fieldsUp[4]) and fields[4] not in filled):
                 filled+=[fields[4]]
                 answer=self.getNextLine()
-                self.fieldsEntry[4].set(answer)
+                self.centerFieldsEntry[4].set(answer)
                 answer=self.getNextLine()
+                print(answer)
                 if(answer!=None):
                     self.checkBoxVar[0].set(0)
-                    self.fieldsEntry[5].set(answer)
+                    self.centerFieldsEntry[5].set(answer)
                 else:
+                    print(answer)
                     self.checkBoxVar[0].set(1)
-                    self.fieldsEntry[5].set("100")
+                    self.centerFieldsEntry[5].set("100")
                 continue
             # Abilities for base unit
             if(line.upper().startswith(fieldsUp[5]) and fields[5] not in filled):

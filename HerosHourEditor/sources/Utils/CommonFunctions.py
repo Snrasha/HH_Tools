@@ -56,13 +56,16 @@ def getCSVData(file):
             if(line.startswith('#')):
                continue
             split=line.split(";")
+            
             length=len(split)
+            for i in range(length):
+                split[i]=split[i].strip()
             if(length>2 and split[2].lower().startswith("f")):
                 continue
             if(length==1):
                 datas[split[0]]="//"
             else:
-                text=split[1].strip()
+                text=split[1]
                 
                 if(len(text)>1):
                     text=text[0].upper()+text[1:]
@@ -71,7 +74,7 @@ def getCSVData(file):
                 datas[split[0]]=text
                 
                 for i in range(3,length,1):
-                    datas[split[0]]+="\n"+tags[i].strip()+": "+split[i].strip()
+                    datas[split[0]]+="\n"+tags[i].strip()+": "+split[i]
         file1.close()
         return datas
     else:

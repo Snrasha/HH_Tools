@@ -55,7 +55,10 @@ def loadStandardAbilities(li):
 def loadAbilitiesBis(li):
     param=[]
     abilities=CommonFunctions.readAbilitiesBis()
+    print(abilities)
     for item in li:
+        print(item)
+        print(item in abilities)
         if item in abilities:
             param+=[item]
     return param

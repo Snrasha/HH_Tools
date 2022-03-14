@@ -1,4 +1,10 @@
 
+
+14/03/2022:
+  - Fix some abilities not loaded on edit.
+  - Fix balance modifier not loaded.
+  - Fix speed.
+
 13/03/2022:
   - Fix Popup which do not save value if you press Enter
   - Fix gray field issues.
