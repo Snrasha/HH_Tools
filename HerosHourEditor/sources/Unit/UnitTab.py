@@ -342,6 +342,8 @@ class TabUnitEditor(CommonClass.Tab):
         gameImage=Image.new("RGBA", (24, 24), (0, 0, 0, 0))
         if(os.path.exists(pathUnit)):
             image=Image.open(pathUnit)
+            image=image.convert('RGBA')
+            
             if(image.height>24):
                 image=self.defaultImg()
             else:
