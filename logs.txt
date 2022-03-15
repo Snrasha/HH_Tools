@@ -1,3 +1,7 @@
+15/03/2022:
+  - Fix 8 bits format
+  - Create 3 virtual environment for each tool for keep the minimal size.
+  - Update the readme for that.
 
 
 14/03/2022:

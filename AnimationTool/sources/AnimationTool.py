@@ -1,7 +1,7 @@
 import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter import filedialog as fd
-import os
+from os import path as pth
 from PIL import Image
 
 def askFile():
@@ -60,7 +60,7 @@ def getImages(path,choice):
 
 
 def toGif(path,choice):
-    if not(os.path.exists(path)):
+    if not(pth.exists(path)):
         return
     
     imgs,isUnit=getImages(path,choice)

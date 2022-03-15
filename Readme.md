@@ -52,3 +52,40 @@ Create a long gif with 3 times each animation.
 
 ## HH Mod Manager
 For Itch, Gog or Steam, you can easily install your mod with this tool.
+
+
+
+### Compilation (For developpment only)
+
+Each tool has a .spec, this is from PyInstaller which made a executable from source code.</br>
+Without spec, you need to launch the command:</br>
+* pyinstaller --onefile "sources/HHModManager.py"  --noconsole --distpath .</br>
+Then modify a bit the spec for be what you want.</br>
+
+The issue with PyInstaller is than it build and compile every module and also optional module which are not used for your app. Which compile it to a 100Mo executable and not 10 Mo.
+For resolve the issue, you need to create a virtual env, like that:
+* python -m venv venv_modmanager
+* python -m venv venv_editor
+* python -m venv venv_animation
+
+When this is made, you can activate it, where you will got a clean python without anything installed. You will need to uninstall PyInstaller on your global path, so use: pip uninstall PyInstaller.
+
+Then you can active them with:
+* . venv_modmanager/Scripts/activate
+* . venv_editor/Scripts/activate
+* . venv_animation/Scripts/activate
+
+And for each, you install manually:
+* pip install Pyinstaller
+
+Then you can launch for each one:
+* pyinstaller HH_Tools/HHModManager/HHModManager.spec --distpath .
+* pyinstaller HH_Tools/HerosHourEditor/HerosHourEditor.spec --distpath .
+* pyinstaller HH_Tools/AnimationTool/AnimationTool.spec --distpath .
+
+Then you can launch each executable and see what module is lacking for each.
+On this case, you will need to install PIL for the animation and editor tool, so go on their virtual environment and install it:
+* pip install pillow
+
+
+For made the three executable more easily, i have made a .bat containing these 6 lines.
