@@ -1,0 +1,55 @@
+Names
+Ne-FireBringer
+Ne-FireDeath
+
+Gold cost for base unit
+1200
+
+Weekly Growth
+2
+
+Rare Resource Cost
+2M
+
+Balance modifier
+90
+90
+
+Abilities
+Ranged
+Fireprojectile
+Burning
+Inert
+Blaster
+Hover
+Small
+Big
+
+Abilities for upgrade
+Ranged
+Fireprojectile
+Burning
+Blaster
+Inert
+Empower
+Small
+Big
+Caster
+Forcefield
+Explosion
+
+Use sound effects from X unit
+Onyx Rod
+
+Attack type
+1
+
+Living
+0
+
+Link
+No-Artillery
+
+Unit groups
+
+

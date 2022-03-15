@@ -49,16 +49,17 @@ def loadStandardAbilities(li):
     param=[]
     abilities=CommonFunctions.readAbilities()
     for item in li:
+        if(item.startswith("Caster")):
+            return param
         if item in abilities:
             param+=[item]
     return param
 def loadAbilitiesBis(li):
     param=[]
     abilities=CommonFunctions.readAbilitiesBis()
-    print(abilities)
     for item in li:
-        print(item)
-        print(item in abilities)
+        if(item.startswith("Caster")):
+            return param
         if item in abilities:
             param+=[item]
     return param
