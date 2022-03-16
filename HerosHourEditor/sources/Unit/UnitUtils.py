@@ -66,12 +66,21 @@ def loadAbilitiesBis(li):
 def loadAttackRange(li):
     param=["Melee","None"]
     nextIsProj=False
+    abilities=CommonFunctions.readAbilities()
+    abilities2=CommonFunctions.readAbilitiesBis()
+    spells=CommonFunctions.readSpells()
     for item in li:
         if(item in attacks and item!="Melee"):
             param[0]=item
             nextIsProj=True
             continue
         if(nextIsProj):
+            if (item in abilities):
+                return
+            if (item in abilities2):
+                return
+            if (item in spells):
+                return
             param[1]=item
             return param
     return param

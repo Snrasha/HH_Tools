@@ -577,6 +577,10 @@ class TabUnitEditor(CommonClass.Tab):
         li+=abilitiesBis
         li+=UnitUtils.getSpellList(spells)
         for item in li:
+            item2=item.strip()
+            if(item2=="" or item2==None):
+                continue
+            
             file1.write(item+"\n")            
         file1.write("\n")
         
@@ -589,6 +593,9 @@ class TabUnitEditor(CommonClass.Tab):
             li+=UnitUtils.getSpellList(spellsUpgr)
 
             for item in li:
+                item2=item.strip()
+                if(item2=="" or item2==None):
+                    continue
                 file1.write(item+"\n")
             file1.write("\n")
         inc+=1

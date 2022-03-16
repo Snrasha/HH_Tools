@@ -410,7 +410,7 @@ class Application(ttk.Frame):
                 namemod=namemod[-1].split('.')
                 b=namemod[0]
                 for i in range(1,len(namemod)-1):
-                    b="."+namemod[i]
+                    b+="."+namemod[i]
                 namemod=b
                 tmp="tmp"
                 inc=0

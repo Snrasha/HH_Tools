@@ -4,6 +4,7 @@ from tkinter import filedialog as fd
 from os import path as pth
 from PIL import Image
 
+
 def askFile():
     filename=fd.askopenfilename(title="Select a spritesheet",filetypes=[("PNG Files","*.png")])
     if(filename==None or filename.strip()==""):
@@ -19,6 +20,12 @@ def askSaveFile(oldFilename):
         indx=inifile.rfind('.')
         if(indx!=-1):
             inifile=inifile[0:indx]
+
+    if not inifile.endswith(" Animation"):
+        inifile+=" Animation"
+
+    if not inifile.endswith(".gif"):
+        inifile+=".gif"
     
     filename=fd.asksaveasfilename(initialfile=inifile,title="Save GIF",filetypes=[("GIF Files","*.gif")])
     if(len(filename.strip())==0):
@@ -51,11 +58,16 @@ def getImages(path,choice):
     
     for i in range(0,cut):
         img=image.crop((i*widthImg,0,(i+1)*widthImg,h))
-        img2=Image.new("P", (24, 24),255)
-        img2.putpalette(image.getpalette())
-        Image.Image.paste(img2,img,((24-img.size[0])//2,24-img.size[1]))
-        img2=img2.resize((24*6, 24*6),resample=Image.BOX)
-        images+=[img2]
+        scal=choice[2]
+        if(choice[1]==1):
+            img2=Image.new("P", (24, 24),255)
+            img2.putpalette(image.getpalette())
+            Image.Image.paste(img2,img,((24-img.size[0])//2,24-img.size[1]))
+            img=img2.resize((img2.size[0]*scal, img2.size[1]*scal),resample=Image.BOX)
+        else:
+            img=img.resize((img.size[0]*scal, img.size[1]*scal),resample=Image.BOX)
+        images+=[img]
+        
     return (images,isUnit)
 
 
@@ -116,7 +128,8 @@ def toGif(path,choice):
 #transparency=255, disposal=2,optimize=False) 
 
 description="Set what you want then load a spritesheet.\nFor unit: do idle, walk, attack and hurt.\nIf death only, will display the death without looping.\nFor hero, will display the animation a bit much longer."
-            
+gifScaling=["1","2","3","4","5","6","7","8","9"]
+      
 class Application(ttk.Frame):
     def  __init__(self,window):
         ttk.Frame.__init__(self,window)
@@ -136,14 +149,27 @@ class Application(ttk.Frame):
         frame3.pack(fill=tk.BOTH,side=tk.RIGHT,padx=(3,3),pady=(3,3))
         self.checkBoxVar=[]
         self.checkBoxVar+=[tk.IntVar()]
-        checkbtn = tk.Checkbutton(frame3,text="Death (No looping)", variable = self.checkBoxVar[0], onvalue = 1, offvalue = 0,bg=self.bg)
-        checkbtn.pack(side=tk.TOP)
+        frame5=ttk.Frame(frame3)
+        frame5.pack(fill=tk.BOTH,side=tk.TOP)
+        checkbtn = tk.Checkbutton(frame5,text="Death (No looping)", variable = self.checkBoxVar[0], onvalue = 1, offvalue = 0,bg=self.bg)
+        checkbtn.pack(side=tk.LEFT)
         self.checkBoxVar+=[tk.IntVar()]
-##        checkbtn = tk.Checkbutton(frame3,text="cubic scale", variable = self.checkBoxVar[1], onvalue = 1, offvalue = 0,bg=self.bg)
-##        checkbtn.pack(side=tk.TOP)
+        checkbtn = tk.Checkbutton(frame5,text="Set canvas to 24x24", variable = self.checkBoxVar[1], onvalue = 1, offvalue = 0,bg=self.bg)
+        self.checkBoxVar[1].set(1)
+        checkbtn.pack(side=tk.LEFT)
+       
+        
         button=ttk.Button(frame2,text="Open",command=self.onClick)
         button.pack(fill=tk.BOTH,side=tk.TOP)
+        self.checkBoxVar+=[ tk.StringVar()]
+        frame4=ttk.Frame(frame3)
+        frame4.pack(fill=tk.BOTH,side=tk.TOP)
         
+        label=ttk.Label(frame4,text="Scaling")
+        label.pack(fill=tk.BOTH,side=tk.RIGHT)        
+        optionMenu=ttk.OptionMenu(frame4,self.checkBoxVar[2],gifScaling[5],*gifScaling)
+        optionMenu.pack(fill=tk.BOTH,side=tk.RIGHT)
+
   
         label=ttk.Label(frame1,text=description)
         label.pack(fill=tk.BOTH,side=tk.TOP)
@@ -151,17 +177,17 @@ class Application(ttk.Frame):
         self.window.bind('<Escape>', self.onClosing)
 
 
-        
+    
     def onClosing(self,event=None):
         self.window.destroy()
 
     def onClick(self):
         filename=askFile()
         if(filename!=None):
-            choice=[0,0]
-            if(self.checkBoxVar[0].get()==1):
-                choice[0]=1
-            
+            choice=[0,0,0]
+            choice[0]=self.checkBoxVar[0].get()
+            choice[1]=self.checkBoxVar[1].get()
+            choice[2]=int(self.checkBoxVar[2].get() )
             toGif(filename,choice)
             return
 
@@ -175,7 +201,7 @@ class Windows(tk.Tk):
         super().__init__()
         # root window
         self.title("Hero's Hour Tool Animation")
-        self.geometry("400x120+300+300")
+        self.geometry("400x160+300+300")
         
         app=Application(self)
         self.protocol("WM_DELETE_WINDOW", app.onClosing)

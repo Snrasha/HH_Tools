@@ -1,45 +1,43 @@
 Names
-Ne-FireBringer
-Ne-FireDeath
+Ne-Artillery
+Ne-ExoShard
 
 Gold cost for base unit
-1200
+900
 
 Weekly Growth
-2
+3
 
 Rare Resource Cost
-2M
+1S
 
 Balance modifier
-90
-90
+110
+120
 
 Abilities
 Ranged
+Long Ranged
 Fireprojectile
-Burning
+Wide Attacks
 Inert
-Blaster
-Hover
-Small
-Big
+Confusion
+Caster
+Chain Lightning
 
 Abilities for upgrade
 Ranged
-Fireprojectile
-Burning
-Blaster
+Long Ranged
+Lightningprojectile
+Wide Attacks
 Inert
+Confusion
 Empower
-Small
-Big
 Caster
-Forcefield
-Explosion
+Chain Lightning
 
 Use sound effects from X unit
-Onyx Rod
+Onyx rod
 
 Attack type
 1
@@ -48,7 +46,7 @@ Living
 0
 
 Link
-No-Artillery
+Ne-Artillery
 
 Unit groups
 
