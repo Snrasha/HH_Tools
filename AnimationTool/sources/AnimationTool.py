@@ -91,21 +91,32 @@ def toGif(path,choice):
         imgs=[]
 
         if(choice[0]==0):
-            for i in range(0,4):
-                imgs+=idleAnim
             for i in range(0,2):
+                imgs+=idleAnim
+            for i in range(0,4):
                 imgs+=walkAnim
+            for i in range(0,2):
+                imgs+=idleAnim                
+            imgs+=attackAnim
+            imgs+=walkAnim
             imgs+=attackAnim
             for i in range(0,2):
-                imgs+=walkAnim
-            imgs+=attackAnim
-            for i in range(0,4):
                 imgs+=idleAnim
+            imgs+=walkAnim
             imgs+=hurtAnim
-        elif (choice[0] == 1):
-            for i in range(0,4):
+            imgs+=idleAnim
+            imgs+=hurtAnim
+            for i in range(0,2):
                 imgs+=idleAnim
             imgs+=deathAnim
+            for i in range(0,20):
+                imgs+=[deathAnim[-1]]        
+            
+            
+##        elif (choice[0] == 1):
+##            for i in range(0,4):
+##                imgs+=idleAnim
+##            imgs+=deathAnim
     else:
         directions=[]
         for i in range(0,8):
@@ -151,8 +162,8 @@ class Application(ttk.Frame):
         self.checkBoxVar+=[tk.IntVar()]
         frame5=ttk.Frame(frame3)
         frame5.pack(fill=tk.BOTH,side=tk.TOP)
-        checkbtn = tk.Checkbutton(frame5,text="Death (No looping)", variable = self.checkBoxVar[0], onvalue = 1, offvalue = 0,bg=self.bg)
-        checkbtn.pack(side=tk.LEFT)
+##        checkbtn = tk.Checkbutton(frame5,text="Death (No looping)", variable = self.checkBoxVar[0], onvalue = 1, offvalue = 0,bg=self.bg)
+##        checkbtn.pack(side=tk.LEFT)
         self.checkBoxVar+=[tk.IntVar()]
         checkbtn = tk.Checkbutton(frame5,text="Set canvas to 24x24", variable = self.checkBoxVar[1], onvalue = 1, offvalue = 0,bg=self.bg)
         self.checkBoxVar[1].set(1)
