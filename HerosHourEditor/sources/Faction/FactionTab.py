@@ -18,7 +18,7 @@ fields=["FACTION NAME","FACTION UNITS ALTERNATES","HERO NAMES",
 terrains=["Crag","Dirt","Grass","Ice","Lava","Swamp","Sand",
           "Deadlands","Moss Forest","Deep Forest","Tundra","Obsidian","Teal Marsh","Orange Desert"]
 
-music=["Order", "Wild", "Arcane", "Decay", "Pyre", "Horde","Enclave", "Lament", "Tide", "Earthen"]
+music=["Order", "Wild", "Arcane", "Decay", "Pyre", "Horde","Enclave", "Lament", "Tide", "Earthen","Pillar"]
 
 magic=["Water", "Air", "Fire", "Earth"]
 humanoidEliteTarget=["1","2","3","4","5","6","7","8","9"]

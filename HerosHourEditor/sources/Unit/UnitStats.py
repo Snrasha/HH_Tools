@@ -10,18 +10,22 @@ def calculateCost(rank):
     return round(15*(1+0.5*(rank**2)+0.1*(rank**3)))*5
 def calculatePower(gold,rank,upgr):
     v = max(1,round(gold/75))
+    if(v<10):
+        v-=1
     if upgr:
         v = math.floor(v*1.15)
     if rank >= 5.5:
         v -= rank-4.5
-    v -= math.floor((v-10)/ 5)
+    v -= math.floor((v-10)/ 5.)
     if v > 50:
         v = 50+(v-50)**.75
     if v >= 35:
-        v=(round(v/5.))*5
+        v=roundGold(v)
     elif v > 10:
-        v=(round(v/2.))*2
+        v=round2(v)
     return round(v)
+
+
 
 def calculateGold(gold,percent,numberRes,res):
     goldUpgr=gold*percent
@@ -68,10 +72,12 @@ def calculateWeight(rank):
 
 def roundDec1(v):
     return round(v,1)
-    
 
-##def calculatePower(rank):
-##    return (math.ceil(rank)*1.5+2)
+##c=[75,85,120,185,285,425,615,855,1155,1520,1950,2455,3045,3720]
+##for i in c:
+##    rank=roundDec1(calculateRank(i))
+##    print(str(rank)+";"+str(calculatePower(i,rank,False)))
+
 
 def calculateAbilities(abilities,attackrange,weight,knockback,damage,health,speed,size):
     attackSpeed1="1.3s"
@@ -81,50 +87,52 @@ def calculateAbilities(abilities,attackrange,weight,knockback,damage,health,spee
     mdamage=1
     ranged=0
     for abi in abilities:
-        if(abi.startswith("Windup")):
+        abi=abi.lower()
+        if(abi.startswith("windup")):
             attackSpeed2= "(50% miss)"
             mdamage *= 1.8
             mhealth *= 1.15
             continue
-        if(abi.startswith("Blaster")):
+        if(abi.startswith("blaster")):
             attackrange+=96
             continue
-        if(abi.startswith("Flying")):
+        if(abi.startswith("flying")):
             mspeed+=1
             mdamage*=0.9
             mhealth*=.9
             continue
-        if(abi.startswith("Slow")):
+        if(abi.startswith("slow")):
             mspeed -= .3
             mhealth *= 1.15
             continue
-        if(abi.startswith("Tank")):
+        if(abi.startswith("tank")):
             mspeed-=0.3
             mhealth *= 1.5
             mdamage*=0.6
             continue
-        if(abi.startswith("Sturdy")):
+        if(abi.startswith("sturdy")):
             weight += 2
             mspeed -= .15
             mhealth *= 1.1
             mdamage *= .9
             continue
-        if(abi.startswith("Savage")):
+        if(abi.startswith("savage")):
             mhealth *= .75 
             mdamage *= 1.2 
             knockback+=1 
             continue
-        if(abi.startswith("Wide Attacks")):
+        if(abi.startswith("wide attacks")):
             mdamage *= .85
             mhealth *= .85
             continue
-        if(abi.startswith("Quick Strikes")):
+        if(abi.startswith("quick strikes")):
             attackSpeed1="0.75s"
             continue
-        if(abi.startswith("Knockback")):
+        if(abi.startswith("knockback")):
             knockback += 2.5-1.5*ranged
             continue
-        if(abi.startswith("Ranged")):
+
+        if(abi.startswith("ranged")):
             mhealth*=0.8
             mdamage*=1
             mspeed-=0.25
@@ -133,66 +141,66 @@ def calculateAbilities(abilities,attackrange,weight,knockback,damage,health,spee
             ranged=1
             attackrange=96+random.randint(0,64)
             continue
-        if(abi.startswith("Harpoonprojectile")):
+        if(abi.startswith("harpoonprojectile")):
             knockback+=2
             continue
-        if(abi.startswith("Small")):
-            size=3
+        if(abi.startswith("small")):
+            size=1
             weight-=1
             knockback-=1
             continue
-        if(abi.startswith("Big")):
-            size+=1
+        if(abi.startswith("big")):
+            size+=1/3
             weight+=1
             knockback+=1
             continue
-        if(abi.startswith("Shrink")):
-            size-=1
+        if(abi.startswith("shrink")):
+            size-=1/3
             continue
-        if(abi.startswith("Micro")):
-            if(size>3):
-                size=3
+        if(abi.startswith("micro")):
+            if(size>1):
+                size=1
             else:
-                size-=1
+                size-=1/3
             continue
-        if(abi.startswith("Fast")):
+        if(abi.startswith("fast")):
             mdamage*=0.95
             mspeed+=.5
             mhealth*=.95
             continue
-        if(abi.startswith("Flimsy")):
+        if(abi.startswith("flimsy")):
             mspeed += .25 
             weight -= 2
             continue
-        if(abi.startswith("Feeble")):
+        if(abi.startswith("feeble")):
             mdamage*=0.75
             continue
-        if(abi.startswith("Lash")):
+        if(abi.startswith("lash")):
             mdamage *= .85
             mhealth *= .85
             continue
-        if(abi.startswith("Ethereal")):
+        if(abi.startswith("ethereal")):
             mhealth *= .65
             continue
-        if(abi.startswith("Burst")):
+        if(abi.startswith("burst")):
             mdamage *= 1.5
             attackSpeed1="0s"
             continue
-        if(abi.startswith("Rebirth")):
-            size -= 1
+        if(abi.startswith("rebirth")):
+            size -= 1/3
             knockback-=1
             weight-=1
             mhealth *= .7
             mdamage *= .8
             continue
-        if(abi.startswith("Immortal")):
+        if(abi.startswith("immortal")):
             knockback-=1
             weight-=1
             mhealth *= .8
             mdamage *= .8
-            continue             
-            
-    return (attackSpeed1+attackSpeed2,roundDec1(attackrange),roundDec1(weight),roundDec1(knockback),damage*mdamage,health*mhealth,roundDec1(speed*mspeed),roundDec1(size))
+            continue
+
+    return (attackSpeed1+attackSpeed2,roundDec1(attackrange),roundDec1(weight),roundDec1(knockback),damage*mdamage,health*mhealth,roundDec1(2*calculateSpeed(size)*mspeed),roundDec1(size))
         
 
 ##			case "Wide Attacks": atw += 3 ; damage *= .85 ; mhealth *= .85 ; addicon(mii_aoe,7) ; break; 

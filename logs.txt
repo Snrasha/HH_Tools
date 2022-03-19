@@ -1,3 +1,10 @@
+19/03/2022:
+- Fix power, size, speed of Unit Editor
+- Disable spells for upgrade.
+- Fix ranged field.
+- Add Pilar on music
+
+
 15/03/2022:
   - Fix 8 bits format
   - Create 3 virtual environment for each tool for keep the minimal size.

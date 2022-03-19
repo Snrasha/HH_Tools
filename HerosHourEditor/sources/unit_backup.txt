@@ -1,53 +1,41 @@
-Names
-Ne-Artillery
-Ne-ExoShard
+Names (first basic, then the upgrade)
+Ne-Drone
+Ne-Drone-II
 
-Gold cost for base unit
-900
+Gold cost for base unit (also decides basic strength of unit)
+30
 
 Weekly Growth
-3
+36
 
-Rare Resource Cost
-1S
+Rare Resource Cost (00 for nothing. Write in number + letter, where letters are: O=ore, L=lumber, S=sulphur, C=crystal, M=mercury)
+00
 
-Balance modifier
-110
-120
+Balance modifier (first basic, then the upgrade. Makes the unit stronger/weaker compared to cost, to make up for strong abilities)
+50
+100
 
-Abilities
-Ranged
-Long Ranged
-Fireprojectile
-Wide Attacks
+Abilities for base unit
 Inert
-Confusion
-Caster
-Chain Lightning
+Shrink
+Hover
 
-Abilities for upgrade
-Ranged
-Long Ranged
-Lightningprojectile
-Wide Attacks
+Abilities for upgrade (duplicate  from base unit if you want to keep them)
 Inert
-Confusion
-Empower
-Caster
-Chain Lightning
+Explosion
+Shrink
+Hover
 
 Use sound effects from X unit
-Onyx rod
+Scroll
 
-Attack type
+Attack type			(0: defensive || 1: aggressive || 2: magical (for potency))
 1
 
-Living
+Living				(-2: blight || -1: undead || 0: elemental || 1: living || 2: humanoid || 3: beast)
 0
 
-Link
-Ne-Artillery
+Link				(unit summoned via Summoning, Bodyguards, or similar)
+Ne-Drone
 
 Unit groups
-
-

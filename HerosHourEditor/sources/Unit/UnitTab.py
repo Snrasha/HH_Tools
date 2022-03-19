@@ -209,8 +209,8 @@ class TabUnitEditor(CommonClass.Tab):
         sizeUpgr=UnitStats.calculateSize(rank)
         speed=UnitStats.calculateSpeed(size)
         speedUpgr=UnitStats.calculateSpeed(sizeUpgr)
-        speed=UnitStats.calculateSpeed(size)
-        speedUpgr=UnitStats.calculateSpeed(sizeUpgr)
+##        speed=UnitStats.calculateSpeed(size)
+##        speedUpgr=UnitStats.calculateSpeed(sizeUpgr)
         weight=UnitStats.calculateWeight(rank)
         weightUpgr=UnitStats.calculateWeight(rank)
         attackSpeed="1.3s"
@@ -232,11 +232,11 @@ class TabUnitEditor(CommonClass.Tab):
         self.labelsStats[2].set(str(round(health)))
         self.labelsStatsUpgraded[2].set(str(round(healthUpgr)))
         # Size
-        self.labelsStats[3].set(str(size))
-        self.labelsStatsUpgraded[3].set(str(sizeUpgr))
+        self.labelsStats[3].set(str(round(size*3)))
+        self.labelsStatsUpgraded[3].set(str(round(sizeUpgr*3)))
         # Speed
-        self.labelsStats[4].set(str(math.ceil(speed*2)))
-        self.labelsStatsUpgraded[4].set(str(math.ceil(speedUpgr*2)))
+        self.labelsStats[4].set(str(round(speed)))
+        self.labelsStatsUpgraded[4].set(str(round(speedUpgr)))
         # Weight
         self.labelsStats[5].set(str(weight))
         self.labelsStatsUpgraded[5].set(str(weightUpgr))
@@ -303,7 +303,7 @@ class TabUnitEditor(CommonClass.Tab):
         self.specialsFieldsEntry+=[UnitUtils.FieldSpell(standardField)]
         self.specialsFieldsEntry+=[UnitUtils.FieldAbilities(standardField,command=self.updateStats)]
         self.specialsFieldsEntry+=[UnitUtils.FieldAbilitiesBis(standardField,command=self.updateStats)]
-
+        self.specialsFieldsEntry[1].setNeutral(1)
     def onCheckBoxChange(self):
         if(self.checkBoxVar[0].get()==0):
             self.fieldsEntry[1].entry.configure(state=tk.NORMAL)
@@ -313,6 +313,7 @@ class TabUnitEditor(CommonClass.Tab):
                 self.centerFieldsEntry[i+2].optionMenu.configure(state=tk.NORMAL)
             for i in range(len(self.specialsFieldsEntry)):
                 self.specialsFieldsEntry[i].setNeutral(0)
+            self.specialsFieldsEntry[1].setNeutral(1)
         else:
             self.fieldsEntry[1].entry.configure(state=tk.DISABLED)
             self.centerFieldsEntry[5].entry.configure(state=tk.DISABLED)
@@ -321,6 +322,7 @@ class TabUnitEditor(CommonClass.Tab):
                 self.centerFieldsEntry[i+2].optionMenu.configure(state=tk.DISABLED)
             for i in range(len(self.specialsFieldsEntry)):
                 self.specialsFieldsEntry[i].setNeutral(1)
+            
         self.updateStats()
 
 
@@ -427,12 +429,10 @@ class TabUnitEditor(CommonClass.Tab):
                 answer=self.getNextLine()
                 self.centerFieldsEntry[4].set(answer)
                 answer=self.getNextLine()
-                print(answer)
                 if(answer!=None):
                     self.checkBoxVar[0].set(0)
                     self.centerFieldsEntry[5].set(answer)
                 else:
-                    print(answer)
                     self.checkBoxVar[0].set(1)
                     self.centerFieldsEntry[5].set("100")
                 continue

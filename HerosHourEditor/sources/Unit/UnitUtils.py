@@ -122,16 +122,18 @@ class FieldAttackRange(CommonClass.Field):
     def getParams(self):
         return (self.params,self.paramsUpgr)
     def setParams(self,params,paramsUpgr):
-        
-        
         self.params=params
         self.paramsUpgr=paramsUpgr
         if(self.params!=None):
             self.entryUnUpgr.configure(state=tk.NORMAL)
-            self.set2(self.params[0].replace("anged","")+":"+self.params[1].replace("rojectile",""))  
+            self.set2(self.params[0].replace("anged","")+":"+self.params[1].replace("rojectile",""))
+        else:
+            self.params=["Melee","None"]
         if(self.paramsUpgr!=None):
             self.entry.configure(state=tk.NORMAL)
-            self.set(self.paramsUpgr[0].replace("anged","")+":"+self.paramsUpgr[1].replace("rojectile",""))        
+            self.set(self.paramsUpgr[0].replace("anged","")+":"+self.paramsUpgr[1].replace("rojectile",""))
+        else:
+            self.paramsUpgr=["Melee","None"]
     def set2(self,text):
         self.entryUnUpgr.delete(0, tk.END)
         if(text==None):
@@ -159,7 +161,7 @@ class AttackRangePopup(CommonClass.Popup):
         self.customProj=CommonClass.Field(frame,titleField="Custom Proj:",hintField="")
         self.command=command
 
-
+        
         self.attackmenu.set(self.params[0])
         if(self.params[1] in self.projs):
             self.projmenu.set(self.params[1])
