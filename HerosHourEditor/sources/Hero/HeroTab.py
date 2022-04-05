@@ -277,10 +277,11 @@ class SimpleFields(ttk.Frame):
             listOfSkills+=[label.get()]
             if(label.get() == "None"):
                 break
-        if(not self.filename.endswith(" Replacement data.txt") and self.checkBoxVar[1].get()==1):
-            self.filename=self.filename[:-len("data.txt")]+"Replacement data.txt"
-        if(self.filename.endswith(" Replacement data.txt") and self.checkBoxVar[1].get()==0):
-            self.filename=self.filename[:-len("Replacement data.txt")]+"data.txt"
+        if(self.filename!=None):
+            if(not self.filename.endswith(" Replacement data.txt") and self.checkBoxVar[1].get()==1):
+                self.filename=self.filename[:-len("data.txt")]+"Replacement data.txt"
+            if(self.filename.endswith(" Replacement data.txt") and self.checkBoxVar[1].get()==0):
+                self.filename=self.filename[:-len("Replacement data.txt")]+"data.txt"
 
 
         self.filename=CommonFunctions.askSaveFile(self.filename,"Save Hero file")

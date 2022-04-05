@@ -1,3 +1,18 @@
+
+TODO:
+- For the unit group of unit editor, do a list of all existing unit group and add a custom input field
+
+05/04/2022:
+  - Begin to add the mod tab. Load custom skill, abilities and spell. Lack Hidden abilities, unit group (for unit editor), Links units too.
+  - Add a version and date of the last update.
+  - Add reference name for unit
+
+
+
+20/03/2022:
+- Fix hero editor where you cannot save without edit a file before.
+
+
 19/03/2022:
 - Fix power, size, speed of Unit Editor
 - Disable spells for upgrade.

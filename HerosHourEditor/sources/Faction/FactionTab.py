@@ -324,13 +324,15 @@ class TabFactionEditor(CommonClass.Tab):
         CommonFunctions.madeBackUp("faction_backup.txt",self.filename)
         file1 = open(self.filename, 'r')
         self.lines=file1.readlines()
+        file1.close()
         self.count=0
-        filled=[]
+        self.methodId()
+        
 
+    def methodId(self):
+        filled=[]
         verySimpleField=[0,10,11,12,13,14,15]
         verySimpleField2=[0,8,9,10,11,12,13]
-
-
         while self.count<len(self.lines):
             line=self.lines[self.count].strip()
 
@@ -441,7 +443,6 @@ class TabFactionEditor(CommonClass.Tab):
                 filled+=[fields[9]]
                 continue
             self.count+=1
-        file1.close()
 
     ## Found the next line to read. Ignore blank line except if stopToBlank is True
     def getNextLine(self):

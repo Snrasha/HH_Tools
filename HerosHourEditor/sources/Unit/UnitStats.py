@@ -58,9 +58,9 @@ def calculateRank(gold):
 def calculateRankStrength(rank):
     return (math.ceil(rank+1)+(max(rank,0)**1.25)*.8+2-rank/4)
 def calculateHealth(rankStrength):
-    return roundDec1(5*(rankStrength**1.5)+5)
+    return 5*(rankStrength**1.5)+5
 def calculateDamage(rankStrength):
-    return roundDec1(1.5*(rankStrength)+1)
+    return 1.5*(rankStrength)+1
 def calculateSize(rank):
     return roundDec1(max(1,1+math.floor(rank*.6)/3))
 def calculateAttackRange(size):
@@ -79,14 +79,17 @@ def roundDec1(v):
 ##    print(str(rank)+";"+str(calculatePower(i,rank,False)))
 
 
-def calculateAbilities(abilities,attackrange,weight,knockback,damage,health,speed,size):
+def calculateAbilities(abilities,weight,knockback,damage,health,speed,size):
     attackSpeed1="1.3s"
     attackSpeed2="(0% miss)"
     mspeed=1
     mhealth=1
     mdamage=1
     ranged=0
+    attackrange=[96,"+rand(64)"]
+    
     for abi in abilities:
+        
         abi=abi.lower()
         if(abi.startswith("windup")):
             attackSpeed2= "(50% miss)"
@@ -94,7 +97,7 @@ def calculateAbilities(abilities,attackrange,weight,knockback,damage,health,spee
             mhealth *= 1.15
             continue
         if(abi.startswith("blaster")):
-            attackrange+=96
+            attackrange[0]+=96
             continue
         if(abi.startswith("flying")):
             mspeed+=1
@@ -131,7 +134,12 @@ def calculateAbilities(abilities,attackrange,weight,knockback,damage,health,spee
         if(abi.startswith("knockback")):
             knockback += 2.5-1.5*ranged
             continue
-
+        if(abi.startswith("long ranged")):
+            attackrange[0]+=96
+            attackrange[1]="+rand(64)"
+        if(abi.startswith("short ranged")):
+            attackrange[0]=64
+            attackrange[1]="+rand(48)"
         if(abi.startswith("ranged")):
             mhealth*=0.8
             mdamage*=1
@@ -139,7 +147,7 @@ def calculateAbilities(abilities,attackrange,weight,knockback,damage,health,spee
             weight-=1
             knockback-=1
             ranged=1
-            attackrange=96+random.randint(0,64)
+            attackrange=[96,"+rand(64)"]
             continue
         if(abi.startswith("harpoonprojectile")):
             knockback+=2
@@ -200,7 +208,7 @@ def calculateAbilities(abilities,attackrange,weight,knockback,damage,health,spee
             mdamage *= .8
             continue
 
-    return (attackSpeed1+attackSpeed2,roundDec1(attackrange),roundDec1(weight),roundDec1(knockback),damage*mdamage,health*mhealth,roundDec1(2*calculateSpeed(size)*mspeed),roundDec1(size))
+    return (attackSpeed1+attackSpeed2,str(attackrange[0])+attackrange[1],roundDec1(weight),roundDec1(knockback),damage*mdamage,health*mhealth,roundDec1(2*calculateSpeed(size)*mspeed),roundDec1(size))
         
 
 ##			case "Wide Attacks": atw += 3 ; damage *= .85 ; mhealth *= .85 ; addicon(mii_aoe,7) ; break; 

@@ -4,6 +4,7 @@ import os
 import Hero.HeroTab as HeroTab
 import Faction.FactionTab as FactionTab
 import Unit.UnitTab as UnitTab
+import Mods.ModTab as ModTab
 
 import Utils.CommonClass as CommonClass
 import Utils.CommonFunctions as CommonFunctions
@@ -29,7 +30,6 @@ class EmptyTab(CommonClass.Tab):
 class Application(ttk.Notebook):
     def  __init__(self,window):
         ttk.Notebook.__init__(self,window)
-
         style = ttk.Style(window)
         style.theme_use('clam')
         style.configure('TNotebook.Tab', width=window.winfo_screenwidth())
@@ -53,30 +53,30 @@ class Application(ttk.Notebook):
         self.tabs=[]
 
         # Add Tabs.
+        self.modtab=ModTab.ModLoad(self,window)
+        self.currentTab=self.modtab.currentTab
+        self.tabs+=[self.modtab]
         self.tabs+=[FactionTab.TabFactionEditor(self,window)]
         self.tabs+=[HeroTab.TabHeroEditor(self,window)]
         self.tabs+=[UnitTab.TabUnitEditor(self,window)]
 
-        self.tabs+=[EmptyTab(self,window)]
-        self.tabs+=[EmptyTab(self,window)]
-        self.tabs+=[EmptyTab(self,window)]
+##        self.tabs+=[EmptyTab(self,window)]
+##        self.tabs+=[EmptyTab(self,window)]
         
-        self.tabs[0].bindKey()
+        
 
         self.window.bind("<KeyPress>", self.onKeyDown)
         self.window.bind('<Escape>', self.onEscape)
         self.bind("<<NotebookTabChanged>>", self.onTabChanged)
 
-        
-        self.add(self.tabs[0],text="Faction (1)")
-        self.add(self.tabs[1],text="Hero (2)")
-        self.add(self.tabs[2],text="Unit (3)")
-        self.add(self.tabs[3],text="Artifact (4)")
-        self.add(self.tabs[4],text="Hero classes (5)")
-        self.add(self.tabs[5],text="Unit group(6)")
+        self.add(self.tabs[0],text="Mods (1)")
+        self.add(self.tabs[1],text="Faction (2)")
+        self.add(self.tabs[2],text="Hero (3)")
+        self.add(self.tabs[3],text="Unit (4)")
+##        self.add(self.tabs[4],text="Artifact (5)")
+##        self.add(self.tabs[5],text="Hero classes (6)")
 
-
-##        ,fg=c.white,bg=c.greenblue,
+        self.changeTab(self.currentTab)
 
     def onEscape(self,event):
         # Exit the input field or any Entry
@@ -106,6 +106,7 @@ class Application(ttk.Notebook):
         # begin to 49 for '1'
         for i in range(len(self.tabs)):
             if(ordinal== 49+i):
+                self.currentTab=char
                 self.unBindKeyTabs()
                 self.select(self.tabs[i])
                 self.tabs[i].bindKey() 
@@ -113,7 +114,9 @@ class Application(ttk.Notebook):
     def unBindKeyTabs(self):
         for i in range(0,len(self.tabs)):
             self.tabs[i].unBindKey()        
-
+    def onClosing(self):
+        self.modtab.savePrefs(self.currentTab)
+        self.window.destroy()
 
 ## Windows with the settings and title.
 class Windows(tk.Tk):
@@ -121,10 +124,11 @@ class Windows(tk.Tk):
         super().__init__()
 
         # root window
-        self.title("Hero's hour Editor")
+        self.title("Hero's hour Editor | Version 1.1 | 05 april 2022")
         self.geometry("1200x450+100+300")
         
         app=Application(self)
+        self.protocol("WM_DELETE_WINDOW", app.onClosing)
         
 
 if __name__ == '__main__':

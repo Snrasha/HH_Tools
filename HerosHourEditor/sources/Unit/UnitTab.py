@@ -14,10 +14,10 @@ import math
 fields=["Names","Gold cost for base unit","Weekly Growth",
         "Rare Resource Cost","Balance modifier","Abilities",
         "Abilities for upgrade","Use sound effects from X unit","Attack type",
-        "Living","Link","Unit groups"
+        "Living","Link","Unit groups","Reference Name"
         ]
 fieldsUp=['NAMES', 'GOLD COST FOR BASE UNIT', 'WEEKLY GROWTH', 'RARE RESOURCE COST', 'BALANCE MODIFIER', 'ABILITIES',
- 'ABILITIES FOR UPGRADE', 'USE SOUND EFFECTS FROM X UNIT', 'ATTACK TYPE', 'LIVING', 'LINK', 'UNIT GROUPS']
+ 'ABILITIES FOR UPGRADE', 'USE SOUND EFFECTS FROM X UNIT', 'ATTACK TYPE', 'LIVING', 'LINK', 'UNIT GROUPS',"REFERENCE NAME"]
 
 rareResource={"Ore":"O", "Lumber":"L", "Sulphur":"S", "Crystal":"C","Mercury":"M"}
 rareResourceEdit={"O":"Ore","L": "Lumber", "S":"Sulphur", "C":"Crystal","M":"Mercury"}
@@ -31,7 +31,6 @@ descAttack="No difference currently for aggressive and defensive. Magical is for
 
 tooltipRareRes="Resource cost when you buy a unit\nIt decreases the gold cost of the unit by 100 for wood/ore and 200 for other resources"
 tooltipIncreaseGoldCost="Always 35% except Colony mod which is 50%"
-tooltipBalanceModifiers="version 2.0.5 and before, balance modifiers are wrong. See modding guide"
 
 tooltipSound="Press F+X in the HH main menu to bring up the list of all sounds"
 tooltipLink="Unit summoned via Summoning, Bodyguards, or similar"
@@ -82,10 +81,8 @@ class TabUnitEditor(CommonClass.Tab):
        
         self.centerFieldsEntry+=[CommonClass.Field(frame1,titleField="Balance modifier: ",hintField="100",side=tk.LEFT,width=10)]
         self.centerFieldsEntry[-1].entry.configure( validate = 'key',validatecommand = vcmd)
-        ToolTipFactory.CreateToolTip(self.centerFieldsEntry[-1].entry, text =tooltipBalanceModifiers )
         self.centerFieldsEntry+=[CommonClass.Field(frame1,titleField=None,hintField="100",side=tk.LEFT,width=10)]
         self.centerFieldsEntry[-1].entry.configure( validate = 'key',validatecommand = vcmd)
-        ToolTipFactory.CreateToolTip(self.centerFieldsEntry[-1].entry, text =tooltipBalanceModifiers )
 
         self.centerFieldsEntry+=[CommonClass.Field(frame1,titleField="Gold upgrade cost: ",hintField="35",side=tk.LEFT,width=10)]
         self.centerFieldsEntry[-1].entry.configure( validate = 'key',validatecommand = vcmd)
@@ -201,36 +198,36 @@ class TabUnitEditor(CommonClass.Tab):
         power=UnitStats.calculatePower(gold,rank,False)
         powerUpgr=UnitStats.calculatePower(gold,rank,True)
 
-        damage=UnitStats.calculateDamage(rankStrength)*balanceStat1
-        damageUpgr=UnitStats.calculateDamage(rankStrength*1.16)*balanceStat2
-        health=UnitStats.calculateHealth(rankStrength)*balanceStat1
-        healthUpgr=UnitStats.calculateHealth(rankStrength*1.16)*balanceStat2
+        damage=UnitStats.calculateDamage(rankStrength)
+        damageUpgr=UnitStats.calculateDamage(rankStrength*1.16)
+        health=UnitStats.calculateHealth(rankStrength)
+        healthUpgr=UnitStats.calculateHealth(rankStrength*1.16)
         size=UnitStats.calculateSize(rank)
         sizeUpgr=UnitStats.calculateSize(rank)
         speed=UnitStats.calculateSpeed(size)
         speedUpgr=UnitStats.calculateSpeed(sizeUpgr)
-##        speed=UnitStats.calculateSpeed(size)
-##        speedUpgr=UnitStats.calculateSpeed(sizeUpgr)
         weight=UnitStats.calculateWeight(rank)
         weightUpgr=UnitStats.calculateWeight(rank)
         attackSpeed="1.3s"
         attackSpeedUpgr="1.3s"
-        attackRange=UnitStats.calculateAttackRange(size)
-        attackRangeUpgr=UnitStats.calculateAttackRange(sizeUpgr)
+##        attackRange=UnitStats.calculateAttackRange(size)
+##        attackRangeUpgr=UnitStats.calculateAttackRange(sizeUpgr)
         knockback=weight
         knockbackUpgr=weightUpgr
-        attackSpeed,attackRange,weight,knockback,damage,health,speed,size=UnitStats.calculateAbilities(abilities,attackRange,weight,knockback,damage,health,speed,size)
-        attackSpeedUpgr,attackRangeUpgr,weightUpgr,knockbackUpgr,damageUpgr,healthUpgr,speedUpgr,sizeUpgr=UnitStats.calculateAbilities(abilitiesUpgr,attackRangeUpgr,weightUpgr,knockbackUpgr,damageUpgr,healthUpgr,speedUpgr,sizeUpgr)
+        attackSpeed,attackRange,weight,knockback,damage,health,speed,size=UnitStats.calculateAbilities(abilities,weight,knockback,damage,health,speed,size)
+        attackSpeedUpgr,attackRangeUpgr,weightUpgr,knockbackUpgr,damageUpgr,healthUpgr,speedUpgr,sizeUpgr=UnitStats.calculateAbilities(abilitiesUpgr,weightUpgr,knockbackUpgr,damageUpgr,healthUpgr,speedUpgr,sizeUpgr)
+##        print(str(healthUpgr)+" "+str(health))
+
         #Power
         self.labelsStats[0].set(str(power))
         self.labelsStatsUpgraded[0].set(str(powerUpgr)+"+")
         
         #Damage
-        self.labelsStats[1].set(str(round(damage)))
-        self.labelsStatsUpgraded[1].set(str(round(damageUpgr)))
+        self.labelsStats[1].set(str(round(damage*balanceStat1))+"(old: "+str(round(damage*(balanceStat1*0.6+balanceStat2*0.4)))+")")
+        self.labelsStatsUpgraded[1].set(str(round(damageUpgr*balanceStat2))+"(old: "+str(round(damageUpgr*(balanceStat1*0.4+balanceStat2*0.6)))+")")
         #Health
-        self.labelsStats[2].set(str(round(health)))
-        self.labelsStatsUpgraded[2].set(str(round(healthUpgr)))
+        self.labelsStats[2].set(str(round(health*balanceStat1))+"(old: "+str(round(health*(balanceStat1*0.6+balanceStat2*0.4)))+")")
+        self.labelsStatsUpgraded[2].set(str(round(healthUpgr*balanceStat2))+"(old: "+str(round(healthUpgr*(balanceStat1*0.4+balanceStat2*0.6)))+")")
         # Size
         self.labelsStats[3].set(str(round(size*3)))
         self.labelsStatsUpgraded[3].set(str(round(sizeUpgr*3)))
@@ -287,8 +284,19 @@ class TabUnitEditor(CommonClass.Tab):
         standardField=ttk.LabelFrame(self,text='Fields', padding=(5, 5))
         standardField.pack(fill=tk.BOTH,side=tk.LEFT,padx=(1,1),pady=(1,1))
 
+        self.canvas=tk.Canvas(standardField,bg=self.bg,relief=tk.FLAT,bd=0,highlightthickness=0)
+        self.canvas.pack(fill=tk.BOTH,side=tk.LEFT, expand=True)
+        self.scrollbar1 = ttk.Scrollbar(standardField, orient='vertical', command=self.canvas.yview)
+        self.scrollbar1.pack(fill=tk.Y,side=tk.LEFT,expand=True)
+        self.canvas.configure(yscrollcommand=self.scrollbar1.set)
+
+        standardField=ttk.Frame(self.canvas)
+        standardField.pack(fill=tk.BOTH)
+
         self.fieldsEntry+=[CommonClass.Field(standardField,titleField="Unit Name:",hintField="Calf")]
         self.fieldsEntry+=[CommonClass.Field(standardField,titleField="Upgrade Name:",hintField="Cow")]
+        self.fieldsEntry+=[CommonClass.Field(standardField,titleField="Ref. Name:",hintField="SampleMod_Calf")]
+        self.fieldsEntry+=[CommonClass.Field(standardField,titleField="Ref. Upgr. Name:",hintField="SampleMod_Cow")]
         self.fieldsEntry+=[CommonClass.Field(standardField,titleField="Sound Effect from a Unit:",hintField="Golem")]
         ToolTipFactory.CreateToolTip(self.fieldsEntry[-1].entry, text = tooltipSound)
         self.fieldsEntry+=[CommonClass.OptionMenu(standardField,"Attack type:",attackType,descAttack)]
@@ -304,6 +312,20 @@ class TabUnitEditor(CommonClass.Tab):
         self.specialsFieldsEntry+=[UnitUtils.FieldAbilities(standardField,command=self.updateStats)]
         self.specialsFieldsEntry+=[UnitUtils.FieldAbilitiesBis(standardField,command=self.updateStats)]
         self.specialsFieldsEntry[1].setNeutral(1)
+
+        standardField.update_idletasks()
+        self.canvas.create_window((0, 0), window=standardField, anchor='w')
+        self.canvas.configure(scrollregion=self.canvas.bbox("all"))
+        self.set_mousewheel(self.canvas)
+        self.set_mousewheel(self.scrollbar1)
+    def set_mousewheel(self,widget):
+        """Activate / deactivate mousewheel scrolling when
+        cursor is over / not over the widget respectively."""
+        widget.bind("<Enter>", lambda _: widget.bind_all('<MouseWheel>', self.onMouseWheel))
+        widget.bind("<Leave>", lambda _: widget.unbind_all('<MouseWheel>'))
+
+    def onMouseWheel(self,event):
+        self.canvas.yview_scroll(int(-1*(event.delta/120)), "units")        
     def onCheckBoxChange(self):
         if(self.checkBoxVar[0].get()==0):
             self.fieldsEntry[1].entry.configure(state=tk.NORMAL)
@@ -397,6 +419,19 @@ class TabUnitEditor(CommonClass.Tab):
                     self.checkBoxVar[0].set(1)
                     self.fieldsEntry[1].set("")
                 continue
+            # REFERENCE NAMES
+            if(line.upper().startswith(fieldsUp[12]) and fields[12] not in filled):
+                filled+=[fields[12]]
+                answer=self.getNextLine()
+                self.fieldsEntry[2].set(answer)
+                answer=self.getNextLine()
+                if(answer!=None):
+                    self.checkBoxVar[0].set(0)
+                    self.fieldsEntry[3].set(answer)
+                else:
+                    self.checkBoxVar[0].set(1)
+                    self.fieldsEntry[3].set("")
+                continue
             # Gold cost for base unit
             if(line.upper().startswith(fieldsUp[1]) and fields[1] not in filled):
                 answer=self.getNextLine()
@@ -462,7 +497,7 @@ class TabUnitEditor(CommonClass.Tab):
             if(line.upper().startswith(fieldsUp[7]) and fields[7] not in filled):
                 answer=self.getNextLine()
                 if(answer !=None):
-                    self.fieldsEntry[2].set(answer)
+                    self.fieldsEntry[4].set(answer)
                 filled+=[fields[7]]
                 continue
             # Attack type
@@ -471,7 +506,7 @@ class TabUnitEditor(CommonClass.Tab):
                 if(answer !=None):
                     for item in attackType:
                         if(item.startswith(answer)):
-                            self.fieldsEntry[3].set(answer)
+                            self.fieldsEntry[5].set(answer)
                 filled+=[fields[8]]
                 continue
             # Living
@@ -480,21 +515,21 @@ class TabUnitEditor(CommonClass.Tab):
                 if(answer !=None):
                     for item in living:
                         if(item.startswith(answer)):
-                            self.fieldsEntry[4].set(answer)
+                            self.fieldsEntry[6].set(answer)
                 filled+=[fields[9]]
                 continue
             # Link
             if(line.upper().startswith(fieldsUp[10]) and fields[10] not in filled):
                 answer=self.getNextLine()
                 if(answer !=None):
-                    self.fieldsEntry[5].set(answer)
+                    self.fieldsEntry[7].set(answer)
                 filled+=[fields[10]]
                 continue
             # Unit groups
             if(line.upper().startswith(fieldsUp[11]) and fields[11] not in filled):
                 answer=self.getNextLine()
                 if(answer !=None):
-                    self.fieldsEntry[6].set(answer)
+                    self.fieldsEntry[8].set(answer)
                 filled+=[fields[11]]
                 continue
             self.count+=1
@@ -540,6 +575,13 @@ class TabUnitEditor(CommonClass.Tab):
             file1.write(self.fieldsEntry[1].get().strip()+"\n")
         file1.write("\n")
         inc+=1
+        # Reference name Names
+        if(len(self.fieldsEntry[2].get().strip())>0):
+            file1.write(fields[12]+"\n")
+            file1.write(self.fieldsEntry[2].get().strip()+"\n")
+            if(notneutral):
+                file1.write(self.fieldsEntry[3].get().strip()+"\n")
+            file1.write("\n")
 
         # Gold cost
         file1.write(fields[inc]+"\n")
@@ -602,23 +644,23 @@ class TabUnitEditor(CommonClass.Tab):
 
         # Sound
         file1.write(fields[inc]+"\n")
-        file1.write(self.fieldsEntry[2].get().strip()+"\n\n")
+        file1.write(self.fieldsEntry[4].get().strip()+"\n\n")
         inc+=1
         # Attack type
         file1.write(fields[inc]+"\n")
-        file1.write(self.fieldsEntry[3].get().strip().split(":")[0]+"\n\n")
+        file1.write(self.fieldsEntry[5].get().strip().split(":")[0]+"\n\n")
         inc+=1
         # Living
         file1.write(fields[inc]+"\n")
-        file1.write(self.fieldsEntry[4].get().strip().split(":")[0]+"\n\n")
+        file1.write(self.fieldsEntry[6].get().strip().split(":")[0]+"\n\n")
         inc+=1
         # Link
         file1.write(fields[inc]+"\n")
-        file1.write(self.fieldsEntry[5].get().strip()+"\n\n")
+        file1.write(self.fieldsEntry[7].get().strip()+"\n\n")
         inc+=1
         # Unit groups
         file1.write(fields[inc]+"\n")
-        file1.write(self.fieldsEntry[6].get().strip()+"\n\n")
+        file1.write(self.fieldsEntry[8].get().strip()+"\n\n")
         inc+=1
         
         file1.close()
