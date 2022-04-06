@@ -4,6 +4,7 @@ import Utils.CommonClass as CommonClass
 import Utils.CommonFunctions as CommonFunctions
 from tkinter import filedialog as fd
 import os
+import Unit.UnitUtils as UnitUtils
 
 spellTier=["Minor","Major","Ultimate","Adventure"]
 
@@ -51,7 +52,8 @@ class ModLoad(CommonClass.Tab):
                 None
             try:
                 abilities,skills,spells=self.foundAllSkillsSpellsAbilities(item)
-                maxi=max(len(abilities),len(skills),len(spells))
+                hiddenabilities=self.foundhiddenAbilities(item)
+                maxi=max(len(abilities),len(skills),len(spells),len(hiddenabilities))
                 
                 frame=tk.Frame(self.leftFrame,bg=self.bg)
                 frame.pack(side=tk.TOP)
@@ -60,8 +62,9 @@ class ModLoad(CommonClass.Tab):
                 self.fillList(frame,"Abilities",abilities,maxi)
                 self.fillList(frame,"Skills",skills,maxi)
                 self.fillList(frame,"Spells",spells,maxi)
-            except:
-                None        
+                self.fillList(frame,"Hidden Abilities",hiddenabilities,maxi)
+            except Exception as e:
+                print (e)
         
         self.leftFrame.update_idletasks()
         self.canvas.create_window((0, 0), window=self.leftFrame, anchor='w')
@@ -82,6 +85,38 @@ class ModLoad(CommonClass.Tab):
         for i in range(maxi-count):
             listb.insert( tk.END,"")
         listb.config(height=0)
+    def foundhiddenAbilities(self,path):
+        habilities={}
+        if not (os.path.exists(path)):
+            return habilities
+        folderpath=path+"/Custom Scripts"
+        cusScriptList=self.getAllScriptTextFiles(folderpath)
+##        print(cusScriptList)
+        for filename in cusScriptList:
+            try:
+                file = open(filename, 'r')
+                lines=file.readlines()
+                file.close()
+                for line in lines:
+                    while ("checkability(\"" in line):
+                        try:
+                            line=line[line.index("checkability(\"")+14:]
+
+                            key=line[:line.index('\"')]
+                            line=line[line.index('\"'):]
+                            if(key in CommonFunctions.readAbilitiesBis() or key in CommonFunctions.readAbilities() or key in CommonFunctions.readAbilities()):
+                                continue
+                            if(key in UnitUtils.attacks):
+                                continue
+                            habilities[key]="Hidden ability"
+                            CommonFunctions.readAbilitiesBis()[key]="Hidden ability"
+                        except:
+                            None
+            except:
+                None
+        return habilities
+
+        
     def foundAllSkillsSpellsAbilities(self,path):
         skills={}
         abilities={}
@@ -136,13 +171,30 @@ class ModLoad(CommonClass.Tab):
         return (abilities,skills,spells)
 
             
-        
     def getAllTextFiles(self,folderpath):
         if (os.path.exists(folderpath)):
             l=[os.path.join(folderpath, f) for f in os.listdir(folderpath) if os.path.isfile(os.path.join(folderpath, f)) and f.endswith(".txt")]
         else:
             l=[]
-        return l
+        return l        
+    def getAllScriptTextFiles(self,folderpath):
+        #all dir on the custom scripts
+        if (os.path.exists(folderpath)):
+            l=[os.path.join(folderpath, f) for f in os.listdir(folderpath) if os.path.isdir(os.path.join(folderpath, f))]
+        else:
+            l=[]
+        scripts=[]
+        try:
+            for item in l:
+##                print(item)
+                namefile=item[item.rindex("/")+1:]
+                if(namefile[0] >= 'a' and namefile[0] <= 'z'):
+                    continue
+                else:
+                    scripts+=[os.path.join(item, f) for f in os.listdir(item) if os.path.isfile(os.path.join(item, f)) and f.endswith(".txt")]
+        except Exception as e:
+            print (e)
+        return scripts
     def set_mousewheel(self,widget):
         """Activate / deactivate mousewheel scrolling when
         cursor is over / not over the widget respectively."""
@@ -215,7 +267,8 @@ class ModLoad(CommonClass.Tab):
         file = open("prefsHHEditor.data", 'w')
         file.write("[MODS]\n")
         for path in self.modsPath:
-            file.write(path+'\n')
+            if(type(path)== str):
+                file.write(path+'\n')
         file.write("[SETUP]\n")
         file.write(str(currentTab)+"\n")
         file.close()

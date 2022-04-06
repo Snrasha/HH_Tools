@@ -487,9 +487,9 @@ class AbilitiesPopup(PopupTripleList):
         
 class FieldAbilitiesBis(FieldTripleList):
     def __init__(self,master,side=tk.TOP,command=None,**kwargs):
-        FieldTripleList.__init__(self,master,side,title="Technical Abilities",command=command)
+        FieldTripleList.__init__(self,master,side,title="Others Abilities",command=command)
     def onEnterPost(self,event):
-        AbilitiesBisPopup(self,"Technical Abilities",event.x_root,event.y_root,command=self.command)
+        AbilitiesBisPopup(self,"Others Abilities",event.x_root,event.y_root,command=self.command)
 class AbilitiesBisPopup(PopupTripleList):
     def __init__(self,field,title,x,y,command):
         PopupTripleList.__init__(self,field,title,x,y,CommonFunctions.readAbilitiesBis(),tooltipMore,True,command=command)

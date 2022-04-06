@@ -124,7 +124,7 @@ class Windows(tk.Tk):
         super().__init__()
 
         # root window
-        self.title("Hero's hour Editor | Version 1.1 | 05 april 2022")
+        self.title("Hero's hour Editor | Version 1.1 | 06 april 2022")
         self.geometry("1200x450+100+300")
         
         app=Application(self)
