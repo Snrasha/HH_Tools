@@ -556,6 +556,19 @@ class TabUnitEditor(CommonClass.Tab):
 
     ## Save a file. Check if all field are valid.
     def saveFile(self):
+        stop=False
+
+        if(len(self.fieldsEntry[7].get().strip())==0):
+            self.fieldsEntry[7].invalid()
+            stop=True
+        else:
+            self.fieldsEntry[7].valid()
+
+
+
+        if(stop):
+            return
+        
         self.filename=CommonFunctions.askSaveFile(self.filename,"Save Unit file")
         if(self.filename==None):
             self.filename=None

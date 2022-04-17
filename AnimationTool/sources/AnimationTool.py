@@ -83,12 +83,19 @@ def toGif(path,choice):
         return None
 
     if(isUnit):
+        # Put one black pixel on the bottom left for the death animation.
+        for img in imgs:
+            pixels = img.load()
+            if(pixels[0,img.size[1]-1] == 255):
+                pixels[0,img.size[1]-1]=0
+            
         idleAnim=[imgs[i] for i in range(0,4)]
         walkAnim=[imgs[i] for i in range(4,8)]
         attackAnim=[imgs[i] for i in range(8,12)]
         hurtAnim=[imgs[i] for i in range(12,16)]
         deathAnim=[imgs[i] for i in range(16,20)]
         imgs=[]
+
 
         if(choice[0]==0):
             for i in range(0,2):
@@ -138,7 +145,7 @@ def toGif(path,choice):
 
 #transparency=255, disposal=2,optimize=False) 
 
-description="Set what you want then load a spritesheet.\nFor unit: do idle, walk, attack and hurt.\nIf death only, will display the death without looping.\nFor hero, will display the animation a bit much longer."
+description="Version 1.0b | 16 april 2022 | Ping Snrasha for any feedback, idea or typo.\nSet what you want then load a spritesheet.\nFor unit: do idle, walk, attack and hurt then a long death.\nFor hero, will display the animation a bit much longer."
 gifScaling=["1","2","3","4","5","6","7","8","9"]
       
 class Application(ttk.Frame):

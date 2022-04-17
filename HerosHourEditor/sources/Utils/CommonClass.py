@@ -60,6 +60,10 @@ class Field(ttk.Frame):
         self.entry.insert(0,text)
     def empty(self):
         self.entry.delete(0, tk.END)
+    def invalid(self):
+        self.entry.configure(background="red")
+    def valid(self):
+        self.entry.configure(background="white")
    
 class FattyField(Field):
     def __init__(self,master,titleField,hintField="",side=tk.TOP,**kwargs):
