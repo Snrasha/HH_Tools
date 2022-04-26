@@ -3,6 +3,12 @@ TODO:
 - For the unit group of unit editor, do a list of all existing unit group and add a custom input field
 - Add unit group and link units.
 
+
+26/04/2022:
+  - Animation tools: 200ms for every animation, but 100ms for the attack animation
+
+(some logs has be forget)
+
 06/04/2022:
   - Add hidden abilities for the mod tab.
 

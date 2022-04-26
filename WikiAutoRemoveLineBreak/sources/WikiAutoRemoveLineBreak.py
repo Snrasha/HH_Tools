@@ -4,10 +4,10 @@ from tkinter import filedialog as fd
 import os
 
 def removeLineBreak():
-    filenameToRead=askFile()
+    filenameToRead=askFile("Select a file for remove linebreak")
     if(filenameToRead==None or len(filenameToRead.strip())==0):
         return
-    filenameToWrite=askSaveFile(filenameToRead)
+    filenameToWrite=askSaveFile(filenameToRead,"Compiled")
     file = open(filenameToRead, 'r')
     savefile = open(filenameToWrite, 'w')
     lines=file.readlines()
@@ -15,27 +15,26 @@ def removeLineBreak():
     l=""
     for line in lines:
         l+=line.strip()
-        print(line.strip())
         
     savefile.write(l)
     
     savefile.close()
 
 
-def askFile():
-    filename=fd.askopenfilename(title="Select a file for remove linebreak",filetypes=[("JS files","*.js")])
+def askFile(title):
+    filename=fd.askopenfilename(title=title,filetypes=[("JS files","*.js")])
     if(filename==None or filename.strip()==""):
         filename=None
     return filename
 ## Call the save dialog
-def askSaveFile(oldFilename):
+def askSaveFile(oldFilename,copySuffix):
     
     
     inifile=oldFilename.split('/')[-1]
-    inifile=inifile[:-len(".js")]+" copy.js"
+    inifile=inifile[:-len(".js")]+" "+copySuffix+".js"
     
         
-    filename=fd.asksaveasfilename(initialfile=inifile,title="Copy of the file",filetypes=[("JS files","*.js")])
+    filename=fd.asksaveasfilename(initialfile=inifile,title=copySuffix+" file",filetypes=[("JS files","*.js")])
     if(len(filename.strip())==0):
         filename=None 
     elif not filename.endswith(".js"):
@@ -43,10 +42,10 @@ def askSaveFile(oldFilename):
     return filename
 class Parser():
     def  __init__(self):
-        self.filenameToRead=askFile()
+        self.filenameToRead=askFile("Select a file for add linebreak")
         if(self.filenameToRead==None or len(self.filenameToRead.strip())==0):
             return
-        self.filenameToWrite=askSaveFile(self.filenameToRead)
+        self.filenameToWrite=askSaveFile(self.filenameToRead,"Uncompiled")
 
         self.lines=[]
         self.index=0

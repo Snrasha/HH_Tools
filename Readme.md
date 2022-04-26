@@ -8,13 +8,13 @@ https://docs.google.com/document/d/1h64ac7rNAW0_0Kfj-KsMecsdMdQGZlJ2cmIU0PMVWFY/
 
 ## Hero's Hour Editor
 
-This editor has only the Hero, Faction tab, but i will implement soon the unit and artifact tab.
+This editor has the Hero, Faction tab, Unit Tab and Mod Tab.
 
 ### Usage
 
 Double click on the HerosHourEditor.exe. Warning, this software will probably be seens like a **virus** the first time.</br>
 
-On open, you will have differents tabs. Click on these tabs for switching of editor or press the number on your keyboard.
+On open, you will have different tabs. Click on these tabs for switching of editor or press the number on your keyboard.
 
 ### Shortcut
 
@@ -44,16 +44,18 @@ On open, you will have differents tabs. Click on these tabs for switching of edi
 Description to add. If someone wish to do it.
 
 ## Animation Tool
-Unit:
-Transform your 20 frames to a gif-alike in HH game. Will add multiples loop of walk, idle, hurt, attack.
-Option with a death animation without looping.
-Hero:
-Create a long gif with 3 times each animation.
+Each button are linked to a hotkey
+
+* Unit:
+Create the animation used like the game. The attack animation use 100ms like in battle compared.
+* Hero:
+Simple animation but each rotation has a more loop.
+* Scaling: Rescale the global size of the gif.
+* Set Scale to 24x24: If your unit is on a canvas of 16x16, place it on a 24x24.
+* Double Background: Duplicate the gif with a transparent and gray background for see the difference.
 
 ## HH Mod Manager
 For Itch, Gog or Steam, you can easily install your mod with this tool.
-
-
 
 ### Compilation (For developpment only)
 
